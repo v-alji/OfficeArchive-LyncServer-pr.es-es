@@ -1,0 +1,196 @@
+---
+title: 'Lync Server 2013: equilibrio de carga de DNS'
+description: 'Lync Server 2013: equilibrio de carga de DNS.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: DNS load balancing
+ms:assetid: 7ed0ed20-33ad-4253-926d-21d392590ae7
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg398634(v=OCS.15)
+ms:contentKeyID: 48184625
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: ba95604ca8f4007c76cedea9bf2a16dbd7db455c
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/24/2020
+ms.locfileid: "49399755"
+---
+# <a name="dns-load-balancing-in-lync-server-2013"></a><span data-ttu-id="4cea3-103">Equilibrio de carga de DNS en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4cea3-103">DNS load balancing in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="4cea3-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="4cea3-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="4cea3-105">_**Última modificación del tema:** 2014-01-15_</span><span class="sxs-lookup"><span data-stu-id="4cea3-105">_**Topic Last Modified:** 2014-01-15_</span></span>
+
+<span data-ttu-id="4cea3-106">Lync Server habilita el equilibrio de carga de DNS, una solución de software que puede reducir en gran medida la sobrecarga de administración para el equilibrio de carga en la red.</span><span class="sxs-lookup"><span data-stu-id="4cea3-106">Lync Server enables DNS load balancing, a software solution that can greatly reduce the administration overhead for load balancing on your network.</span></span> <span data-ttu-id="4cea3-107">El equilibrio de carga de DNS equilibra el tráfico de red que es exclusivo de Lync Server, como el tráfico SIP y el tráfico de medios.</span><span class="sxs-lookup"><span data-stu-id="4cea3-107">DNS load balancing balances the network traffic that is unique to Lync Server, such as SIP traffic and media traffic.</span></span>
+
+<span data-ttu-id="4cea3-p102">Si implementa el equilibrio de carga de DNS, se reducirá considerablemente la sobrecarga de administración de la organización correspondiente a los equilibradores de carga de hardware. Además, se evitará la solución de problemas complejos asociados a errores de configuración de equilibradores de carga del tráfico SIP. También puede impedir que se establezcan conexiones de servidores para poder desconectar servidores. El equilibrio de carga de DNS también garantiza que los problemas relacionados con los equilibradores de carga de hardware no afecten a elementos de tráfico SIP, como el enrutamiento de llamadas básico.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p102">If you deploy DNS load balancing, your organization’s administration overhead for hardware load balancers will be minimized. Additionally, complex troubleshooting of problems related to misconfiguration of load balancers for SIP traffic will be eliminated. You can also prevent server connections so that you can take servers offline. DNS load balancing also ensures that hardware load balancer problems do not affect elements of SIP traffic such as basic call routing.</span></span>
+
+<span data-ttu-id="4cea3-112">Si se utiliza el equilibrio de carga de DNS también podrá adquirir equilibradores de carga de hardware a un precio más económico que si usa equilibradores de carga de hardware para todos los tipos de tráfico.</span><span class="sxs-lookup"><span data-stu-id="4cea3-112">If you use DNS load balancing, you may also be able to purchase lower-cost hardware load balancers than if you used the hardware load balancers for all types of traffic.</span></span> <span data-ttu-id="4cea3-113">Debe usar equilibradores de carga que hayan superado las pruebas de calificación de interoperabilidad con Lync Server.</span><span class="sxs-lookup"><span data-stu-id="4cea3-113">You should use load balancers that have passed interoperability qualification testing with Lync Server.</span></span> <span data-ttu-id="4cea3-114">Para obtener más información sobre las pruebas de interoperabilidad de equilibrador de carga, consulte "Lync Server 2010 de equilibrador de carga" en [https://go.microsoft.com/fwlink/p/?linkId=202452](https://go.microsoft.com/fwlink/p/?linkid=202452) .</span><span class="sxs-lookup"><span data-stu-id="4cea3-114">For details about load balancer interoperability testing, see "Lync Server 2010 Load Balancer Partners" at [https://go.microsoft.com/fwlink/p/?linkId=202452](https://go.microsoft.com/fwlink/p/?linkid=202452).</span></span>
+
+<span data-ttu-id="4cea3-115">El equilibrio de carga de DNS es compatible con grupos de servidores front-end, grupos de servidores perimetrales, grupos de servidores de director y grupos de servidores de mediación independientes.</span><span class="sxs-lookup"><span data-stu-id="4cea3-115">DNS load balancing is supported for Front End pools, Edge Server pools, Director pools, and stand-alone Mediation Server pools.</span></span>
+
+<div>
+
+## <a name="dns-load-balancing-on-front-end-pools-and-director-pools"></a><span data-ttu-id="4cea3-116">Equilibrio de carga de DNS en grupos de servidores front-end y grupos de servidores de director</span><span class="sxs-lookup"><span data-stu-id="4cea3-116">DNS Load Balancing on Front End Pools and Director Pools</span></span>
+
+<span data-ttu-id="4cea3-p104">Puede usar el equilibrio de carga de DNS para el tráfico SIP de los grupos de servidores front-end y los grupos de servidores de director. Con el equilibrio de carga de DNS implementado, seguirá necesitando usar también equilibradores de carga de hardware para esos grupos de servidores, pero solo para el tráfico HTTPS de cliente a servidor. El equilibrador de carga de hardware se usa para el tráfico HTTPS de los clientes en los puertos 443 y 80.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p104">You can use DNS load balancing for the SIP traffic on Front End pools and Director pools. With DNS load balancing deployed, you still need to also use hardware load balancers for these pools, but only for client-to-server HTTPS traffic. The hardware load balancer is used for HTTPS traffic from clients over ports 443 and 80.</span></span>
+
+<span data-ttu-id="4cea3-120">A pesar de que seguirá necesitando equilibradores de carga de hardware para esos grupos de servidores, su instalación y administración será fundamentalmente para el tráfico HTTPS, al que están habituados los administradores de equilibradores de carga de hardware.</span><span class="sxs-lookup"><span data-stu-id="4cea3-120">Although you still need hardware load balancers for these pools, their setup and administration will be primarily for HTTPS traffic, which the administrators of hardware load balancers are accustomed to.</span></span>
+
+<div>
+
+## <a name="dns-load-balancing-and-supporting-older-clients-and-servers"></a><span data-ttu-id="4cea3-121">Equilibrio de carga de DNS y compatibilidad con clientes y servidores más antiguos</span><span class="sxs-lookup"><span data-stu-id="4cea3-121">DNS Load Balancing and Supporting Older Clients and Servers</span></span>
+
+<span data-ttu-id="4cea3-122">El equilibrio de carga de DNS admite la conmutación por error automática solo para servidores que ejecutan Lync Server 2013 o Lync Server 2010, y para clientes de Lync 2013 y Lync 2010.</span><span class="sxs-lookup"><span data-stu-id="4cea3-122">DNS load balancing supports automatic failover only for servers running Lync Server 2013 or Lync Server 2010, and for Lync 2013 and Lync 2010 clients.</span></span> <span data-ttu-id="4cea3-123">Las versiones anteriores de clientes y Office Communications Server aún pueden conectarse a grupos que ejecutan el equilibrio de carga de DNS, pero si no pueden realizar una conexión con el primer servidor al que el equilibrio de carga DNS hace referencia a él, no pueden conmutar por error a otro servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-123">Earlier versions of clients and Office Communications Server can still connect to pools running DNS load balancing, but if they cannot make a connection to the first server that DNS load balancing refers them to, they are unable to fail over to another server in the pool.</span></span>
+
+<span data-ttu-id="4cea3-124">Además, si usa la mensajería unificada de Exchange, debe usar un mínimo de Exchange 2010 SP1 para obtener soporte técnico para el equilibrio de carga de DNS de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="4cea3-124">Additionally, if you are using Exchange UM, you must use a minimum of Exchange 2010 SP1 to get support for Lync Server DNS load balancing.</span></span> <span data-ttu-id="4cea3-125">Si usa alguna versión anterior de Exchange, los usuarios no tendrán capacidades de conmutación por error para estos escenarios de la mensajería unificada de Exchange:</span><span class="sxs-lookup"><span data-stu-id="4cea3-125">If you use an earlier version of Exchange, your users will not have failover capabilities for these Exchange UM scenarios:</span></span>
+
+  - <span data-ttu-id="4cea3-126">Reproducir el correo de voz de la empresa en su teléfono</span><span class="sxs-lookup"><span data-stu-id="4cea3-126">Playing their Enterprise Voice voice mail on their phone</span></span>
+
+  - <span data-ttu-id="4cea3-127">Transferir llamadas de un operador automático de la mensajería unificada de Exchange</span><span class="sxs-lookup"><span data-stu-id="4cea3-127">Transferring calls from an Exchange UM Auto Attendant</span></span>
+
+<span data-ttu-id="4cea3-128">Todos los demás escenarios de la mensajería unificada de Exchange funcionarán correctamente.</span><span class="sxs-lookup"><span data-stu-id="4cea3-128">All other Exchange UM scenarios will work properly.</span></span>
+
+</div>
+
+<div>
+
+## <a name="deploying-dns-load-balancing-on-front-end-pools-and-director-pools"></a><span data-ttu-id="4cea3-129">Implementar el equilibrio de carga de DNS en grupos de servidores front-end y grupos de servidores de director</span><span class="sxs-lookup"><span data-stu-id="4cea3-129">Deploying DNS Load Balancing on Front End Pools and Director Pools</span></span>
+
+<span data-ttu-id="4cea3-130">Para implementar el equilibrio de carga de DNS en grupos de servidores front-end y grupos de servidores de director, es necesario realizar un par de pasos adicionales con los registros de DNS y los FQDN.</span><span class="sxs-lookup"><span data-stu-id="4cea3-130">Deploying DNS load balancing on Front End pools and Director pools requires you to perform a couple of extra steps with FQDNs and DNS records.</span></span>
+
+  - <span data-ttu-id="4cea3-131">Si un grupo de servidores usa equilibrio de carga de DNS, necesita tener dos FQDN: el FQDN normal del grupo que usa el equilibrio de carga de DNS (como, por ejemplo, pool01.contoso.com) y que se resuelve en las IP físicas de los servidores del grupo, y otro FQDN para los servicios web del grupo (como, por ejemplo, web01.contoso.com), que se resuelve como la dirección IP virtual del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-131">A pool that uses DNS load balancing must have two FQDNs: the regular pool FQDN that is used by DNS load balancing (such as pool01.contoso.com), and resolves to the physical IPs of the servers in the pool, and another FQDN for the pool’s Web services (such as web01.contoso.com), which resolves to virtual IP address of the pool.</span></span>
+    
+    <span data-ttu-id="4cea3-132">En el generador de topología, si desea implementar el equilibrio de carga de DNS para un grupo, para crear este FQDN adicional para los servicios web del grupo, debe activar la casilla **invalidar FQDN del grupo de servicios Web internos** y escribir el FQDN en la página **especificar las direcciones URL de los servicios web para este grupo** .</span><span class="sxs-lookup"><span data-stu-id="4cea3-132">In Topology Builder, if you want to deploy DNS load balancing for a pool, to create this extra FQDN for the pool’s Web services you must select the **Override internal Web Services pool FQDN** check box and type the FQDN, in the **Specify the Web Services URLs for this Pool** page.</span></span>
+
+  - <span data-ttu-id="4cea3-p107">Para admitir el FQDN que usa el equilibrio de carga de DNS, necesita aprovisionar el DNS, de modo que resuelva el FQDN del grupo (como, por ejemplo, pool01.contoso.com) en las direcciones IP de todos los servidores del grupo (por ejemplo, 192.168.1.1, 192.168.1.2, etc.). Necesita incluir solo las direcciones IP de los servidores implementados actualmente.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p107">To support the FQDN used by DNS load balancing, you must provision DNS to resolve the pool FQDN (such as pool01.contoso.com) to the IP addresses of all the servers in the pool (for example, 192.168.1.1, 192.168.1.2, and so on). You should include only the IP addresses of servers that are currently deployed.</span></span>
+    
+    <div>
+    
+
+    > [!WARNING]  
+    > <span data-ttu-id="4cea3-135">Si tiene más de un grupo de servidores front-end o un servidor front-end, el FQDN de los servicios web externos debe ser único.</span><span class="sxs-lookup"><span data-stu-id="4cea3-135">If you have more than one Front End pool or Front End Server the external Web services FQDN must be unique.</span></span> <span data-ttu-id="4cea3-136">Por ejemplo, si define el FQDN de los servicios web externos de un servidor front-end como <STRONG>pool01.contoso.com</STRONG>, no puede usar <STRONG>pool01.contoso.com</STRONG> para otro grupo de servidores front-end o servidor front-end.</span><span class="sxs-lookup"><span data-stu-id="4cea3-136">For example, if you define the external Web services FQDN of a Front End Server as <STRONG>pool01.contoso.com</STRONG>, you cannot use <STRONG>pool01.contoso.com</STRONG> for another Front End pool or Front End Server.</span></span> <span data-ttu-id="4cea3-137">Si también va a implementar directores, el FQDN de servicios Web externo definido para cualquier Director o grupo de directores debe ser único de cualquier otro grupo de directores o directores, así como de cualquier grupo de servidores front-end o servidor front-end.</span><span class="sxs-lookup"><span data-stu-id="4cea3-137">If you are also deploying Directors, the external Web services FQDN defined for any Director or Director pool must be unique from any other Director or Director pool as well as any Front End pool or Front End Server.</span></span> <span data-ttu-id="4cea3-138">Si decide invalidar los servicios Web internos con un FQDN definido por el usuario, cada FQDN debe ser único de cualquier otro grupo de servidores front-end, director o grupo de directores.</span><span class="sxs-lookup"><span data-stu-id="4cea3-138">If decide to override the Internal web services with a self-defined FQDN, each FQDN must be unique from any other Front End pool, Director or a Director pool.</span></span>
+
+    
+    </div>
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="dns-load-balancing-on-edge-server-pools"></a><span data-ttu-id="4cea3-139">Equilibrio de carga de DNS en grupos de servidores perimetrales</span><span class="sxs-lookup"><span data-stu-id="4cea3-139">DNS Load Balancing on Edge Server Pools</span></span>
+
+<span data-ttu-id="4cea3-p109">Puede implementar el equilibrio de carga de DNS en grupos de servidores perimetrales. Si lo hace, necesita tener en cuenta varias consideraciones.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p109">You can deploy DNS load balancing on Edge Server pools. If you do, you must be aware of some considerations.</span></span>
+
+<span data-ttu-id="4cea3-142">El uso del equilibrio de carga de DNS en los servidores perimetrales provoca una pérdida en la capacidad de conmutación por error, en los siguientes escenarios:</span><span class="sxs-lookup"><span data-stu-id="4cea3-142">Using DNS load balancing on your Edge Servers causes a loss of failover ability in the following scenarios:</span></span>
+
+  - <span data-ttu-id="4cea3-143">Federación con organizaciones que ejecutan versiones de Office Communications Server publicadas antes de Lync Server 2010.</span><span class="sxs-lookup"><span data-stu-id="4cea3-143">Federation with organizations that are running versions of Office Communications Server released prior to Lync Server 2010.</span></span>
+
+  - <span data-ttu-id="4cea3-144">Intercambio de mensajes instantáneos con usuarios de servicios de mensajería instantánea (mi) públicos AOLand Yahoo \! , además de servidores y proveedores basados en XMPP, como Google Talk.</span><span class="sxs-lookup"><span data-stu-id="4cea3-144">Instant message exchange with users of public instant messaging (IM) services AOLand Yahoo\!, in addition to XMPP-based providers and servers, such as Google Talk.</span></span>
+    
+    <div>
+    
+
+    > [!IMPORTANT]  
+    > <UL>
+    > <LI>
+    > <P><span data-ttu-id="4cea3-145">Actualmente, Google Talk es el único socio XMPP admitido.</span><span class="sxs-lookup"><span data-stu-id="4cea3-145">Google Talk is currently the only supported XMPP partner.</span></span></P>
+    > <LI>
+    > <P><span data-ttu-id="4cea3-146">A partir del 1 de septiembre de 2012, la licencia de suscripción de usuario de conectividad de mensajería instantánea pública de Microsoft Lync ("PIC USL") ya no está disponible para la compra de contratos nuevos o de renovación.</span><span class="sxs-lookup"><span data-stu-id="4cea3-146">As of September 1st, 2012, the Microsoft Lync Public IM Connectivity User Subscription License (“PIC USL”) is no longer available for purchase for new or renewing agreements.</span></span> <span data-ttu-id="4cea3-147">Los clientes con licencias activas podrán seguir federando a Yahoo!</span><span class="sxs-lookup"><span data-stu-id="4cea3-147">Customers with active licenses will be able to continue to federate with Yahoo!</span></span> <span data-ttu-id="4cea3-148">Messenger hasta que se cierre la fecha del servicio.</span><span class="sxs-lookup"><span data-stu-id="4cea3-148">Messenger until the service shut down date.</span></span> <span data-ttu-id="4cea3-149">Una fecha de fin de vida de junio de 2014 para AOL y Yahoo!</span><span class="sxs-lookup"><span data-stu-id="4cea3-149">An end of life date of June 2014 for AOL and Yahoo!</span></span> <span data-ttu-id="4cea3-150">ha sido anunciado.</span><span class="sxs-lookup"><span data-stu-id="4cea3-150">has been announced.</span></span> <span data-ttu-id="4cea3-151">Para obtener más información, consulte <A href="lync-server-2013-support-for-public-instant-messenger-connectivity.md">compatibilidad de la conectividad de mensajería instantánea pública en Lync Server 2013</A>.</span><span class="sxs-lookup"><span data-stu-id="4cea3-151">For details, see <A href="lync-server-2013-support-for-public-instant-messenger-connectivity.md">Support for public instant messenger connectivity in Lync Server 2013</A>.</span></span></P></LI></UL>
+
+    
+    </div>
+
+<span data-ttu-id="4cea3-152">Estos escenarios funcionarán siempre que se ejecuten correctamente todos los servidores perimetrales del grupo pero, si un servidor perimetral no está disponible, fallarán todas las solicitudes de estos escenarios que se envíen a él, en lugar de redirigirse a otro servidor perimetral.</span><span class="sxs-lookup"><span data-stu-id="4cea3-152">These scenarios will work as long as all Edge Servers in the pool are up and running, but if one Edge Server is unavailable, any requests for these scenarios that are sent to it will fail, instead of routing to another Edge Server.</span></span>
+
+<span data-ttu-id="4cea3-153">Si usa la mensajería unificada de Exchange, debe usar un mínimo de 2013 de Exchange para obtener compatibilidad con el equilibrio de carga de DNS de Lync Server en Edge.</span><span class="sxs-lookup"><span data-stu-id="4cea3-153">If you are using Exchange UM, you must use a minimum of Exchange 2013 to get support for Lync Server DNS load balancing on Edge.</span></span> <span data-ttu-id="4cea3-154">Si usa alguna versión anterior de Exchange, los usuarios remotos no tendrán capacidades de conmutación por error para estos escenarios de mensajería unificada de Exchange:</span><span class="sxs-lookup"><span data-stu-id="4cea3-154">If you use an earlier version of Exchange, your remote users will not have failover capabilities for these Exchange UM scenarios:</span></span>
+
+  - <span data-ttu-id="4cea3-155">Reproducir el correo de voz de la empresa en su teléfono</span><span class="sxs-lookup"><span data-stu-id="4cea3-155">Playing their Enterprise Voice voice mail on their phone</span></span>
+
+  - <span data-ttu-id="4cea3-156">Transferir llamadas de un operador automático de la mensajería unificada de Exchange</span><span class="sxs-lookup"><span data-stu-id="4cea3-156">Transferring calls from an Exchange UM Auto Attendant</span></span>
+
+<span data-ttu-id="4cea3-157">Todos los demás escenarios de la mensajería unificada de Exchange funcionarán correctamente.</span><span class="sxs-lookup"><span data-stu-id="4cea3-157">All other Exchange UM scenarios will work properly.</span></span>
+
+<span data-ttu-id="4cea3-p112">La interfaz perimetral interna y la interfaz perimetral externa necesitan usar el mismo tipo de equilibrio de carga. No puede usar equilibrio de carga de DNS en una interfaz perimetral y equilibrio de carga de hardware en la otra interfaz perimetral.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p112">The internal Edge interface and external Edge interface must use the same type of load balancing. You cannot use DNS load balancing on one Edge interface and hardware load balancing on the other Edge interface.</span></span>
+
+<div>
+
+## <a name="deploying-dns-load-balancing-on-edge-server-pools"></a><span data-ttu-id="4cea3-160">Implementar el equilibrio de carga de DNS en grupos de servidores perimetrales</span><span class="sxs-lookup"><span data-stu-id="4cea3-160">Deploying DNS Load Balancing on Edge Server Pools</span></span>
+
+<span data-ttu-id="4cea3-161">Para implementar el equilibrio de carga de DNS en la interfaz externa del grupo de servidores perimetrales, necesita las siguientes entradas de DNS:</span><span class="sxs-lookup"><span data-stu-id="4cea3-161">To deploy DNS load balancing on the external interface of your Edge Server pool, you need the following DNS entries:</span></span>
+
+  - <span data-ttu-id="4cea3-p113">Para el servicio perimetral de acceso, necesita una entrada por cada servidor del grupo. Cada entrada necesita resolver el FQDN del servicio perimetral de acceso (por ejemplo, sip.contoso.com) en la dirección IP del servicio perimetral de acceso de uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p113">For the Access Edge service, you need one entry for each server in the pool. Each entry must resolve the FQDN of the Access Edge service (for example, sip.contoso.com) to the IP address of the Access Edge service on one of the Edge Servers in the pool.</span></span>
+
+  - <span data-ttu-id="4cea3-p114">Para el servicio perimetral de conferencia web, necesita una entrada por cada servidor del grupo. Cada entrada necesita resolver el FQDN del servicio perimetral de conferencia web (por ejemplo, webconf.contoso.com) en la dirección IP del servicio perimetral de conferencia web de uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p114">For the Web Conferencing Edge service, you need one entry for each server in the pool. Each entry must resolve the FQDN of the Web Conferencing Edge service (for example, webconf.contoso.com) to the IP address of the Web Conferencing Edge service on one of the Edge Servers in the pool.</span></span>
+
+  - <span data-ttu-id="4cea3-166">Para el servicio perimetral de audio y vídeo, necesita una entrada por cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-166">For the Audio/Video Edge service, you need one entry for each server in the pool.</span></span> <span data-ttu-id="4cea3-167">Cada entrada debe resolver el FQDN del servicio perimetral de audio/vídeo (por ejemplo, av.contoso.com) a la dirección IP del servicio de borde A/V de uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-167">Each entry must resolve the FQDN of the Audio/Video Edge service (for example, av.contoso.com) to the IP address of the A/V Edge service on one of the Edge Servers in the pool.</span></span>
+
+<span data-ttu-id="4cea3-168">Para implementar el equilibrio de carga de DNS en la interfaz interna del grupo de servidores perimetrales, necesita agregar un registro A de DNS que resuelva el FQDN interno del grupo de servidores perimetrales en la dirección IP de cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-168">To deploy DNS load balancing on the internal interface of your Edge Server pool, you must add one DNS A record, which resolves the internal FQDN of the Edge Server pool to the IP address of each server in the pool.</span></span>
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="using-dns-load-balancing-on-mediation-server-pools"></a><span data-ttu-id="4cea3-169">Usar el equilibrio de carga de DNS en grupos de servidores de mediación</span><span class="sxs-lookup"><span data-stu-id="4cea3-169">Using DNS Load Balancing on Mediation Server Pools</span></span>
+
+<span data-ttu-id="4cea3-p116">Puede usar el equilibrio de carga de DNS en grupos de servidores de mediación independientes. Todo el tráfico de medios y SIP se equilibra con el equilibrio de carga de DNS.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p116">You can use DNS load balancing on stand-alone Mediation Server pools. All SIP and media traffic is balanced by DNS load balancing.</span></span>
+
+<span data-ttu-id="4cea3-172">Para implementar el equilibrio de carga de DNS en un grupo de servidores de mediación, necesita aprovisionar el DNS, de modo que resuelva el FQDN del grupo (por ejemplo, mediationpool1.contoso.com) en las direcciones IP de todos los servidores del grupo (por ejemplo, 192.168.1.1, 192.168.1.2, etc.).</span><span class="sxs-lookup"><span data-stu-id="4cea3-172">To deploy DNS load balancing on a Mediation Server pool, you must provision DNS to resolve the pool FQDN (for example, mediationpool1.contoso.com) to the IP addresses of all the servers in the pool (for example, 192.168.1.1, 192.168.1.2, and so on).</span></span>
+
+</div>
+
+<div>
+
+## <a name="blocking-traffic-to-a-server-with-dns-load-balancing"></a><span data-ttu-id="4cea3-173">Bloquear tráfico a un servidor con equilibrio de carga de DNS</span><span class="sxs-lookup"><span data-stu-id="4cea3-173">Blocking Traffic to a Server With DNS Load Balancing</span></span>
+
+<span data-ttu-id="4cea3-p117">Si utiliza el equilibrio de carga de DNS y necesita bloquear el tráfico a un equipo específico, no es suficiente con solo quitar las entradas de direcciones IP del grupo FQDN. También necesita quitar la entrada de DNS para el equipo.</span><span class="sxs-lookup"><span data-stu-id="4cea3-p117">If you use DNS load balancing and you need to block traffic to a specific computer, it is not sufficient to just remove the IP address entries from the Pool FQDN. You must remove the DNS entry for the computer as well.</span></span>
+
+<span data-ttu-id="4cea3-176">Tenga en cuenta que para el tráfico de servidor a servidor, Lync Server 2013 usa el equilibrio de carga para la topología.</span><span class="sxs-lookup"><span data-stu-id="4cea3-176">Note that for server-to-server traffic, Lync Server 2013 uses topology-aware load balancing.</span></span> <span data-ttu-id="4cea3-177">Los servidores leen la topología Publicada en el almacén central de administración para obtener los FQDN de los servidores de la topología y distribuyen automáticamente el tráfico entre los servidores.</span><span class="sxs-lookup"><span data-stu-id="4cea3-177">Servers read the published topology in the Central Management store to obtain the FQDNs of servers in the topology, and automatically distribute the traffic among the servers.</span></span> <span data-ttu-id="4cea3-178">Para bloquear un servidor para que no reciba tráfico de servidor a servidor, necesita quitar el servidor de la topología.</span><span class="sxs-lookup"><span data-stu-id="4cea3-178">To block a server from receiving server-to-server traffic, you must remove the server from the topology.</span></span>
+
+<span data-ttu-id="4cea3-179"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="4cea3-179"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
