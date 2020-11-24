@@ -1,0 +1,78 @@
+---
+title: 'Lync Server 2013: Administrar características de administración de llamadas'
+description: 'Lync Server 2013: administración de características de administración de llamadas.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Managing call management features
+ms:assetid: c1261140-7a17-4bb2-9823-aa2cf307067c
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ721872(v=OCS.15)
+ms:contentKeyID: 49733805
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 6c51aa3174ee42047e6b6fe25a834ec832ebc889
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/24/2020
+ms.locfileid: "49399125"
+---
+# <a name="managing-call-management-features-in-lync-server-2013"></a>Administrar características de administración de llamadas en Lync Server 2013
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody">
+
+<span> </span>
+
+_**Última modificación del tema:** 2012-12-18_
+
+Las características de administración de llamadas de telefonía de empresa controlan cómo se enrutan y responden las llamadas entrantes. Lync Server 2013 ofrece las siguientes características de administración de llamadas:
+
+  - **Parque de llamadas:** Permite a los usuarios de voz detener temporalmente una llamada y, a continuación, recogerla desde el mismo teléfono u otro teléfono.
+
+  - **Recogida de grupos:** Permite que los usuarios reciban llamadas que están sonando para otros usuarios marcando un número de grupo de recogida de llamadas.
+
+  - **Grupo de respuesta:** Enruta las llamadas entrantes a grupos de agentes mediante el uso de grupos de extensiones o preguntas y respuestas interactivas de respuesta de voz (IVR).
+
+  - **Anuncio:** Reproduce un mensaje para las llamadas realizadas a un número no asignado o enruta la llamada en otro lugar, o ambas.
+
+En esta sección se describe cómo administrar estas características de administración de llamadas en la implementación de telefonía IP empresarial.
+
+<div>
+
+## <a name="in-this-section"></a>En esta sección
+
+  - [Administración del parque de llamadas en Lync Server 2013](lync-server-2013-managing-call-park.md)
+
+  - [Administración de la recogida de llamadas en Lync Server 2013](lync-server-2013-managing-group-call-pickup.md)
+
+  - [Administración de grupos de respuesta en Lync Server 2013](lync-server-2013-managing-response-groups.md)
+
+  - [Administración de llamadas a números no asignados en Lync Server 2013](lync-server-2013-managing-calls-to-unassigned-numbers.md)
+
+</div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</div>
+
