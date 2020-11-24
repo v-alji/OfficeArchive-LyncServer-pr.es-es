@@ -1,0 +1,353 @@
+---
+title: 'Lync Server 2013: Procedimiento de conmutación por error de ABC del grupo de servidores front-end'
+description: 'Lync Server 2013: procedimiento de conmutación por error ABC de grupo de front-end.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Front End pool ABC failover procedure
+ms:assetid: 67763ad3-6796-45eb-a486-901f21ac1a95
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ945635(v=OCS.15)
+ms:contentKeyID: 51541486
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: b86f196d53afdc1dcad6fe41191c2aa1582f717e
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/24/2020
+ms.locfileid: "49399137"
+---
+# <a name="front-end-pool-abc-failover-procedure-in-lync-server-2013"></a><span data-ttu-id="e9479-103">Procedimiento de conmutación por error de ABC del grupo de servidores front-end en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="e9479-103">Front End pool ABC failover procedure in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="e9479-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="e9479-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="e9479-105">_**Última modificación del tema:** 2014-05-22_</span><span class="sxs-lookup"><span data-stu-id="e9479-105">_**Topic Last Modified:** 2014-05-22_</span></span>
+
+<span data-ttu-id="e9479-106">Siga estos pasos para realizar el procedimiento de conmutación por error ABC.</span><span class="sxs-lookup"><span data-stu-id="e9479-106">Use the following steps to perform the ABC failover procedure.</span></span> <span data-ttu-id="e9479-107">Este procedimiento contiene una descripción de alto nivel de cada paso seguida de comandos y cmdlets para cada paso.</span><span class="sxs-lookup"><span data-stu-id="e9479-107">This procedure contains a high-level description of each step, followed by commands and cmdlets to be run for each step.</span></span>
+
+<span data-ttu-id="e9479-108">Para ejecutar los cmdlets, abra un shell de administración de Lync Server con ejecutar como administrador.</span><span class="sxs-lookup"><span data-stu-id="e9479-108">To run the cmdlets, open a Lync Server Management Shell using Run as Administrator.</span></span>
+
+<div>
+
+## <a name="to-perform-an-abc-failover"></a><span data-ttu-id="e9479-109">Para realizar una conmutación por error ABC</span><span class="sxs-lookup"><span data-stu-id="e9479-109">To Perform an ABC Failover</span></span>
+
+1.  <span data-ttu-id="e9479-110">Compruebe si el grupo A es el host del servidor de administración central (CMS).</span><span class="sxs-lookup"><span data-stu-id="e9479-110">Check whether the pool A is the host for the Central Management Server (CMS).</span></span>
+    
+      - <span data-ttu-id="e9479-111">Ejecute el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-111">Run the following cmdlet:</span></span>
+        
+            Get-CsService -CentralManagement
+        
+        <span data-ttu-id="e9479-112">Si el campo Identity del CMS activo apunta al nombre de dominio completo (FQDN) del grupo A, siga los pasos 2 y 3 de este procedimiento para realizar la conmutación por error primero en el servidor de administración central.</span><span class="sxs-lookup"><span data-stu-id="e9479-112">If the Identity field of the active CMS points to the fully qualified domain name (FQDN) of Pool A, then you use steps 2 and 3 of this procedure to fail over the Central Management Server first.</span></span> <span data-ttu-id="e9479-113">En caso contrario, vaya al paso 4.</span><span class="sxs-lookup"><span data-stu-id="e9479-113">Otherwise, skip to step 4.</span></span>
+
+2.  <span data-ttu-id="e9479-114">Conmutar por error el CMS al grupo B en modo de recuperación de desastres ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-114">Fail over the CMS to Pool B in disaster recovery mode by running the following cmdlet:</span></span>
+    
+        Invoke-CsManagementServerFailover -BackupSqlServerFqdn <Pool B BE FQDN> -BackupSqlInstanceName <Pool B BE instance name> [-BackupMirrorSqlServerFqdn <Pool B Mirror BE FQDN> -BackupMirrorSqlInstanceName <Pool B Mirror BE Instance name>] -Force -Verbose
+    
+    <span data-ttu-id="e9479-115">Después de hacerlo, le recomendamos que mueva el CMS del grupo B a otro grupo emparejado existente para obtener resistencia adicional.</span><span class="sxs-lookup"><span data-stu-id="e9479-115">After you do this, we recommend that you move the CMS from pool B to another existing paired pool for extra resiliency.</span></span> <span data-ttu-id="e9479-116">Para obtener más información, consulte [Move-CsManagementServer](https://docs.microsoft.com/powershell/module/skype/Move-CsManagementServer)..</span><span class="sxs-lookup"><span data-stu-id="e9479-116">For details, see [Move-CsManagementServer](https://docs.microsoft.com/powershell/module/skype/Move-CsManagementServer)..</span></span>
+
+3.  <span data-ttu-id="e9479-117">Si el grupo A contiene CMS, importe la configuración de LIS del grupo A en la base de datos LIS del grupo B (LIS. MDF).</span><span class="sxs-lookup"><span data-stu-id="e9479-117">If Pool A contains CMS, import the LIS configuration from pool A into pool B’s LIS database (Lis.mdf).</span></span> <span data-ttu-id="e9479-118">Esto funcionará solo si ha realizado una copia de seguridad de los datos de LIS de forma regular.</span><span class="sxs-lookup"><span data-stu-id="e9479-118">This will work only if you have been backing up LIS data on a regular basis.</span></span> <span data-ttu-id="e9479-119">Para importar la configuración de LIS, ejecute los siguientes cmdlets:</span><span class="sxs-lookup"><span data-stu-id="e9479-119">To import the LIS configuration, run the following cmdlets:</span></span>
+    
+        Import-CsLisConfiguration -FileName <String> 
+        Publish-CsLisConfiguration
+
+4.  <span data-ttu-id="e9479-120">Importar flujos de trabajo de copia de seguridad del servicio del grupo de respuesta de Lync Server del grupo A al grupo B.</span><span class="sxs-lookup"><span data-stu-id="e9479-120">Import backed-up Lync Server Response Group service workflows from pool A into pool B.</span></span>
+    
+    <div>
+    
+
+    > [!NOTE]  
+    > <span data-ttu-id="e9479-121">En este momento, el cmdlet <STRONG>Import-CsRgsConfiguration</STRONG> requiere que los nombres de la cola y del flujo de trabajo del grupo a sean distintos de los nombres de la cola y del flujo de trabajo del grupo B. Si los nombres no son distintos, recibirá un error al ejecutar el cmdlet <STRONG>Import-CsRgsConfiguration</STRONG> y las colas y los flujos de trabajo deberán cambiar de nombre en el grupo B antes de continuar con el cmdlet <STRONG>Import-CsRgsConfiguration</STRONG> .</span><span class="sxs-lookup"><span data-stu-id="e9479-121">Currently, the <STRONG>Import-CsRgsConfiguration</STRONG> cmdlet requires that the queue and workflow names on pool A are distinct from the queue and workflow names on pool B. If the names are not distinct, you will get an error when running the <STRONG>Import-CsRgsConfiguration</STRONG> cmdlet, and the queues and workflows will need to be renamed in pool B before proceeding with <STRONG>Import-CsRgsConfiguration</STRONG> cmdlet.</span></span>
+
+    
+    </div>
+    
+    <span data-ttu-id="e9479-122">Tiene dos opciones para importar la configuración del grupo de respuesta desde el grupo A al grupo B. La opción que use dependerá de si desea sobrescribir la configuración de nivel de aplicación del grupo de servidores B con la configuración de nivel de aplicación en el grupo A.</span><span class="sxs-lookup"><span data-stu-id="e9479-122">You have two options for importing the Response Group configuration from pool A to pool B. Which option you use depends on whether you want to overwrite the application-level settings of pool B with the application-level settings in pool A.</span></span>
+    
+      - <span data-ttu-id="e9479-123">Si desea sobrescribir la configuración del grupo B, ejecute el cmdlet **Import-CsRgsConfiguration** con la opción **ReplaceExistingSettings** :</span><span class="sxs-lookup"><span data-stu-id="e9479-123">If you want to overwrite the Pool B settings, run the **Import-CsRgsConfiguration** cmdlet with the **ReplaceExistingSettings** option:</span></span>
+        
+            Import-CsRgsConfiguration -Destination "service:ApplicationServer:<Pool B FQDN>" -FileName "C:\RgsExportPrimary.zip"  -ReplaceExistingRgsSettings
+    
+      - <span data-ttu-id="e9479-124">Si no desea sobrescribir la configuración del grupo B, use el cmdlet **Import-CsRgsConfiguration** sin la opción **ReplaceExistingSettings** .</span><span class="sxs-lookup"><span data-stu-id="e9479-124">If you do not want to overwrite the Pool B settings, use the **Import-CsRgsConfiguration** cmdlet without the **ReplaceExistingSettings** option.</span></span>
+        
+            Import-CsRgsConfiguration -Destination "service:ApplicationServer:<Pool B FQDN>" -FileName "C:\RgsExportPrimary.zip"
+    
+    <div>
+    
+
+    > [!WARNING]  
+    > <span data-ttu-id="e9479-125">Tenga en cuenta que si no desea sobrescribir la configuración de nivel de aplicación del grupo de copias de seguridad (grupo B) con la configuración del grupo principal (grupo A), la configuración de nivel de aplicación del grupo A se perderá si el grupo A se pierde, porque la aplicación de grupo de respuesta solo puede almacenar un conjunto de parámetros de nivel de aplicación por grupo.</span><span class="sxs-lookup"><span data-stu-id="e9479-125">Keep in mind that if you do not want to overwrite the application-level settings of the backup pool (pool B) with the settings of the primary pool (pool A), pool A’s application-level settings will be lost if pool A is lost, because the Response Group application can store only one set of application-level settings per pool.</span></span> <span data-ttu-id="e9479-126">Cuando se implementa el grupo C para reemplazar el grupo A, se debe volver a configurar la configuración del nivel de aplicación, incluido el archivo de audio de música en espera predeterminado.</span><span class="sxs-lookup"><span data-stu-id="e9479-126">When pool C is deployed to replace pool A, the application-level settings must be reconfigured, including the default music-on-hold audio file.</span></span>
+
+    
+    </div>
+
+5.  <span data-ttu-id="e9479-127">Compruebe que la importación de configuración del grupo de respuesta se ha realizado correctamente ejecutando los siguientes cmdlets para mostrar los grupos de respuesta importados.</span><span class="sxs-lookup"><span data-stu-id="e9479-127">Verify that the Response Group configuration import was successful by running the following cmdlets to display the imported response groups.</span></span> <span data-ttu-id="e9479-128">Observe que los grupos de respuesta importados siguen siendo propiedad del grupo A.</span><span class="sxs-lookup"><span data-stu-id="e9479-128">Note that the imported response groups are still owned by pool A.</span></span>
+    
+        Get-CsRgsWorkflow -Identity "service:ApplicationServer:<Pool B FQDN>" -Owner "service:ApplicationServer:<Pool A FQDN>"
+        
+        Get-CsRgsQueue -Identity "service:ApplicationServer:<Pool B FQDN>" -Owner "service:ApplicationServer:<Pool A FQDN>"
+        
+        Get-CsRgsAgentGroup -Identity "service:ApplicationServer:<Pool B FQDN>" -Owner "service:ApplicationServer:<Pool A FQDN>"
+
+6.  <span data-ttu-id="e9479-129">En el caso de números no asignados, mueva los rangos de números sin asignar que usan "anuncio" como el servicio de anuncios seleccionado del grupo A al grupo B. Para ello, haga lo siguiente:</span><span class="sxs-lookup"><span data-stu-id="e9479-129">For Unassigned Numbers, move the Unassigned Number ranges that are using "Announcement" as the selected announcement service from pool A to pool B. To do so:</span></span>
+    
+      - <span data-ttu-id="e9479-130">Vuelva a crear todos los anuncios que se han implementado en el grupo A del grupo B. Si se usaron archivos de audio al implementar los anuncios en el grupo A, se necesitarán estos archivos para volver a crear los anuncios en el grupo B. Para volver a crear los anuncios en el grupo B, use los cmdlets **New-CsAnnouncement** con el grupo b como servicio principal.</span><span class="sxs-lookup"><span data-stu-id="e9479-130">Re-create all announcements that were deployed in pool A on pool B. If any audio files were used when deploying the announcements in pool A, these files will be needed to re-create the announcements in pool B. To re-create the announcements in pool B, use the **New-CsAnnouncement** cmdlets, with pool B as the Parent service.</span></span>
+    
+      - <span data-ttu-id="e9479-131">Redestinar todos los intervalos de números no asignados dirigidos a un anuncio en el grupo A para los anuncios recién implementados en el grupo B. Ejecute el siguiente cmdlet para cada intervalo de números no asignado dirigido a un anuncio del grupo A:</span><span class="sxs-lookup"><span data-stu-id="e9479-131">Retarget all the Unassigned Number ranges that are targeting an announcement in pool A to the newly deployed announcements in pool B. Run the following cmdlet for every Unassigned Number range targeting an announcement of pool A:</span></span>
+        
+            Set-CsUnassignedNumber -Identity "<Range Name>" -AnnouncementService "<Pool B FQDN>" -AnnouncementName "<New Announcement in pool B>"
+    
+    <div>
+    
+
+    > [!NOTE]  
+    > <span data-ttu-id="e9479-132">Este paso no es necesario para intervalos de números no asignados que usan "mensajería unificada de Exchange" como servicio de anuncios seleccionado.</span><span class="sxs-lookup"><span data-stu-id="e9479-132">This step is not required for unassigned number ranges that use "Exchange UM" as the selected announcement service.</span></span>
+
+    
+    </div>
+
+7.  <span data-ttu-id="e9479-133">Conmuta por error al grupo B en el modo de recuperación ante desastres (DR) ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-133">Fail over Pool A to Pool B in Disaster Recovery (DR) mode, by running the following cmdlet:</span></span>
+    
+        Invoke-CsPoolFailover -PoolFqdn <Pool A FQDN> -DisasterMode
+
+8.  <span data-ttu-id="e9479-134">Cree el grupo C, pero no inicie ningún servicio en el grupo C.</span><span class="sxs-lookup"><span data-stu-id="e9479-134">Build pool C, but do not start any services on pool C.</span></span>
+    
+    <span data-ttu-id="e9479-135">Tenga en cuenta que este paso se puede llevar a cabo de forma simultánea con los pasos 5 y 6.</span><span class="sxs-lookup"><span data-stu-id="e9479-135">Note that this step can be carried out concurrently with steps 5 and 6.</span></span>
+
+9.  <span data-ttu-id="e9479-136">Forzar a los usuarios alojados en el grupo a para que se muevan al grupo C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-136">Force users homed on pool A to move to pool C by running the following cmdlet:</span></span>
+    
+        Get-csuser -Filter {RegistrarPool -eq "<Pool A FQDN>"} | Move-CsUser -Target <Pool C FQDN> -Force
+    
+    <span data-ttu-id="e9479-137">En este momento, los usuarios alojados en el grupo A comenzarán a experimentar una interrupción del servicio.</span><span class="sxs-lookup"><span data-stu-id="e9479-137">At this point, users homed on pool A will begin to experience a service outage.</span></span> <span data-ttu-id="e9479-138">Esta interrupción continuará hasta el paso 16, a la que se inician los servicios en el pool C.</span><span class="sxs-lookup"><span data-stu-id="e9479-138">This outage will continue until step 16, at which point services are started on pool C.</span></span>
+
+10. <span data-ttu-id="e9479-139">Fuerce el directorio de la Conferencia del grupo a para que se mueva al grupo C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-139">Force the conference directory of pool A to move to pool C by running the following cmdlet:</span></span>
+    
+        Move-CsConferenceDirectory -Identity <Conference Directory ID of Pool A> -TargetPool <Pool C FQDN> -Force
+
+11. <span data-ttu-id="e9479-140">Haga que el objeto de contacto operador automático de la Conferencia (CAA) se mueva del grupo a al grupo C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-140">Force the Conference Auto Attendant (CAA) Contact Object to move from pool A to pool C by running the following cmdlet:</span></span>
+    
+        Move-csApplicationEndpoint -Identity "<Pool A CAA Uri>" -targetApplicationPool <Pool C FQDN> -force
+
+12. <span data-ttu-id="e9479-141">Copie el contenido de la Conferencia desde el grupo B al grupo C.</span><span class="sxs-lookup"><span data-stu-id="e9479-141">Copy conference content from pool B to pool C.</span></span>
+
+13. <span data-ttu-id="e9479-142">Exportar los datos de usuario del grupo B e importar los datos de usuario en el grupo C ejecutando los siguientes cmdlets:</span><span class="sxs-lookup"><span data-stu-id="e9479-142">Export user data from pool B and import the user data into pool C by running the following cmdlets:</span></span>
+    
+        Export-CsUserData -PoolFqdn <Pool B Fqdn> -FileName <String>
+        Import-CsUserData -PoolFqdn <Pool C Fqdn> -FileName <String>
+
+14. <span data-ttu-id="e9479-143">Restaure la copia de seguridad de los datos de la aplicación de estacionamiento desde el grupo A en el grupo C y asigne los intervalos órbita de la llamada estacionamiento de la cola a al grupo C.</span><span class="sxs-lookup"><span data-stu-id="e9479-143">Restore backed-up Call Park application data from pool A into pool C and assign the Call Park orbit ranges of pool A to pool C.</span></span>
+    
+      - <span data-ttu-id="e9479-144">Puede reasignar un rango de llamada estacionamiento orbital de la agrupación a en el grupo C a través del panel de control de Lync Server o del shell de administración de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="e9479-144">You can reassign a Call Park orbit range of pool A to pool C either through the Lync Server Control Panel or the Lync Server Management Shell.</span></span> <span data-ttu-id="e9479-145">Para el shell de administración de Lync Server, ejecute el siguiente cmdlet para cada rango de la órbita de la llamada que se asigna al grupo a (tenga en cuenta que el parámetro Identity hace referencia a los intervalos de las llamadas en la órbita que pertenecen al grupo a):</span><span class="sxs-lookup"><span data-stu-id="e9479-145">For the Lync Server Management Shell, run the following cmdlet for every Call Park orbit range assigned to pool A (note that the Identity parameter refers to the Call Park Orbit Ranges that belong to pool A):</span></span>
+        
+            Set-CsCallParkOrbit -Identity "<Call Park Orbit Identity>" -CallParkService "service:ApplicationServer:<Pool C FQDN>"
+    
+      - <span data-ttu-id="e9479-146">Si se ha configurado una música en espera personalizada para el servicio de estacionamiento en el grupo A, restaure el archivo de música en espera personalizado de la llamada en el pool C.</span><span class="sxs-lookup"><span data-stu-id="e9479-146">If a customized music-on-hold has been configured for Call Park in pool A, restore the Call Park customized music-on-hold file in pool C.</span></span>
+        
+            Xcopy <Source> <Destination: Pool C CPS File Store Path>
+        
+        <span data-ttu-id="e9479-147">Por ejemplo:</span><span class="sxs-lookup"><span data-stu-id="e9479-147">For example:</span></span>
+        
+            Xcopy "Source Path" "<Pool C File Store Path>\OcsFileStore\coX-ApplicationServer-X\AppServerFiles\CPS\"
+    
+      - <span data-ttu-id="e9479-148">Por último, vuelva a configurar la configuración de estacionamiento de llamadas en el grupo C mediante el cmdlet **set-CsCpsConfiguration** .</span><span class="sxs-lookup"><span data-stu-id="e9479-148">Finally, reconfigure the Call Park settings on pool C by using the **Set-CsCpsConfiguration** cmdlet.</span></span> <span data-ttu-id="e9479-149">La aplicación de estacionamiento de llamadas solo puede almacenar un conjunto de opciones de configuración y un archivo de audio de música activada en espera personalizado por grupo, y no se hace una copia de seguridad de estos valores ni se conservan en el caso de un desastre.</span><span class="sxs-lookup"><span data-stu-id="e9479-149">The Call Park application can store only one set of settings and one customized music-on-hold audio file per pool, and these settings are not backed up or preserved in the event of a disaster.</span></span>
+
+15. <span data-ttu-id="e9479-150">Si el siguiente grupo de saltos de chat persistente apunta al grupo A, realice y publique cambios de topología para que el servidor del próximo salto apunte al grupo C.</span><span class="sxs-lookup"><span data-stu-id="e9479-150">If the next hop pool for Persistent Chat is pointing to pool A, make and publish topology changes so that the next hop server points to pool C.</span></span>
+    
+      - <span data-ttu-id="e9479-151">En el generador de topología, cambie el grupo de chats persistentes para que apunte a la sección C como su próximo salto.</span><span class="sxs-lookup"><span data-stu-id="e9479-151">In Topology Builder, change the Persistent Chat pool to point to Pool C as its next hop.</span></span> <span data-ttu-id="e9479-152">Para ello, haga clic con el botón secundario en el grupo de chats persistentes, luego haga clic en la pestaña **General** y, por último, escriba el nombre del grupo C en el **grupo de siguiente saltos**.</span><span class="sxs-lookup"><span data-stu-id="e9479-152">To do so, right-click on the Persistent Chat pool, then click the **General** tab, and then type the name of Pool C in **Next Hop Pool**.</span></span>
+    
+      - <span data-ttu-id="e9479-153">Inicie los servicios en el conjunto de servidores C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-153">Start services on pool C by running the following cmdlet:</span></span>
+        
+            Start-csWindowsService
+    
+    <span data-ttu-id="e9479-154">En este punto, finaliza la interrupción del servicio para los usuarios alojados originalmente en el grupo A.</span><span class="sxs-lookup"><span data-stu-id="e9479-154">At this point, the service outage ends for users originally homed on pool A.</span></span>
+
+16. <span data-ttu-id="e9479-155">Exportar los flujos de trabajo del servicio de grupo de respuesta de Lync Server desde el grupo B al que pertenece el grupo A para importarlos en el grupo C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-155">Export Lync Server Response Group service workflows from pool B owned by pool A for import into pool C by running the following cmdlet:</span></span>
+    
+        Export-CsRgsConfiguration -Source "service:ApplicationServer:<Pool B FQDN>" -Owner "service:ApplicationServer:<Pool A FQDN>" -FileName "C:\RgsExportPrimaryUpdated.zip" 
+
+17. <span data-ttu-id="e9479-156">Importar los flujos de trabajo del servicio del grupo de respuesta de Lync Server en el grupo C del grupo B.</span><span class="sxs-lookup"><span data-stu-id="e9479-156">Import Lync Server Response Group service workflows into pool C from pool B.</span></span>
+    
+    <span data-ttu-id="e9479-157">Tiene dos opciones para importar la configuración del grupo de respuesta del grupo B al grupo C. La opción que use dependerá de si desea sobrescribir la configuración de nivel de aplicación del grupo C con la configuración de nivel de la aplicación en el grupo de servidores B.</span><span class="sxs-lookup"><span data-stu-id="e9479-157">You have two options are for importing the Response Group configuration from pool B to pool C. Which option you use depends on whether you want to overwrite the application-level settings of pool C with the application-level settings in pool B.</span></span>
+    
+      - <span data-ttu-id="e9479-158">Si desea sobrescribir la configuración del grupo C, ejecute el cmdlet **Import-CsRgsConfiguration** con la opción **ReplaceExistingSettings** :</span><span class="sxs-lookup"><span data-stu-id="e9479-158">If you want to overwrite the Pool C settings, run the **Import-CsRgsConfiguration** cmdlet with the **ReplaceExistingSettings** option:</span></span>
+        
+            Import-CsRgsConfiguration -Destination "service:ApplicationServer:<Pool C FQDN>" -FileName "C:\RgsExportPrimary.zip"  -ReplaceExistingRgsSettings
+    
+      - <span data-ttu-id="e9479-159">Si no desea sobrescribir la configuración del grupo C, use el cmdlet **Import-CsRgsConfiguration** sin la opción **ReplaceExistingSettings** .</span><span class="sxs-lookup"><span data-stu-id="e9479-159">If you do not want to overwrite the Pool C settings, use the **Import-CsRgsConfiguration** cmdlet without the **ReplaceExistingSettings** option.</span></span>
+        
+            Import-CsRgsConfiguration -Destination "service:ApplicationServer:<Pool B FQDN>" -FileName "C:\RgsExportPrimary.zip"
+    
+    <div>
+    
+
+    > [!WARNING]  
+    > <span data-ttu-id="e9479-160">Tenga en cuenta que si no desea sobrescribir la configuración de nivel de aplicación del grupo C con la configuración del grupo de copias de seguridad (grupo B), la configuración de nivel de aplicación del grupo B se perderá porque la aplicación de grupo de respuesta solo puede almacenar un conjunto de opciones de nivel de aplicación por grupo.</span><span class="sxs-lookup"><span data-stu-id="e9479-160">Keep in mind that if you do not want to overwrite the application-level settings of Pool C with the settings of the backup pool (pool B), pool B’s application-level settings will be lost because the Response Group application can store only one set of application-level settings per pool.</span></span>
+
+    
+    </div>
+
+18. <span data-ttu-id="e9479-161">Compruebe que la importación de configuración del grupo de respuesta se ha realizado correctamente ejecutando los siguientes cmdlets para mostrar los grupos de respuesta que se han importado al grupo de servidores C.</span><span class="sxs-lookup"><span data-stu-id="e9479-161">Verify that the Response Group configuration import was successful by running the following cmdlets to display the response groups that have been imported to Pool C.</span></span>
+    
+        Get-CsRgsWorkflow -Identity "service:ApplicationServer:<Pool C FQDN>" -ShowAll
+         Get-CsRgsQueue -Identity "service:ApplicationServer:<Pool C FQDN>" -ShowAll
+        Get-CsRgsAgentGroup -Identity "service:ApplicationServer:<Pool C FQDN>" -ShowAll
+
+19. <span data-ttu-id="e9479-162">Cuando se haya comprobado la configuración importada en el grupo C, quite los grupos de respuesta que pertenecen al grupo principal del grupo B. Esto minimizará el tiempo de inactividad de los grupos de respuesta.</span><span class="sxs-lookup"><span data-stu-id="e9479-162">When the imported configuration has been verified in pool C, remove the response groups owned by the primary pool from pool B. This will minimize the downtime of the response groups.</span></span>
+    
+    <span data-ttu-id="e9479-163">En este paso se crea un nuevo archivo con la configuración exportada y, a continuación, se quita el archivo del grupo B.</span><span class="sxs-lookup"><span data-stu-id="e9479-163">This step creates a new file with the exported configuration, and then removes the file from pool B.</span></span>
+    
+        Export-CsRgsConfiguration -Source "service:ApplicationServer:<Pool B FQDN>" -Owner "service:ApplicationServer:<Pool A FQDN>" -FileName "C:\RgsExportPrimaryUpdated.zip" -RemoveExportedConfiguration
+
+20. <span data-ttu-id="e9479-164">Mover a la sección C los intervalos de números sin asignar que se movieron del grupo A al grupo B.</span><span class="sxs-lookup"><span data-stu-id="e9479-164">Move to pool C the Unassigned Number ranges that were moved from pool A to pool B.</span></span>
+    
+      - <span data-ttu-id="e9479-165">Vuelva a crear en el grupo C todos los anuncios que se han vuelto a crear a partir del grupo A en el grupo B. Si se usaron archivos de audio al implementar los anuncios que se van a mover, tendrá que usar estos archivos para volver a crear los anuncios en el grupo C. Para volver a crear los anuncios en el grupo C, use los cmdlets **New-CsAnnouncement** , con el grupo c como servicio principal.</span><span class="sxs-lookup"><span data-stu-id="e9479-165">Re-create in pool C all announcements that were re-created from pool A in pool B. If any audio files were used when deploying the announcements to be moved, you will need to use these files to re-create the announcements in pool C. To re-create the announcements in pool C, use the **New-CsAnnouncement** cmdlets, with pool C as the Parent service.</span></span>
+    
+      - <span data-ttu-id="e9479-166">Redestinar al grupo C todos los intervalos de números no asignados que se han redestinado del grupo A al grupo B. Ejecute el siguiente cmdlet para cada intervalo de números no asignado que deba redestinarse:</span><span class="sxs-lookup"><span data-stu-id="e9479-166">Retarget to pool C all the unassigned number ranges that were retargeted from pool A to pool B. Run the following cmdlet for every Unassigned Number range that needs to be retargeted:</span></span>
+        
+            Set-CsUnassignedNumber -Identity "<Range Name>" -AnnouncementService "<Pool C FQDN>" -AnnouncementName "<New Announcement in pool C>"
+    
+      - <span data-ttu-id="e9479-167">Faculta Quitar del grupo de servidores B los anuncios que se han vuelto a crear en el grupo C si ya no se usan en el grupo B. Para quitar anuncios, use el cmdlet **Remove-CsAnnouncement** .</span><span class="sxs-lookup"><span data-stu-id="e9479-167">(Optional) Remove from pool B the announcements that were re-created in pool C if they are no longer in use in pool B. To remove announcements, use the **Remove-CsAnnouncement** cmdlet.</span></span>
+        
+        <div>
+        
+
+        > [!NOTE]  
+        > <span data-ttu-id="e9479-168">Este paso no es necesario para intervalos de números no asignados que usan "mensajería unificada de Exchange" como servicio de anuncios.</span><span class="sxs-lookup"><span data-stu-id="e9479-168">This step is not required for unassigned number ranges that use "Exchange UM" as the announcement service.</span></span>
+
+        
+        </div>
+
+21. <span data-ttu-id="e9479-169">Limpie los datos de usuario del grupo A en el grupo B ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-169">Clean up user data of pool A in pool B by running the following cmdlet:</span></span>
+    
+        Remove-CsUserStoreBackupData -PoolFqdn <Pool B FQDN> -Verbose
+
+22. <span data-ttu-id="e9479-170">Haga lo siguiente en el generador de topología:</span><span class="sxs-lookup"><span data-stu-id="e9479-170">Do the following in Topology Builder:</span></span>
+    
+      - <span data-ttu-id="e9479-171">Desemparejar el grupo A y el grupo B. emparejar grupo B y grupo C. A continuación, quite el grupo A de la topología y publíquelo.</span><span class="sxs-lookup"><span data-stu-id="e9479-171">Unpair pool A and pool B. Pair pool B and pool C. Then remove Pool A from the topology and publish it.</span></span> <span data-ttu-id="e9479-172">Para hacerlo:</span><span class="sxs-lookup"><span data-stu-id="e9479-172">To do so:</span></span>
+        
+          - <span data-ttu-id="e9479-173">En el generador de topología, haga clic con el botón secundario en Pool B y, a continuación, haga clic en **Editar propiedades**.</span><span class="sxs-lookup"><span data-stu-id="e9479-173">In Topology Builder, right-click on Pool B, and then click **Edit Properties**.</span></span>
+        
+          - <span data-ttu-id="e9479-174">Haga clic en **resistencia** en el panel de la izquierda.</span><span class="sxs-lookup"><span data-stu-id="e9479-174">Click **Resiliency** in the left pane.</span></span>
+        
+          - <span data-ttu-id="e9479-175">En el cuadro que se encuentra debajo de **grupo de copia de seguridad asociado**, seleccione Pool C. Observe que el cuadro de selección de grupo de copia de seguridad asociado mostrará inicialmente el grupo a, porque el grupo B se asoció previamente con este grupo.</span><span class="sxs-lookup"><span data-stu-id="e9479-175">In the box below **Associated Backup Pool**, select Pool C. Note that the Associated Backup Pool selection box will initially display pool A, because pool B was previously associated with this pool.</span></span>
+        
+          - <span data-ttu-id="e9479-176">Seleccione **Conmutación por error y conmutación por recuperación automática para voz** y después haga clic en **Aceptar**.</span><span class="sxs-lookup"><span data-stu-id="e9479-176">Select **Automatic failover and failback for Voice**, and then click **OK**.</span></span>
+            
+            <span data-ttu-id="e9479-177">Cuando vea los detalles de este grupo, el grupo asociado aparecerá en el panel derecho debajo de **Resistencia**. </span><span class="sxs-lookup"><span data-stu-id="e9479-177">When you view the details about this pool, the associated pool now appears in the right pane under **Resiliency**.</span></span>
+        
+          - <span data-ttu-id="e9479-178">En el árbol de consola, haga clic con el botón secundario en Pool A y, a continuación, haga clic en eliminar.</span><span class="sxs-lookup"><span data-stu-id="e9479-178">In the console tree, right-click pool A, and then click Delete.</span></span>
+        
+          - <span data-ttu-id="e9479-179">Publique la topología.</span><span class="sxs-lookup"><span data-stu-id="e9479-179">Publish the topology.</span></span>
+
+23. <span data-ttu-id="e9479-180">Ejecute la aplicación de programa previo en el pool C para instalar la aplicación de servicio de copia de seguridad y, a continuación, inicie la aplicación de servicio de copia de seguridad ejecutando lo siguiente desde la carpeta de implementación en un equipo local en el grupo C:</span><span class="sxs-lookup"><span data-stu-id="e9479-180">Run the bootstrapping application on pool C to install the backup service application, and then start the backup service application by running the following from the deployment folder on a local machine in pool C:</span></span>
+    
+        Run "%SYSTEMROOT%\Program Files\Microsoft Lync Server 2013\Deployment\Bootstrapper.exe"
+        Start-CsWindowsService -name LyncBackup
+
+24. <span data-ttu-id="e9479-181">Ejecute los siguientes cmdlets para reiniciar la aplicación de servicio de copia de seguridad en el grupo B:</span><span class="sxs-lookup"><span data-stu-id="e9479-181">Restart the backup service application on pool B by running the following cmdlets:</span></span>
+    
+        Stop-CsWindowsService -name LyncBackup
+        Start-CsWindowsService -name LyncBackup
+
+25. <span data-ttu-id="e9479-182">Si el grupo C es un grupo de servidores Standard Edition (SE) y el grupo B tiene CMS, instale la base de datos de CMS manualmente en el grupo C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-182">If pool C is a Standard Edition (SE) Pool and pool B has CMS, install the CMS database manually on pool C by running the following cmdlet:</span></span>
+    
+        Install-CsDatabase -CentralManagementDatabase -SqlServerFqdn <Pool C FQDN> -SqlInstanceName rtc
+
+26. <span data-ttu-id="e9479-183">Invocar el servicio de copia de seguridad para sincronizar el contenido de las conferencias antiguas del grupo B al C generado antes de emparejar B y C, y para sincronizar el nuevo contenido de la Conferencia desde el grupo C al grupo B que se generó después de iniciar el grupo C y antes de que se emparejaran B y C.</span><span class="sxs-lookup"><span data-stu-id="e9479-183">Invoke the backup service to sync old conferencing content from pool B to pool C that was generated before pairing B and C together, and to sync new conferencing content from pool C to pool B that was generated after starting pool C and before B and C were paired together.</span></span> <span data-ttu-id="e9479-184">Para ello, ejecute los siguientes cmdlets:</span><span class="sxs-lookup"><span data-stu-id="e9479-184">To do so, run the following cmdlets:</span></span>
+    
+        Invoke-CsBackupServiceSync -PoolFqdn <Pool C FQDN>
+        Invoke-CsBackupServiceSync -PoolFqdn <Pool B FQDN>
+
+27. <span data-ttu-id="e9479-185">Para cada rama de equipo de la aplicación X asociada con el grupo A:</span><span class="sxs-lookup"><span data-stu-id="e9479-185">For each Survivable Branch Appliance X associated with pool A:</span></span>
+    
+      - <span data-ttu-id="e9479-186">Para apagar SBA X, ejecute el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-186">Shut down SBA X by running the following cmdlet:</span></span>
+        
+            Stop-CsWindowsService
+    
+      - <span data-ttu-id="e9479-187">Cree un archivo que contenga una lista de usuarios alojados en SBA X. La lista será necesaria cuando los usuarios vuelvan a pasar a SBA X en el paso 30.</span><span class="sxs-lookup"><span data-stu-id="e9479-187">Create a file that contains a list of users homed on SBA X. The list will be needed when the users are moved back to SBA X in step 30.</span></span> <span data-ttu-id="e9479-188">Para ello, ejecute el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-188">To do so, run the following cmdlet:</span></span>
+        
+            Get-CsUser -Filter {RegistrarPool -eq "<SBA X FQDN>"} | Export-Csv d:\sbaxusers.txt
+    
+      - <span data-ttu-id="e9479-189">Fuerce que los usuarios alojados en SBA X se muevan a la sección C ejecutando el siguiente cmdlet:</span><span class="sxs-lookup"><span data-stu-id="e9479-189">Force users homed on SBA X to move to pool C by running the following cmdlet:</span></span>
+        
+            Get-CsUser -Filter {RegistrarPool -eq "<SBA X FQDN>"} | Move-CsUser -Target <Pool C FQDN> -Force -Verbose
+    
+      - <span data-ttu-id="e9479-190">Actualice los datos de estos usuarios ejecutando primero los cmdlets siguientes:</span><span class="sxs-lookup"><span data-stu-id="e9479-190">Update the data of these users by first running the following cmdlets:</span></span>
+        
+            Convert-csUserData -InputFile <Data file exported from PoolB> -OutputFile c:\Logs\ExportedUserData.xml -TargetVersionLync2010 
+            $a=get-csuser -Filter {RegistrarPool -eq "FQDN of SBA X"} | select SipAddress
+            foreach($x in $a) {$x.SipAddress.Substring(4) >> users.txt}
+        
+        <span data-ttu-id="e9479-191">Y, a continuación, ejecute este script:</span><span class="sxs-lookup"><span data-stu-id="e9479-191">And then run this script:</span></span>
+        
+            $users=gc c:\logs\users.txt
+            foreach ($user in $users)
+            {
+            Update-CsUserData -FileName c:\logs\exportedUserDAta.xml -UserFilter $user - 
+            }
+        
+        <div>
+        
+
+        > [!NOTE]  
+        > <span data-ttu-id="e9479-192">Se producirá una interrupción del servicio para los usuarios que estén alojados en SBAs asociados al grupo A hasta que estos usuarios se muevan al grupo C.</span><span class="sxs-lookup"><span data-stu-id="e9479-192">A service outage will occur for users who are homed on SBAs that are associated with pool A until these users are moved to pool C.</span></span>
+
+        
+        </div>
+
+28. <span data-ttu-id="e9479-193">En el generador de topologías, para cada X de SBA asociada previamente al grupo A, haga lo siguiente:</span><span class="sxs-lookup"><span data-stu-id="e9479-193">In Topology Builder, for each SBA X previously associated with Pool A, do the following:</span></span>
+    
+      - <span data-ttu-id="e9479-194">Cambie la asociación al grupo C. Para ello, haga clic en el sitio de la sucursal, expanda el nodo de las sucursales o servidores supervivientes y haga clic en **aplicación de rama superviviente**.</span><span class="sxs-lookup"><span data-stu-id="e9479-194">Change the association to Pool C. To do so, click the branch site, expand the Survivable Branch Appliances or Servers node, and click **Survivable Branch Appliance**.</span></span> <span data-ttu-id="e9479-195">A continuación, seleccione el **grupo de servidores front-end, el grupo de servicios de usuario** al que se conectará este equipo con el grupo C y, a continuación, haga clic en **siguiente**.</span><span class="sxs-lookup"><span data-stu-id="e9479-195">Then select the **Front End pool, User Services Pool** that this Survivable Branch Appliance will connect to as Pool C, and then click **Next**.</span></span>
+    
+      - <span data-ttu-id="e9479-196">Publique la topología.</span><span class="sxs-lookup"><span data-stu-id="e9479-196">Publish the topology.</span></span> <span data-ttu-id="e9479-197">Para ello, en el árbol de consola, haga clic con el botón secundario del ratón en el nuevo **equipo de sucursal con supervivencia**, haga clic en **topología** y, a continuación, haga clic en **publicar**.</span><span class="sxs-lookup"><span data-stu-id="e9479-197">To do so, in the console tree, right-click the new **Survivable Branch Appliance**, click **Topology**, and then click **Publish**.</span></span>
+
+29. <span data-ttu-id="e9479-198">Para cada X de SBA asociada ahora con el grupo C:</span><span class="sxs-lookup"><span data-stu-id="e9479-198">For each SBA X now associated with pool C:</span></span>
+    
+      - <span data-ttu-id="e9479-199">Inicie SBA X ejecutando el siguiente cmdlet en el dispositivo de rama superviviente:</span><span class="sxs-lookup"><span data-stu-id="e9479-199">Start SBA X by running the following cmdlet on the survivable branch appliance:</span></span>
+        
+            Start-CsWindowsService
+    
+      - <span data-ttu-id="e9479-200">Mueva los usuarios que hayan alojado originalmente en SBA X del bloque C a SBA X ejecutando el siguiente cmdlet.</span><span class="sxs-lookup"><span data-stu-id="e9479-200">Move users who were originally homed on SBA X from pool C to SBA X by running the following cmdlet.</span></span>
+        
+            Import-Csv d:\sbaxusers.txt | Move-CsUser -Target <SBA X FQDN> -Force
+
+<span data-ttu-id="e9479-201"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="e9479-201"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+

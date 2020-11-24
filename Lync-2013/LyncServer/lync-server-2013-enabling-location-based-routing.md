@@ -1,0 +1,353 @@
+---
+title: 'Lync Server 2013: Habilitar enrutamiento de Location-Based'
+description: 'Lync Server 2013: habilitar el enrutamiento de Location-Based.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Enabling Location-Based Routing
+ms:assetid: 029ede7e-0c4e-4ad2-af99-909ae674d6fe
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ994014(v=OCS.15)
+ms:contentKeyID: 51803920
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 7844af5792468cd5645b6b42c857c63b943c2df1
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/24/2020
+ms.locfileid: "49399287"
+---
+# <a name="enabling-location-based-routing-in-lync-server-2013"></a><span data-ttu-id="33d54-103">Habilitar el enrutamiento de Location-Based en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="33d54-103">Enabling Location-Based Routing in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="33d54-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="33d54-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="33d54-105">_**Última modificación del tema:** 2013-04-26_</span><span class="sxs-lookup"><span data-stu-id="33d54-105">_**Topic Last Modified:** 2013-04-26_</span></span>
+
+<span data-ttu-id="33d54-106">Una vez que se implementa la telefonía IP empresarial y se definen las regiones, sitios y subredes de la red, puede habilitar el enrutamiento de Location-Based.</span><span class="sxs-lookup"><span data-stu-id="33d54-106">Once Enterprise Voice is deployed and network regions, sites and subnets are defined, you can enable Location-Based Routing.</span></span> <span data-ttu-id="33d54-107">El enrutamiento de Location-Based debe estar habilitado para los siguientes elementos de Enterprise Voice:</span><span class="sxs-lookup"><span data-stu-id="33d54-107">Location-Based Routing must be enabled for the following Enterprise Voice elements:</span></span>
+
+  - <span data-ttu-id="33d54-108">Sitios de red</span><span class="sxs-lookup"><span data-stu-id="33d54-108">Network sites</span></span>
+
+  - <span data-ttu-id="33d54-109">Configuraciones troncales</span><span class="sxs-lookup"><span data-stu-id="33d54-109">Trunk configurations</span></span>
+
+  - <span data-ttu-id="33d54-110">Directivas de voz</span><span class="sxs-lookup"><span data-stu-id="33d54-110">Voice policies</span></span>
+
+  - <span data-ttu-id="33d54-111">Configuración de enrutamiento</span><span class="sxs-lookup"><span data-stu-id="33d54-111">Routing configuration</span></span>
+
+<div>
+
+## <a name="enable-location-based-routing-to-network-sites"></a><span data-ttu-id="33d54-112">Habilitar el enrutamiento de Location-Based a sitios de red</span><span class="sxs-lookup"><span data-stu-id="33d54-112">Enable Location-Based Routing to Network Sites</span></span>
+
+<span data-ttu-id="33d54-113">Una vez que haya implementado Enterprise Voice y haya configurado sitios de red, estará listo para configurar Location-Based enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-113">After you have deployed Enterprise Voice, and configured network sites, you are ready to configure Location-Based Routing.</span></span> <span data-ttu-id="33d54-114">En primer lugar, cree una directiva de enrutamiento de voz para asociar el sitio de red a los usos de RTC apropiados.</span><span class="sxs-lookup"><span data-stu-id="33d54-114">First, you create a voice routing policy to associate the network site with the appropriate PSTN usages.</span></span> <span data-ttu-id="33d54-115">Al asignar usos de RTC a una directiva de enrutamiento de voz, asegúrese de usar solo usos de RTC asociados a rutas de voz que usen una puerta de enlace PSTN local para el sitio o una puerta de enlace RTC que se encuentre en una región en la que no se necesiten restricciones de enrutamiento de Location-Based. Use el comando de Windows PowerShell de Lync Server, New-CsVoiceRoutingPolicy o panel de control de Lync Server para crear directivas de enrutamiento de voz.</span><span class="sxs-lookup"><span data-stu-id="33d54-115">When assigning PSTN usages to a voice routing policy, make sure to only use PSTN usages that are associated to voice routes that use a PSTN gateway local to the site or a PSTN gateway that is located in a region where Location-Based Routing restrictions are not needed.Use the Lync Server Windows PowerShell command, New-CsVoiceRoutingPolicy, or Lync Server Control Panel to create voice routing policies.</span></span>
+
+    New-CsVoiceRoutingPolicy -Identity <voice routing policy ID> -Name <voice routing policy name> -PstnUsages <usages>
+
+<span data-ttu-id="33d54-116">Para obtener más información, vea [New-CsVoiceRoutingPolicy](https://docs.microsoft.com/powershell/module/skype/New-CsVoiceRoutingPolicy).</span><span class="sxs-lookup"><span data-stu-id="33d54-116">For more information, see [New-CsVoiceRoutingPolicy](https://docs.microsoft.com/powershell/module/skype/New-CsVoiceRoutingPolicy).</span></span>
+
+<span data-ttu-id="33d54-117">En este ejemplo, los siguientes comandos de tabla y Windows PowerShell ilustran dos directivas de enrutamiento de voz y sus usos de RTC asociados definidos en este escenario.</span><span class="sxs-lookup"><span data-stu-id="33d54-117">For this example, the following table and Windows PowerShell commands illustrate two voice routing policies and their associated PSTN usages defined in this scenario.</span></span> <span data-ttu-id="33d54-118">En la tabla solo se incluyen los valores específicos de Location-Based enrutamiento, con fines de ilustración.</span><span class="sxs-lookup"><span data-stu-id="33d54-118">Only settings that are specific to Location-Based Routing are included in the table for illustration purposes.</span></span>
+
+    New-CsVoiceRoutingPolicy -Identity "DelhiVoiceRoutingPolicy" -Name "Delhi voice routing policy" -PstnUsages @{add="Delhi usage", "PBX Del usage", "PBX Hyd usage"}
+    New-CsVoiceRoutingPolicy -Identity "HyderabadVoiceRoutingPolicy" -Name " Hyderabad voice routing policy" -PstnUsages @{add="Hyderabad usage", "PBX Del usage", "PBX Hyd usage"}
+
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span data-ttu-id="33d54-119">Directiva de enrutamiento de voz 1</span><span class="sxs-lookup"><span data-stu-id="33d54-119">Voice routing policy 1</span></span></th>
+<th><span data-ttu-id="33d54-120">Directiva de enrutamiento de voz 2</span><span class="sxs-lookup"><span data-stu-id="33d54-120">Voice routing policy 2</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-121">IDENTIFICADOR de la Directiva de voz</span><span class="sxs-lookup"><span data-stu-id="33d54-121">Voice policy ID</span></span></p></td>
+<td><p><span data-ttu-id="33d54-122">Directiva de enrutamiento de voz de Delhi</span><span class="sxs-lookup"><span data-stu-id="33d54-122">Delhi voice routing policy</span></span></p></td>
+<td><p><span data-ttu-id="33d54-123">Directiva de enrutamiento de voz de Hyderabad</span><span class="sxs-lookup"><span data-stu-id="33d54-123">Hyderabad voice routing policy</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-124">Usos de RTC</span><span class="sxs-lookup"><span data-stu-id="33d54-124">PSTN usages</span></span></p></td>
+<td><p><span data-ttu-id="33d54-125">Uso de la Delhi, PBX del uso, uso de HYD de PBX</span><span class="sxs-lookup"><span data-stu-id="33d54-125">Delhi usage, PBX Del usage, PBX Hyd usage</span></span></p></td>
+<td><p><span data-ttu-id="33d54-126">Uso de Hyderabad, uso de HYD de PBX, PBX del uso</span><span class="sxs-lookup"><span data-stu-id="33d54-126">Hyderabad usage, PBX Hyd usage, PBX Del usage</span></span></p></td>
+</tr>
+</tbody>
+</table>
+
+  
+
+<span data-ttu-id="33d54-127">A continuación, configure Location-Based enrutamiento para los sitios de red aplicables y asocie las directivas de enrutamiento de voz.</span><span class="sxs-lookup"><span data-stu-id="33d54-127">Next, configure Location-Based Routing for the applicable network sites and associate your voice routing policies to them.</span></span> <span data-ttu-id="33d54-128">Use el comando de Windows PowerShell de Lync Server, New-CsNetworkSite, para habilitar el enrutamiento Location-Based y asociar directivas de enrutamiento de voz a los sitios de red que deban exigir restricciones de enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-128">Use the Lync Server Windows PowerShell command, New-CsNetworkSite, to enable Location-Based Routing and associate voice routing policies to your network sites that must enforce routing restrictions.</span></span>
+
+    Set-CsNetworkSite -Identity <site ID> -EnableLocationBasedRouting <$true|$false> -VoiceRoutingPolicy <voice routing policy ID>
+
+<span data-ttu-id="33d54-129">En este ejemplo, la tabla siguiente muestra Location-Based enrutamiento de dos sitios de red diferentes, Delhi y Hyderabad, definidos en este escenario con Windows PowerShell de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="33d54-129">In this example, the following table illustrates Location-Based Routing for two different network sites, Delhi and Hyderabad, defined in this scenario using the Lync Server Windows PowerShell.</span></span> <span data-ttu-id="33d54-130">En la tabla solo se incluyen los valores específicos de Location-Based enrutamiento, con fines de ilustración.</span><span class="sxs-lookup"><span data-stu-id="33d54-130">Only settings that are specific to Location-Based Routing are included in the table for illustration purposes.</span></span>
+
+    Set-CsNetworkSite -Identity "Delhi" -EnableLocationBasedRouting $true -VoiceRoutingPolicy "DelhiVoiceRoutingPolicy"
+    Set-CsNetworkSite -Identity "Hyderabad" -EnableLocationBasedRouting $true -VoiceRoutingPolicy "HyderabadVoiceRoutingPolicy"
+
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span data-ttu-id="33d54-131">Sitio 1 (Delhi)</span><span class="sxs-lookup"><span data-stu-id="33d54-131">Site 1 (Delhi)</span></span></th>
+<th><span data-ttu-id="33d54-132">Sitio 2 (Hyderabad)</span><span class="sxs-lookup"><span data-stu-id="33d54-132">Site 2 (Hyderabad)</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-133">Nombre del sitio</span><span class="sxs-lookup"><span data-stu-id="33d54-133">Site Name</span></span></p></td>
+<td><p><span data-ttu-id="33d54-134">Sitio 1 (Delhi)</span><span class="sxs-lookup"><span data-stu-id="33d54-134">Site 1 (Delhi)</span></span></p></td>
+<td><p><span data-ttu-id="33d54-135">Sitio 2 (Hyderabad)</span><span class="sxs-lookup"><span data-stu-id="33d54-135">Site 2 (Hyderabad)</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-136">EnableLocationBasedRouting</span><span class="sxs-lookup"><span data-stu-id="33d54-136">EnableLocationBasedRouting</span></span></p></td>
+<td><p><span data-ttu-id="33d54-137">True</span><span class="sxs-lookup"><span data-stu-id="33d54-137">True</span></span></p></td>
+<td><p><span data-ttu-id="33d54-138">True</span><span class="sxs-lookup"><span data-stu-id="33d54-138">True</span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-139">Directiva de enrutamiento de voz</span><span class="sxs-lookup"><span data-stu-id="33d54-139">Voice routing policy</span></span></p></td>
+<td><p><span data-ttu-id="33d54-140">Directiva de enrutamiento de voz de Delhi</span><span class="sxs-lookup"><span data-stu-id="33d54-140">Delhi voice routing policy</span></span></p></td>
+<td><p><span data-ttu-id="33d54-141">Directiva de enrutamiento de voz de Hyderabad</span><span class="sxs-lookup"><span data-stu-id="33d54-141">Hyderabad voice routing policy</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-142">Subredes</span><span class="sxs-lookup"><span data-stu-id="33d54-142">Subnets</span></span></p></td>
+<td><p><span data-ttu-id="33d54-143">Subred 1 (Delhi)</span><span class="sxs-lookup"><span data-stu-id="33d54-143">Subnet 1 (Delhi)</span></span></p></td>
+<td><p><span data-ttu-id="33d54-144">Subred 2 (Hyderabad)</span><span class="sxs-lookup"><span data-stu-id="33d54-144">Subnet 2 (Hyderabad)</span></span></p></td>
+</tr>
+</tbody>
+</table>
+
+
+<div>
+
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="enable-location-based-routing-to-trunks"></a><span data-ttu-id="33d54-145">Habilitar el enrutamiento Location-Based a los troncos</span><span class="sxs-lookup"><span data-stu-id="33d54-145">Enable Location-Based Routing to Trunks</span></span>
+
+<span data-ttu-id="33d54-146">Antes de poder habilitar una configuración de tronco para Location-Based enrutamiento, debe crear una configuración troncal para cada troncal o cada sitio de red.</span><span class="sxs-lookup"><span data-stu-id="33d54-146">Before a trunk configuration can be enabled for Location-Based Routing, you need to create a trunk configuration for each trunk or each network site.</span></span> <span data-ttu-id="33d54-147">Use el comando de Windows PowerShell de Lync Server, New-CsTrunkConfiguration, para crear una configuración troncal.</span><span class="sxs-lookup"><span data-stu-id="33d54-147">Use the Lync Server Windows PowerShell command, New-CsTrunkConfiguration, to create a trunk configuration.</span></span> <span data-ttu-id="33d54-148">Si hay varios troncos asociados con un sistema determinado (por ejemplo, puerta de enlace o PBX), cada configuración de troncal debe modificarse para habilitar Location-Based restricciones de enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-148">If multiple trunks are associated with a given system (i.e. Gateway or PBX), each trunk configuration must be modified to enable Location-Based Routing restrictions.</span></span>
+
+    New-CsTrunkConfiguration -Identity < trunk configuration ID>
+
+<span data-ttu-id="33d54-149">Para obtener más información, vea [New-CsTrunkConfiguration](https://docs.microsoft.com/powershell/module/skype/New-CsTrunkConfiguration).</span><span class="sxs-lookup"><span data-stu-id="33d54-149">For more information, see [New-CsTrunkConfiguration](https://docs.microsoft.com/powershell/module/skype/New-CsTrunkConfiguration).</span></span>
+
+<span data-ttu-id="33d54-150">En este ejemplo, los siguientes comandos de Windows PowerShell ilustran la creación de una configuración de tronco para cada tronco de la implementación definida en este escenario.</span><span class="sxs-lookup"><span data-stu-id="33d54-150">For this example, the following Windows PowerShell commands illustrate creating one trunk configuration for each trunk in the deployment defined in this scenario.</span></span>
+
+    New-CsTrunkConfiguration -Identity Service:PstnGateway:"<Trunk 1 DEL-GW>"
+    New-CsTrunkConfiguration -Identity Service:PstnGateway:"<Trunk 2 HYD-GW>"
+    New-CsTrunkConfiguration -Identity Service:PstnGateway:"<Trunk 3 DEL-PBX>"
+    New-CsTrunkConfiguration -Identity Service:PstnGateway:"<Trunk 4 HYD-PBX>"
+
+<span data-ttu-id="33d54-151">Una vez configurada la configuración troncal por tronco, puede usar el comando de Windows PowerShell de Lync Server, Set-CsTrunkConfiguration, para habilitar el enrutamiento Location-Based a sus troncos que deben exigir restricciones de enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-151">Once a trunk configuration is configured per trunk, you can use the Lync Server Windows PowerShell command, Set-CsTrunkConfiguration, to enable Location-Based Routing to your trunks that must enforce routing restrictions.</span></span> <span data-ttu-id="33d54-152">Habilite el enrutamiento Location-Based a los troncos que enruten las llamadas a puertas de enlace RTC que enruten las llamadas a la RTC y asocie el sitio de red donde se encuentra la puerta de enlace.</span><span class="sxs-lookup"><span data-stu-id="33d54-152">Enable Location-Based Routing to trunks that route calls to PSTN gateways that route calls to the PSTN, and associate the network site where the gateway is located.</span></span>
+
+    Set-CsTrunkConfiguration -Identity <trunk configuration ID> -EnableLocationRestriction $true -NetworkSiteID <site ID>
+
+<span data-ttu-id="33d54-153">Para obtener más información, vea [New-CsTrunkConfiguration](https://docs.microsoft.com/powershell/module/skype/New-CsTrunkConfiguration).</span><span class="sxs-lookup"><span data-stu-id="33d54-153">For more information, see [New-CsTrunkConfiguration](https://docs.microsoft.com/powershell/module/skype/New-CsTrunkConfiguration).</span></span>
+
+<span data-ttu-id="33d54-154">En este ejemplo, Location-Based enrutamiento está habilitado para cada tronco asociado a las puertas de enlace RTC en Delhi y Hyderabad:</span><span class="sxs-lookup"><span data-stu-id="33d54-154">In this example, Location-Based Routing is enabled for each trunk that is associated to PSTN gateways in Delhi and Hyderabad:</span></span>
+
+    Set-CsTrunkConfiguration -Identity Service:PstnGateway:Trunk 1 DEL-GW -EnableLocationRestriction $true -NetworkSiteID "Delhi"
+    Set-CsTrunkConfiguration -Identity Service:PstnGateway:Trunk 2 HYD-GW -EnableLocationRestriction $true -NetworkSiteID "Hyderabad"
+
+  
+
+<span data-ttu-id="33d54-155">No habilite el enrutamiento de Location-Based para los troncos que no enruten las llamadas a la RTC; sin embargo, todavía debe asociar el tronco al sitio de red en el que se encuentra el sistema como Location-Based restricciones de enrutamiento deben exigirse para que las llamadas RTC alcancen puntos de conexión a través de este tronco.</span><span class="sxs-lookup"><span data-stu-id="33d54-155">Do not enable Location-Based Routing for trunks that do not route calls to the PSTN; however, you must still associate the trunk to the network site where the system is located as Location-Based Routing restrictions need to be enforced for PSTN calls reaching endpoints connected via this trunk.</span></span> <span data-ttu-id="33d54-156">En este ejemplo, Location-Based enrutamiento no está habilitado para cada tronco asociado a sistemas PBX en Delhi y Hyderabad:</span><span class="sxs-lookup"><span data-stu-id="33d54-156">For this example, Location-Based Routing is not enabled for each trunk that is associated to PBX systems in Delhi and Hyderabad:</span></span>
+
+    Set-CsTrunkConfiguration -Identity Service:PstnGateway:Trunk 3 DEL-PBX -EnableLocationRestriction $false -NetworkSiteID "Delhi"
+    Set-CsTrunkConfiguration -Identity Service:PstnGateway:Trunk 4 HYD-PBX -EnableLocationRestriction $false -NetworkSiteID "Hyderabad"
+
+  
+<span data-ttu-id="33d54-157">Los puntos de conexión que estén conectados a sistemas que no enruten llamadas a la RTC (es decir, una PBX) tendrán restricciones similares a las de los extremos de Lync de los usuarios habilitados para el enrutamiento de Location-Based.</span><span class="sxs-lookup"><span data-stu-id="33d54-157">Endpoints that are connected to systems that do not route calls to the PSTN (i.e. a PBX) will have similar restrictions as Lync endpoints of users enabled for Location-Based Routing.</span></span> <span data-ttu-id="33d54-158">Esto significa que estos usuarios podrán realizar y recibir llamadas a y desde el usuario de Lync independientemente de la ubicación del usuario.</span><span class="sxs-lookup"><span data-stu-id="33d54-158">This means that these users will be able to place and receive calls to and from Lync user regardless of the user’s location.</span></span> <span data-ttu-id="33d54-159">También podrán realizar llamadas recibidas a otros sistemas y desde otros sistemas que no enruten las llamadas a la red RTC (es decir, un extremo conectado a otro PBX), independientemente del sitio de red al que esté asociado el sistema.</span><span class="sxs-lookup"><span data-stu-id="33d54-159">They will also be able to place an receive calls to and from other systems that do not route calls to the PSTN network (i.e. an endpoint connected to a different PBX) regardless of the network site to which the system is associated.</span></span> <span data-ttu-id="33d54-160">Todas las llamadas entrantes, las llamadas salientes, las transferencias de llamadas y el desvío de llamadas con puntos de conexión RTC estarán sujetos a Location-Based las fuerzas de enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-160">All inbound calls, outbound calls, call transfers and call forwarding involving PSTN endpoints will be subject to Location-Based Routing enforcements.</span></span> <span data-ttu-id="33d54-161">Dichas llamadas deben usar solo puertas de enlace RTC que estén definidas como locales para esos sistemas.</span><span class="sxs-lookup"><span data-stu-id="33d54-161">Such calls must use only PSTN gateways that are defined as local to such systems.</span></span>
+
+<span data-ttu-id="33d54-162">En la tabla siguiente se muestra la configuración troncal de cuatro troncos en dos sitios de red diferentes: dos conectados a puertas de enlace RTC y dos conectados a sistemas PBX.</span><span class="sxs-lookup"><span data-stu-id="33d54-162">The following table illustrates the trunk configuration of four trunks in two different network sites: two connected to PSTN gateways and two connected to PBX systems.</span></span>
+
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span data-ttu-id="33d54-163">Nombre</span><span class="sxs-lookup"><span data-stu-id="33d54-163">Name</span></span></th>
+<th><span data-ttu-id="33d54-164">EnableLocationRestriction</span><span class="sxs-lookup"><span data-stu-id="33d54-164">EnableLocationRestriction</span></span></th>
+<th><span data-ttu-id="33d54-165">NetworkSiteID</span><span class="sxs-lookup"><span data-stu-id="33d54-165">NetworkSiteID</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-166">PstnGateway: troncal 1 DEL-GW</span><span class="sxs-lookup"><span data-stu-id="33d54-166">PstnGateway:Trunk 1 DEL-GW</span></span></p></td>
+<td><p><span data-ttu-id="33d54-167">Verdadero</span><span class="sxs-lookup"><span data-stu-id="33d54-167">True</span></span></p></td>
+<td><p><span data-ttu-id="33d54-168">Sitio 1 (Delhi)</span><span class="sxs-lookup"><span data-stu-id="33d54-168">Site 1 (Delhi)</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-169">PstnGateway: Troncal 2 HYD-GW</span><span class="sxs-lookup"><span data-stu-id="33d54-169">PstnGateway:Trunk 2 HYD-GW</span></span></p></td>
+<td><p><span data-ttu-id="33d54-170">Verdadero</span><span class="sxs-lookup"><span data-stu-id="33d54-170">True</span></span></p></td>
+<td><p><span data-ttu-id="33d54-171">Sitio 2 (Hyderabad)</span><span class="sxs-lookup"><span data-stu-id="33d54-171">Site 2 (Hyderabad)</span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-172">PstnGateway: troncal 3 DEL-PBX</span><span class="sxs-lookup"><span data-stu-id="33d54-172">PstnGateway:Trunk 3 DEL-PBX</span></span></p></td>
+<td><p><span data-ttu-id="33d54-173">Falso</span><span class="sxs-lookup"><span data-stu-id="33d54-173">False</span></span></p></td>
+<td><p><span data-ttu-id="33d54-174">Sitio 1 (Delhi)</span><span class="sxs-lookup"><span data-stu-id="33d54-174">Site 1 (Delhi)</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-175">PstnGateway: troncal 4 HYD-PBX</span><span class="sxs-lookup"><span data-stu-id="33d54-175">PstnGateway:Trunk 4 HYD-PBX</span></span></p></td>
+<td><p><span data-ttu-id="33d54-176">Falso</span><span class="sxs-lookup"><span data-stu-id="33d54-176">False</span></span></p></td>
+<td><p><span data-ttu-id="33d54-177">Sitio 2 (Hyderabad)</span><span class="sxs-lookup"><span data-stu-id="33d54-177">Site 2 (Hyderabad)</span></span></p></td>
+</tr>
+</tbody>
+</table>
+
+
+<div>
+
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="enable-location-based-routing-to-voice-policies"></a><span data-ttu-id="33d54-178">Habilitar el enrutamiento de Location-Based a directivas de voz</span><span class="sxs-lookup"><span data-stu-id="33d54-178">Enable Location-Based Routing to Voice Policies</span></span>
+
+<span data-ttu-id="33d54-179">Para exigir Location-Based enrutamiento a usuarios específicos, configure la Directiva de voz de esos usuarios para evitar la omisión de llamadas RTC.</span><span class="sxs-lookup"><span data-stu-id="33d54-179">To enforce Location-Based Routing to specific users, configure those users’ voice policy to prevent PSTN toll bypass.</span></span> <span data-ttu-id="33d54-180">Use el comando de Windows PowerShell de Lync Server, New-CsVoicePolicy, para crear una nueva Directiva de voz o set-CsVoicePolicy, si usa una directiva existente, para habilitar el enrutamiento Location-Based evitando la omisión de llamadas RTC.</span><span class="sxs-lookup"><span data-stu-id="33d54-180">Use the Lync Server Windows PowerShell command, New-CsVoicePolicy, to create a new voice policy or Set-CsVoicePolicy, if using an existing policy, to enable Location-Based Routing by preventing PSTN toll bypass.</span></span>
+
+    Set-CsVoicePolicy -Identity <voice policy ID> -PreventPSTNTollBypass <$true|$false>
+
+<span data-ttu-id="33d54-181">Para obtener más información, vea [New-CsVoicePolicy](https://docs.microsoft.com/powershell/module/skype/New-CsVoicePolicy).</span><span class="sxs-lookup"><span data-stu-id="33d54-181">For more information, see [New-CsVoicePolicy](https://docs.microsoft.com/powershell/module/skype/New-CsVoicePolicy).</span></span>
+
+<span data-ttu-id="33d54-182">En este ejemplo, los siguientes comandos de tabla y Windows PowerShell ilustran la prevención de la omisión de llamadas RTC en las directivas de voz de Delhi y Hyderabad definidas en este escenario.</span><span class="sxs-lookup"><span data-stu-id="33d54-182">For this example, the following table and Windows PowerShell commands illustrate enabling the prevention of PSTN toll bypass to the Delhi and Hyderabad voice policies defined in this scenario.</span></span> <span data-ttu-id="33d54-183">En la tabla solo se incluyen los valores específicos de Location-Based enrutamiento, con fines de ilustración.</span><span class="sxs-lookup"><span data-stu-id="33d54-183">Only settings that are specific to Location-Based Routing are included in the table for illustration purposes.</span></span>
+
+    Set-CsVoicePolicy -Identity "Delhi voice policy" -PreventPSTNTollBypass $true
+    Set-CsVoicePolicy -Identity "Hyderabad voice policy" -PreventPSTNTollBypass $true
+
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span data-ttu-id="33d54-184">Política de voz 1</span><span class="sxs-lookup"><span data-stu-id="33d54-184">Voice policy 1</span></span></th>
+<th><span data-ttu-id="33d54-185">Política de voz 2</span><span class="sxs-lookup"><span data-stu-id="33d54-185">Voice policy 2</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-186">IDENTIFICADOR de la Directiva de voz</span><span class="sxs-lookup"><span data-stu-id="33d54-186">Voice policy ID</span></span></p></td>
+<td><p><span data-ttu-id="33d54-187">Directiva de voz de Delhi</span><span class="sxs-lookup"><span data-stu-id="33d54-187">Delhi voice policy</span></span></p></td>
+<td><p><span data-ttu-id="33d54-188">Política de voz de Hyderabad</span><span class="sxs-lookup"><span data-stu-id="33d54-188">Hyderabad voice policy</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="33d54-189">Usos de RTC</span><span class="sxs-lookup"><span data-stu-id="33d54-189">PSTN usages</span></span></p></td>
+<td><p><span data-ttu-id="33d54-190">Uso de la Delhi, PBX del uso, uso de HYD de PBX</span><span class="sxs-lookup"><span data-stu-id="33d54-190">Delhi usage, PBX Del usage, PBX Hyd usage</span></span></p></td>
+<td><p><span data-ttu-id="33d54-191">Uso de Hyderabad, uso de HYD de PBX, PBX del uso</span><span class="sxs-lookup"><span data-stu-id="33d54-191">Hyderabad usage, PBX Hyd usage, PBX Del usage</span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="33d54-192">PreventPSTNTollBypass</span><span class="sxs-lookup"><span data-stu-id="33d54-192">PreventPSTNTollBypass</span></span></p></td>
+<td><p><span data-ttu-id="33d54-193">True</span><span class="sxs-lookup"><span data-stu-id="33d54-193">True</span></span></p></td>
+<td><p><span data-ttu-id="33d54-194">True</span><span class="sxs-lookup"><span data-stu-id="33d54-194">True</span></span></p></td>
+</tr>
+</tbody>
+</table>
+
+
+<div>
+
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="enable-location-based-routing-in-the-routing-configuration"></a><span data-ttu-id="33d54-195">Habilitar el enrutamiento de Location-Based en la configuración de enrutamiento</span><span class="sxs-lookup"><span data-stu-id="33d54-195">Enable Location-Based Routing in the routing configuration</span></span>
+
+<span data-ttu-id="33d54-196">Por último, habilite globalmente Location-Based enrutamiento a la configuración de enrutamiento.</span><span class="sxs-lookup"><span data-stu-id="33d54-196">Finally, globally enable Location-Based Routing to your routing configuration.</span></span> <span data-ttu-id="33d54-197">Use el comando de Windows PowerShell de Lync Server, New-CsRoutingConfiguration, para habilitar el enrutamiento de Location-Based.</span><span class="sxs-lookup"><span data-stu-id="33d54-197">Use the Lync Server Windows PowerShell command, New-CsRoutingConfiguration, to enable Location-Based Routing.</span></span>
+
+    Set-CsRoutingConfiguration -EnableLocationBasedRouting $true
+
+<span data-ttu-id="33d54-198">Para obtener más información, consulte [set-CsRoutingConfiguration](https://docs.microsoft.com/powershell/module/skype/Set-CsRoutingConfiguration).</span><span class="sxs-lookup"><span data-stu-id="33d54-198">For more information, see [Set-CsRoutingConfiguration](https://docs.microsoft.com/powershell/module/skype/Set-CsRoutingConfiguration).</span></span>
+
+<div>
+
+
+> [!NOTE]  
+> <span data-ttu-id="33d54-199">Aunque el enrutamiento de Location-Based debe estar habilitado a través de una configuración global, el conjunto de reglas que se aplicará se aplicará a los sitios, usuarios y troncos para los que se haya configurado tal y como se especifica en esta documentación.</span><span class="sxs-lookup"><span data-stu-id="33d54-199">while Location-Based Routing must be enabled via a global configuration, the set of rules to be applied will only be enforced for the sites, users and trunks for which it has been configured as specified in this documentation.</span></span>
+
+
+
+</div>
+
+<div>
+
+
+</div>
+
+</div>
+
+<div>
+
+## <a name="see-also"></a><span data-ttu-id="33d54-200">Vea también</span><span class="sxs-lookup"><span data-stu-id="33d54-200">See Also</span></span>
+
+
+[<span data-ttu-id="33d54-201">Configurar el enrutamiento basado en ubicación en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="33d54-201">Configuring Location-Based Routing in Lync Server 2013</span></span>](lync-server-2013-configuring-location-based-routing.md)  
+  
+
+<span data-ttu-id="33d54-202"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="33d54-202"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
