@@ -1,0 +1,96 @@
+---
+title: Quitar la base de datos de SQL Server de un servidor de supervisión
+description: Quitar la base de datos de SQL Server de un servidor de supervisión.
+ms.reviewer: ''
+ms.author: serdars
+author: serdarsoysal
+f1.keywords:
+- NOCSH
+TOCTitle: Remove the SQL Server database for a Monitoring server
+ms:assetid: aed5e394-d63e-4ad4-af40-f12d3a044344
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ721848(v=OCS.15)
+ms:contentKeyID: 49733781
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 99bf734f0a9978fe14055fb36b01ce37f77e14a8
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49440258"
+---
+# <a name="remove-the-sql-server-database-for-a-monitoring-server"></a><span data-ttu-id="7a5ab-103">Quitar la base de datos de SQL Server de un servidor de supervisión</span><span class="sxs-lookup"><span data-stu-id="7a5ab-103">Remove the SQL Server database for a Monitoring server</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="7a5ab-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="7a5ab-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="7a5ab-105">_**Última modificación del tema:** 2012-10-04_</span><span class="sxs-lookup"><span data-stu-id="7a5ab-105">_**Topic Last Modified:** 2012-10-04_</span></span>
+
+<span data-ttu-id="7a5ab-106">Después de quitar un servidor de supervisión de Microsoft Lync Server 2010, puede quitar las bases de datos de SQL Server que hospedaron los datos del servidor.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-106">After you remove a Microsoft Lync Server 2010 Monitoring Server, you can remove the SQL Server databases that hosted the server data.</span></span> <span data-ttu-id="7a5ab-107">Use los procedimientos siguientes para quitar las definiciones del generador de topología y, a continuación, quite los archivos de base de datos y de registro del servidor de base de datos.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-107">Use the following procedures to remove the definitions from Topology Builder, and then remove the database and log files from the database server.</span></span>
+
+<div>
+
+## <a name="to-remove-the-sql-server-database-using-topology-builder"></a><span data-ttu-id="7a5ab-108">Para quitar la base de datos de SQL Server con el generador de topologías</span><span class="sxs-lookup"><span data-stu-id="7a5ab-108">To remove the SQL Server database using Topology Builder</span></span>
+
+1.  <span data-ttu-id="7a5ab-109">En el servidor front-end de Lync Server 2013, abra Topology Builder.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-109">On the Lync Server 2013 Front End Server, open Topology Builder.</span></span>
+
+2.  <span data-ttu-id="7a5ab-110">En el generador de topología, vaya a **componentes compartidos** y, a continuación, a **almacenes de SQL Server**, haga clic con el botón secundario en la instancia de SQL Server asociada al servidor de supervisión eliminado o reconfigurado y, a continuación, haga clic en **eliminar**.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-110">In Topology Builder, navigate to **Shared Components** and then **SQL Server Stores**, right-click the SQL Server instance associated with the removed or reconfigured Monitoring Server, and then click **Delete**.</span></span>
+
+3.  <span data-ttu-id="7a5ab-111">Publique la topología y, a continuación, compruebe el estado de replicación.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-111">Publish the topology, and then check replication status.</span></span>
+
+</div>
+
+<div>
+
+## <a name="to-remove-the-database-files-from-the-sql-server"></a><span data-ttu-id="7a5ab-112">Para quitar los archivos de base de datos de SQL Server</span><span class="sxs-lookup"><span data-stu-id="7a5ab-112">To remove the database files from the SQL Server</span></span>
+
+1.  <span data-ttu-id="7a5ab-113">Para quitar las bases de datos en el servidor basado en SQL Server, debe ser miembro del grupo de administradores de bases de datos de SQL Server para el servidor de SQL Server en el que va a quitar los archivos de base de datos.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-113">To remove the databases on the SQL Server-based server, you must be a member of the SQL Server sysadmins group for the SQL Server server where you are removing the database files.</span></span>
+
+2.  <span data-ttu-id="7a5ab-114">Abra el shell de administración de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-114">Open the Lync Server Management Shell.</span></span>
+
+3.  <span data-ttu-id="7a5ab-115">En la línea de comandos, escriba:</span><span class="sxs-lookup"><span data-stu-id="7a5ab-115">At the command line, type the following:</span></span>
+    
+        Uninstall-CsDataBase -DatabaseType Monitoring -SqlServerFqdn <FQDN> [-SqlInstanceName <instance>]
+    
+    <span data-ttu-id="7a5ab-116">Donde \<FQDN\> es el nombre de dominio completo (FQDN) del servidor de la base de datos y \<instance\> es la instancia opcional de la base de datos con nombre.</span><span class="sxs-lookup"><span data-stu-id="7a5ab-116">Where \<FQDN\> is the fully qualified domain name (FQDN) of the database server, and \<instance\> is the optional named database instance.</span></span>
+
+4.  <span data-ttu-id="7a5ab-117">Cuando el cmdlet **Uninstall-CsDataBase** le pida que confirme las acciones, lea la información y, a continuación, presione **s** (o presione Entrar) para continuar, o presione **N** y después entrar si quiere detener el cmdlet (es decir, en caso de que se produzcan errores).</span><span class="sxs-lookup"><span data-stu-id="7a5ab-117">When the **Uninstall-CsDataBase** cmdlet prompts you to confirm actions, read the information, and then press **Y** (or press Enter) to proceed, or press **N** and then Enter if you want to stop the cmdlet (that is, in case there errors).</span></span>
+
+<span data-ttu-id="7a5ab-118"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="7a5ab-118"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
