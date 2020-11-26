@@ -1,0 +1,144 @@
+---
+title: 'Lync Server 2013: Implementar el servidor de chat persistente'
+description: 'Lync Server 2013: implementar un servidor de chat persistente.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Deploying Persistent Chat Server
+ms:assetid: e3b930fb-6855-47f0-b6b3-7dfae386540d
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ205357(v=OCS.15)
+ms:contentKeyID: 48185717
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: b85c0070ab4bcd60d80d57738c25daac1de4faf1
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49429814"
+---
+# <a name="deploying-persistent-chat-server-in-lync-server-2013"></a><span data-ttu-id="4b128-103">Implementar el servidor de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-103">Deploying Persistent Chat Server in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="4b128-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="4b128-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="4b128-105">_**Última modificación del tema:** 2014-03-31_</span><span class="sxs-lookup"><span data-stu-id="4b128-105">_**Topic Last Modified:** 2014-03-31_</span></span>
+
+<span data-ttu-id="4b128-106">Lync Server 2013, el servidor de chat persistente es parte de la infraestructura de Lync Server 2013.</span><span class="sxs-lookup"><span data-stu-id="4b128-106">Lync Server 2013, Persistent Chat Server is part of the Lync Server 2013 infrastructure.</span></span>
+
+<span data-ttu-id="4b128-107">La implementación del servidor de chat persistente requiere que:</span><span class="sxs-lookup"><span data-stu-id="4b128-107">Deploying Persistent Chat Server requires that you:</span></span>
+
+  - <span data-ttu-id="4b128-108">Use el generador de topología para definir o importar y posteriormente publicar su topología y los componentes que desea implementar.</span><span class="sxs-lookup"><span data-stu-id="4b128-108">Use Topology Builder to define, or import, and subsequently publish your topology and the components that you want to deploy.</span></span>
+
+  - <span data-ttu-id="4b128-109">Preparar el entorno para implementar componentes de servidor de chat persistentes.</span><span class="sxs-lookup"><span data-stu-id="4b128-109">Prepare your environment for deploying Persistent Chat Server components.</span></span>
+
+  - <span data-ttu-id="4b128-110">Instale y configure los componentes del servidor de chat persistentes para su implementación.</span><span class="sxs-lookup"><span data-stu-id="4b128-110">Install and configure Persistent Chat Server components for your deployment.</span></span>
+
+<span data-ttu-id="4b128-111">El servidor de chat persistente está disponible con Lync Server 2013 Enterprise Edition como un grupo independiente (que no se encuentra en los servidores front-end de Enterprise Edition).</span><span class="sxs-lookup"><span data-stu-id="4b128-111">Persistent Chat Server is available with Lync Server 2013 Enterprise Edition as a separate pool (not collocated with the Enterprise Edition Front End Servers).</span></span> <span data-ttu-id="4b128-112">El servidor de chat persistente requiere un servidor SQL Server back end en el grupo de servidores Enterprise Edition para almacenar el contenido del salón de chat y otros metadatos relevantes.</span><span class="sxs-lookup"><span data-stu-id="4b128-112">Persistent Chat Server requires a SQL Server Back End Server in your Enterprise Edition pool to store the chat room content and other relevant metadata.</span></span> <span data-ttu-id="4b128-113">Le recomendamos que instale el **PersistentChatStore** en un servidor de back-end de SQL Server dedicado, aunque se admite Collocating servidor back-end de Lync Server 2013 y **PersistentChatStore** en la misma instancia de SQL Server.</span><span class="sxs-lookup"><span data-stu-id="4b128-113">We recommend that you install the **PersistentChatStore** on a dedicated SQL Server Back End Server, although collocating Lync Server 2013 Back End Server and **PersistentChatStore** on the same SQL Server instance is supported.</span></span>
+
+<span data-ttu-id="4b128-114">El servidor de chat persistente también se puede implementar con Lync Server 2013 Standard Edition.</span><span class="sxs-lookup"><span data-stu-id="4b128-114">Persistent Chat Server can also be deployed with Lync Server 2013 Standard Edition.</span></span> <span data-ttu-id="4b128-115">En este caso, el servidor front-end de **PersistentChatService** se colocará en el equipo Standard Edition y el servidor back end de **PersistentChatStore** se puede implementar en la instancia local de SQL Server Express.</span><span class="sxs-lookup"><span data-stu-id="4b128-115">In this case, the **PersistentChatService** Front End Server is collocated on the Standard Edition computer, and the **PersistentChatStore** Back End Server can be deployed on the local SQL Server Express instance.</span></span>
+
+<span data-ttu-id="4b128-116">Para obtener más información sobre las configuraciones de colocaciones compatibles, consulte [compatibilidad de servidores de collocation en Lync server 2013](lync-server-2013-supported-server-collocation.md).</span><span class="sxs-lookup"><span data-stu-id="4b128-116">For details about supported colocation configurations, see [Supported server collocation in Lync Server 2013](lync-server-2013-supported-server-collocation.md).</span></span>
+
+<div>
+
+
+> [!IMPORTANT]  
+> <span data-ttu-id="4b128-117">No se admite la alta disponibilidad de la versión del servidor de chat persistente &nbsp; .</span><span class="sxs-lookup"><span data-stu-id="4b128-117">We do not support high availability for Persistent Chat Server&nbsp;Standard Edition.</span></span> <span data-ttu-id="4b128-118">El rendimiento y la escala serán limitados.</span><span class="sxs-lookup"><span data-stu-id="4b128-118">Performance and scale will be limited.</span></span> <span data-ttu-id="4b128-119">Además, solo admitimos un servidor de servidor &nbsp; Standard Edition nuevo.</span><span class="sxs-lookup"><span data-stu-id="4b128-119">Furthermore, we support only new Persistent Chat Server&nbsp;Standard Edition server.</span></span> <span data-ttu-id="4b128-120">No se admite la actualización de Lync Server 2010, servidor de chats grupales a un servidor de Lync Server 2013, una &nbsp; versión estándar de servidor de chat &nbsp; .</span><span class="sxs-lookup"><span data-stu-id="4b128-120">We do not support upgrading Lync Server 2010, Group Chat Server to a Lync Server 2013&nbsp;Persistent Chat Server&nbsp;Standard Edition.</span></span>
+
+
+
+</div>
+
+<span data-ttu-id="4b128-121">Si su organización requiere soporte de cumplimiento, puede instalar el servicio de cumplimiento del servidor de chat persistente en el servidor front-end del servidor de chat persistente.</span><span class="sxs-lookup"><span data-stu-id="4b128-121">If your organization requires compliance support, you can install the Persistent Chat Server Compliance service on the Persistent Chat Server Front End Server.</span></span> <span data-ttu-id="4b128-122">Se necesita una base de datos independiente para el cumplimiento.</span><span class="sxs-lookup"><span data-stu-id="4b128-122">A separate database is required for compliance.</span></span>
+
+<span data-ttu-id="4b128-123">Como mínimo, cada topología requiere un servidor con Lync Server 2013 instalado y un servidor con el software de base de datos de SQL Server instalado.</span><span class="sxs-lookup"><span data-stu-id="4b128-123">At a minimum, each topology requires a server with Lync Server 2013 installed and a server with SQL Server database software installed.</span></span>
+
+<span data-ttu-id="4b128-124">Use el generador de topología para agregar un servidor de chat persistente a las implementaciones de Lync Server 2013.</span><span class="sxs-lookup"><span data-stu-id="4b128-124">Use Topology Builder to add Persistent Chat Server to your Lync Server 2013 deployments.</span></span> <span data-ttu-id="4b128-125">Puede elegir agregar uno o varios grupos de servidores de chat persistentes con el generador de topologías.</span><span class="sxs-lookup"><span data-stu-id="4b128-125">You can choose to add one or more Persistent Chat Server pools using Topology Builder.</span></span> <span data-ttu-id="4b128-126">Siga las mismas instrucciones de implementación para implementar varios grupos de servidores de chat persistentes como lo haría para cualquier grupo.</span><span class="sxs-lookup"><span data-stu-id="4b128-126">Follow the same deployment instructions for deploying multiple Persistent Chat Server pools as you would for any pool.</span></span> <span data-ttu-id="4b128-127">Para obtener más información, vea [implementación de Lync Server 2013](lync-server-2013-deploying-lync-server.md) en la documentación de implementación.</span><span class="sxs-lookup"><span data-stu-id="4b128-127">For details, see [Deploying Lync Server 2013](lync-server-2013-deploying-lync-server.md) in the Deployment documentation.</span></span>
+
+<span data-ttu-id="4b128-128">Para obtener información detallada sobre las topologías disponibles y los requisitos técnicos y de software para instalar el servidor de chat persistente, consulte [planear el servidor de chat persistente en Lync server 2013](lync-server-2013-planning-for-persistent-chat-server.md) en la documentación de planeación, [Cómo funciona el servidor de chat persistente en Lync Server 2013](lync-server-2013-how-persistent-chat-server-works.md) , en la documentación de planeación, la documentación de implementación o la documentación de operaciones, y el [hardware compatible para Lync Server 2013](lync-server-2013-supported-hardware.md)</span><span class="sxs-lookup"><span data-stu-id="4b128-128">For details about available topologies and the technical and software requirements for installing Persistent Chat Server, see [Planning for Persistent Chat Server in Lync Server 2013](lync-server-2013-planning-for-persistent-chat-server.md) in the Planning documentation, [How Persistent Chat Server works in Lync Server 2013](lync-server-2013-how-persistent-chat-server-works.md) in the Planning documentation, Deployment documentation, or Operations documentation, and [Supported hardware for Lync Server 2013](lync-server-2013-supported-hardware.md) in the Supportability documentation.</span></span>
+
+<span data-ttu-id="4b128-129">Para obtener detalles sobre la adquisición de certificados, la creación de la base de datos de SQL Server y la creación de almacenes de archivos, vea [implementar Lync server 2013](lync-server-2013-deploying-lync-server.md) en la documentación de implementación.</span><span class="sxs-lookup"><span data-stu-id="4b128-129">For details about acquiring certificates, creating the SQL Server database, and creating file stores, see [Deploying Lync Server 2013](lync-server-2013-deploying-lync-server.md) in the Deployment documentation.</span></span>
+
+<span data-ttu-id="4b128-130">Un solo servidor de cliente de servidor de chat persistente puede admitir usuarios activos de 20.000.</span><span class="sxs-lookup"><span data-stu-id="4b128-130">A single Persistent Chat Server Front End Server can support 20,000 active users.</span></span> <span data-ttu-id="4b128-131">Puede tener un grupo de servidores de chat persistente con hasta 4 servidores activos para el usuario que admitan un total de 80.000 usuarios simultáneos.</span><span class="sxs-lookup"><span data-stu-id="4b128-131">You can have a Persistent Chat Server pool with up to 4 active Front End Servers supporting a total of 80,000 concurrent users.</span></span>
+
+<span data-ttu-id="4b128-132">El servidor de chat persistente también se admite en un servidor virtual.</span><span class="sxs-lookup"><span data-stu-id="4b128-132">Persistent Chat Server is also supported on a virtual server.</span></span> <span data-ttu-id="4b128-133">El servidor virtual puede admitir hasta 20.000 usuarios simultáneos si coincide con las especificaciones del servidor físico.</span><span class="sxs-lookup"><span data-stu-id="4b128-133">The virtual server can support up to 20,000 concurrent users if it matches the specifications of the physical server.</span></span>
+
+<div>
+
+
+> [!IMPORTANT]  
+> <span data-ttu-id="4b128-134">El servidor de chat persistente debe instalarse en un sistema de archivos NTFS para ayudar a exigir la seguridad del sistema de archivos.</span><span class="sxs-lookup"><span data-stu-id="4b128-134">Persistent Chat Server must be installed on an NTFS file system to help enforce file system security.</span></span> <span data-ttu-id="4b128-135">FAT32 no es un sistema de archivos compatible para el servidor de chat persistente.</span><span class="sxs-lookup"><span data-stu-id="4b128-135">FAT32 is not a supported file system for Persistent Chat Server.</span></span>
+
+
+
+</div>
+
+<div>
+
+## <a name="in-this-section"></a><span data-ttu-id="4b128-136">En esta sección</span><span class="sxs-lookup"><span data-stu-id="4b128-136">In This Section</span></span>
+
+  - [<span data-ttu-id="4b128-137">Cómo funciona el servidor de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-137">How Persistent Chat Server works in Lync Server 2013</span></span>](lync-server-2013-how-persistent-chat-server-works.md)
+
+  - [<span data-ttu-id="4b128-138">Lista de comprobación para la implementación de servidores de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-138">Deployment checklist for Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-deployment-checklist-for-persistent-chat-server.md)
+
+  - [<span data-ttu-id="4b128-139">Requisitos técnicos para el servidor de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-139">Technical requirements for Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-technical-requirements-for-persistent-chat-server.md)
+
+  - [<span data-ttu-id="4b128-140">Configurar los sistemas y la infraestructura para servidores de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-140">Setting up systems and infrastructure for Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-setting-up-systems-and-infrastructure-for-persistent-chat-server.md)
+
+  - [<span data-ttu-id="4b128-141">Agregar un servidor de chat persistente a la implementación en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-141">Adding Persistent Chat Server to your deployment in Lync Server 2013</span></span>](lync-server-2013-adding-persistent-chat-server-to-your-deployment.md)
+
+  - [<span data-ttu-id="4b128-142">Instalación del servidor de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-142">Installing Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-installing-persistent-chat-server.md)
+
+  - [<span data-ttu-id="4b128-143">Agregar un administrador de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-143">Adding a Persistent Chat administrator in Lync Server 2013</span></span>](lync-server-2013-adding-a-persistent-chat-administrator.md)
+
+  - [<span data-ttu-id="4b128-144">Configurar servidor de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-144">Configuring Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-configuring-persistent-chat-server.md)
+
+  - [<span data-ttu-id="4b128-145">Configuración del servidor de chat persistente con cmdlets de Windows PowerShell</span><span class="sxs-lookup"><span data-stu-id="4b128-145">Configuring Persistent Chat Server by using Windows PowerShell cmdlets</span></span>](configuring-persistent-chat-server-by-using-windows-powershell-cmdlets.md)
+
+  - [<span data-ttu-id="4b128-146">Solucionar problemas de configuración de servidores de chat persistentes mediante los cmdlets de Windows PowerShell en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-146">Troubleshooting Persistent Chat Server configuration using Windows PowerShell cmdlets in Lync Server 2013</span></span>](lync-server-2013-troubleshooting-persistent-chat-server-configuration-using-windows-powershell-cmdlets.md)
+
+  - [<span data-ttu-id="4b128-147">Configurar servidores de chat persistente para la alta disponibilidad y la recuperación ante desastres en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-147">Configuring Persistent Chat Server for high availability and disaster recovery in Lync Server 2013</span></span>](lync-server-2013-configuring-persistent-chat-server-for-high-availability-and-disaster-recovery.md)
+
+  - [<span data-ttu-id="4b128-148">Conmutación por recuperación y por error de servidores de chat persistente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4b128-148">Failing over and failing back Persistent Chat Server in Lync Server 2013</span></span>](lync-server-2013-failing-over-and-failing-back-persistent-chat-server.md)
+
+<span data-ttu-id="4b128-149"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="4b128-149"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+

@@ -1,0 +1,82 @@
+---
+title: 'Lync Server 2013: eliminar una regla de directiva de versión de cliente existente'
+description: 'Lync Server 2013: elimine una regla de directiva de versión de cliente existente.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Delete an existing client version policy rule
+ms:assetid: 2fe351c4-d78b-47d5-af49-d47ee5e0fe42
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ923066(v=OCS.15)
+ms:contentKeyID: 50675352
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 48cb2dc6458406c988bdc2626fc000c7a9bf5d16
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49430612"
+---
+# <a name="delete-an-existing-client-version-policy-rule-in-lync-server-2013"></a><span data-ttu-id="c52a2-103">Eliminar una regla de directiva de versión de cliente existente en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="c52a2-103">Delete an existing client version policy rule in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="c52a2-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="c52a2-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="c52a2-105">_**Última modificación del tema:** 2013-01-21_</span><span class="sxs-lookup"><span data-stu-id="c52a2-105">_**Topic Last Modified:** 2013-01-21_</span></span>
+
+<span data-ttu-id="c52a2-106">Una directiva de versión de cliente está formada por un conjunto de reglas de directiva de versión de cliente.</span><span class="sxs-lookup"><span data-stu-id="c52a2-106">A client version policy is made up of a set of client version policy rules.</span></span> <span data-ttu-id="c52a2-107">Estas reglas definen las acciones que se necesitan realizar cuando los usuarios intentan iniciar sesión con clientes y versiones de clientes específicos.</span><span class="sxs-lookup"><span data-stu-id="c52a2-107">These rules define the actions that should be taken when users attempt to log on with specific clients and client versions.</span></span> <span data-ttu-id="c52a2-108">Puede eliminar reglas individuales de una directiva de versión de cliente desde el panel de control de Lync Server 2013.</span><span class="sxs-lookup"><span data-stu-id="c52a2-108">You can delete individual rules from a client version policy from Lync Server 2013 Control Panel.</span></span>
+
+<div>
+
+## <a name="to-delete-client-version-policy-rules-with-lync-server-control-panel"></a><span data-ttu-id="c52a2-109">Para eliminar reglas de directiva de versión de cliente con el panel de control de Lync Server</span><span class="sxs-lookup"><span data-stu-id="c52a2-109">To delete client version policy rules with Lync Server Control Panel</span></span>
+
+1.  <span data-ttu-id="c52a2-110">Desde una cuenta de usuario que se asigne al rol CsUserAdministrator o CsAdministrator, inicie sesión en cualquier equipo en la implementación interna.</span><span class="sxs-lookup"><span data-stu-id="c52a2-110">From a user account that is assigned to the CsUserAdministrator role or the CsAdministrator role, log on to any computer in your internal deployment.</span></span>
+
+2.  <span data-ttu-id="c52a2-111">Abra una ventana del explorador y, a continuación, escriba la dirección URL del administrador para abrir el panel de control de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="c52a2-111">Open a browser window, and then enter the Admin URL to open the Lync Server Control Panel.</span></span> <span data-ttu-id="c52a2-112">Para obtener más información sobre los diferentes métodos que puede usar para iniciar el panel de control de Lync Server, consulte [abrir las herramientas administrativas 2013 de Lync Server](lync-server-2013-open-lync-server-administrative-tools.md).</span><span class="sxs-lookup"><span data-stu-id="c52a2-112">For details about the different methods you can use to start Lync Server Control Panel, see [Open Lync Server 2013 administrative tools](lync-server-2013-open-lync-server-administrative-tools.md).</span></span>
+
+3.  <span data-ttu-id="c52a2-113">En la barra de navegación izquierda, haga clic en **clientes** y, a continuación, haga clic en el botón de navegación de la **Directiva de versión cliente** .</span><span class="sxs-lookup"><span data-stu-id="c52a2-113">In the left navigation bar, click **Clients**, and then click the **Client Version Policy** navigation button.</span></span>
+
+4.  <span data-ttu-id="c52a2-114">En la página de la **Directiva de versión del cliente** , haga doble clic en la Directiva de versión del cliente para la regla que desea eliminar.</span><span class="sxs-lookup"><span data-stu-id="c52a2-114">On the **Client Version Policy** page, double-click the client version policy for the rule you want to delete.</span></span>
+
+5.  <span data-ttu-id="c52a2-115">Las reglas aparecen en la página **Editar Directiva de versión del cliente** .</span><span class="sxs-lookup"><span data-stu-id="c52a2-115">The rules appear on the **Edit Client Version Policy** page.</span></span> <span data-ttu-id="c52a2-116">Para eliminar una regla, seleccione la regla y, a continuación, haga clic en **quitar**.</span><span class="sxs-lookup"><span data-stu-id="c52a2-116">To delete a rule, select the rule, and then click **Remove**.</span></span>
+
+<span data-ttu-id="c52a2-117"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="c52a2-117"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+

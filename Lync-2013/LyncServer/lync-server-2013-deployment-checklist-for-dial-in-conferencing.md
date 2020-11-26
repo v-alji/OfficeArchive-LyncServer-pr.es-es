@@ -1,0 +1,244 @@
+---
+title: 'Lync Server 2013: Lista de comprobación para la implementación de las conferencias de acceso telefónico local'
+description: Lista de comprobación de implementación de Lync Server 2013 para conferencias de acceso telefónico local.
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Deployment checklist for dial-in conferencing
+ms:assetid: 9c8d3ebe-0d70-4a61-9bd0-522286cddd9a
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg412726(v=OCS.15)
+ms:contentKeyID: 48184987
+ms.date: 10/03/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 743b5120bf011ab8467679bea9869a46231b0835
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49429744"
+---
+# <a name="deployment-checklist-for-dial-in-conferencing-in-lync-server-2013"></a><span data-ttu-id="dce06-103">Lista de comprobación para la implementación de las conferencias de acceso telefónico local en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="dce06-103">Deployment checklist for dial-in conferencing in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="dce06-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="dce06-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="dce06-105">_**Última modificación del tema:** 2014-10-03_</span><span class="sxs-lookup"><span data-stu-id="dce06-105">_**Topic Last Modified:** 2014-10-03_</span></span>
+
+<span data-ttu-id="dce06-106">Los componentes necesarios para las conferencias de acceso telefónico local se implementan al implementar la carga de trabajo de las conferencias.</span><span class="sxs-lookup"><span data-stu-id="dce06-106">The components required for dial-in conferencing are deployed when you deploy the conferencing workload.</span></span> <span data-ttu-id="dce06-107">Para poder configurar las conferencias de acceso telefónico local, debe implementar la telefonía IP empresarial o un servidor de mediación y una puerta de enlace de red telefónica conmutada (RTC).</span><span class="sxs-lookup"><span data-stu-id="dce06-107">Before you can configure dial-in conferencing, you need to deploy either Enterprise Voice or a Mediation Server and a public switched telephone network (PSTN) gateway.</span></span>
+
+<span data-ttu-id="dce06-108">Todos los pasos de la tabla siguiente deben realizarse antes de que los usuarios puedan llamar desde la RTC para unirse a una conferencia de audio o vídeo.</span><span class="sxs-lookup"><span data-stu-id="dce06-108">All the steps in the following table must be performed before users can dial in from the PSTN to join an audio/video conference.</span></span>
+
+<div>
+
+
+> [!NOTE]  
+> <span data-ttu-id="dce06-109">Si va a migrar desde Office Communications Server 2007 R2, debe aplicar las actualizaciones más recientes al entorno de Office Communications Server 2007 R2 antes de implementar la Conferencia de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-109">If you are migrating from Office Communications Server 2007 R2, you must apply the latest updates to your Office Communications Server 2007 R2 environment before deploying dial-in conferencing.</span></span>
+
+
+
+</div>
+
+### <a name="dial-in-conferencing-deployment-process"></a><span data-ttu-id="dce06-110">Proceso de implementación de conferencias de acceso telefónico local</span><span class="sxs-lookup"><span data-stu-id="dce06-110">Dial-in Conferencing Deployment Process</span></span>
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span data-ttu-id="dce06-111">Fase</span><span class="sxs-lookup"><span data-stu-id="dce06-111">Phase</span></span></th>
+<th><span data-ttu-id="dce06-112">Pasos</span><span class="sxs-lookup"><span data-stu-id="dce06-112">Steps</span></span></th>
+<th><span data-ttu-id="dce06-113">Permisos</span><span class="sxs-lookup"><span data-stu-id="dce06-113">Permissions</span></span></th>
+<th><span data-ttu-id="dce06-114">Documentación de implementación</span><span class="sxs-lookup"><span data-stu-id="dce06-114">Deployment documentation</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-115"><strong>Crear una topología que incluya la carga de trabajo de las conferencias, incluido un servidor de mediación y una puerta de enlace RTC, e implementar el grupo de servidores front-end o el servidor Standard Edition</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-115"><strong>Create a topology that includes the Conferencing workload, including a Mediation Server and PSTN gateway, and deploy the Front End pool or Standard Edition server</strong></span></span></p></td>
+<td><ol>
+<li><p><span data-ttu-id="dce06-116">Ejecute el generador de topología para configurar su topología.</span><span class="sxs-lookup"><span data-stu-id="dce06-116">Run Topology Builder to configure your topology.</span></span> <span data-ttu-id="dce06-117">Mientras configura la topología, seleccione la opción de conferencia de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-117">While configuring the topology, select the dial-in conferencing option.</span></span></p></li>
+<li><p><span data-ttu-id="dce06-118">Publicar la topología e implementar el grupo de servidores front-end o el servidor Standard Edition.</span><span class="sxs-lookup"><span data-stu-id="dce06-118">Publish the topology and deploy the Front End pool or Standard Edition server.</span></span></p></li>
+<li><p><span data-ttu-id="dce06-119">Si es necesario, cree un servidor de mediación independiente y asócielo con una puerta de enlace RTC.</span><span class="sxs-lookup"><span data-stu-id="dce06-119">If necessary, create a stand-alone Mediation Server and associate it with a PSTN gateway.</span></span></p>
+<div>
+
+> [!NOTE]  
+> <span data-ttu-id="dce06-120">Este paso solo es necesario si no implementa la telefonía IP empresarial y no Collocate el servidor de mediación con el servidor Standard Edition o Enterprise EditionFront end.</span><span class="sxs-lookup"><span data-stu-id="dce06-120">This step is required only if you do not deploy Enterprise Voice and do not collocate the Mediation Server with the Enterprise EditionFront End Server or Standard Edition server.</span></span> <span data-ttu-id="dce06-121">Si implementa la telefonía IP empresarial, instale y configure los servidores de mediación y las puertas de enlace RTC como parte de la implementación de telefonía IP empresarial.</span><span class="sxs-lookup"><span data-stu-id="dce06-121">If you deploy Enterprise Voice, you install and configure Mediation Servers and PSTN gateways as part of the Enterprise Voice deployment.</span></span> <span data-ttu-id="dce06-122">Si Collocate el servidor de mediación, debe instalar y configurar el servidor de mediación como parte de la implementación del grupo de servidores front-end o del servidor Standard Edition.</span><span class="sxs-lookup"><span data-stu-id="dce06-122">If you collocate the Mediation Server, you install and configure the Mediation Server as part of the Front End pool or Standard Edition server deployment.</span></span>
+
+
+</div></li>
+</ol></td>
+<td><p><span data-ttu-id="dce06-123">Administradores de dominio</span><span class="sxs-lookup"><span data-stu-id="dce06-123">Domain Admins</span></span></p>
+<p><span data-ttu-id="dce06-124">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-124">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-125">Administrador</span><span class="sxs-lookup"><span data-stu-id="dce06-125">Administrator</span></span></p></td>
+<td><ul>
+<li><p><span data-ttu-id="dce06-126"><a href="lync-server-2013-deploying-lync-server.md">Implementar Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-126"><a href="lync-server-2013-deploying-lync-server.md">Deploying Lync Server 2013</a></span></span></p></li>
+<li><p><span data-ttu-id="dce06-127">Para crear un grupo de servidores de mediación independiente: <a href="lync-server-2013-deploying-mediation-servers-and-defining-peers.md">implementar servidores de mediación y definir pares en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-127">To create a stand-alone Mediation Server pool: <a href="lync-server-2013-deploying-mediation-servers-and-defining-peers.md">Deploying Mediation Servers and defining peers in Lync Server 2013</a></span></span></p></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-128"><strong>Configure dial plans</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-128"><strong>Configure dial plans</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-129">Un plan de marcado es un conjunto de reglas de normalización de números de teléfono que convierten los números de teléfono marcados desde una ubicación determinada a un formato estándar único (E.164) para la autorización telefónica y el enrutamiento de llamadas.</span><span class="sxs-lookup"><span data-stu-id="dce06-129">A dial plan is a set of phone number normalization rules that translate phone numbers dialed from a specific location to a single standard (E.164) format for purposes of phone authorization and call routing.</span></span> <span data-ttu-id="dce06-130">El mismo número de teléfono marcado desde diferentes ubicaciones puede, basándose en los respectivos planes de marcado, resolverse en diferentes números E.164, según cada ubicación.</span><span class="sxs-lookup"><span data-stu-id="dce06-130">The same phone number dialed from different locations can, based on the respective dial plans, resolve to different E.164 numbers, as appropriate to each location.</span></span> <span data-ttu-id="dce06-131">Si implementa la telefonía IP empresarial, configurará planes de marcado como parte de esa implementación y tendrá que asegurarse de que los planes de marcado también admitan las conferencias de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-131">If you deploy Enterprise Voice, you set up dial plans as part of that deployment, and you need to make sure that the dial plans also accommodate dial-in conferencing.</span></span> <span data-ttu-id="dce06-132">Si no implementa la telefonía IP empresarial, debe configurar los planes de marcado para las conferencias de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-132">If you do not deploy Enterprise Voice, you need to set up dial plans for dial-in conferencing.</span></span></p>
+<p><span data-ttu-id="dce06-133">Use el panel de control de Lync Server 2013 o el shell de administración de Lync Server para configurar los planes de marcado de la siguiente manera:</span><span class="sxs-lookup"><span data-stu-id="dce06-133">Use the Lync Server 2013 Control Panel or Lync Server Management Shell to set up dial plans as follows:</span></span></p>
+<ol>
+<li><p><span data-ttu-id="dce06-134">Cree uno o más planes de marcado para enrutar números de teléfono de acceso.</span><span class="sxs-lookup"><span data-stu-id="dce06-134">Create one or more dial plans for routing dial-in access phone numbers.</span></span></p></li>
+<li><p><span data-ttu-id="dce06-p105">Asigne un plan de marcado predeterminado a cada grupo de servidores. Establezca la <strong>Región de conferencia de acceso telefónico local</strong> en la ubicación geográfica a la que necesita aplicarse el plan de marcado. La región asocia el plan de marcado con números de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-p105">Assign a default dial plan to each pool. Set the <strong>Dial-in conferencing region</strong> to the geographic location to which the dial plan applies. The region associates the dial plan with dial-in access numbers.</span></span></p></li>
+</ol></td>
+<td><p><span data-ttu-id="dce06-138">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-138">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-139">CsVoiceAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-139">CsVoiceAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-140">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-140">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-141">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-141">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-142"><a href="lync-server-2013-configure-dial-plans-for-dial-in-conferencing.md">Configurar planes de marcado para las conferencias de acceso telefónico local en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-142"><a href="lync-server-2013-configure-dial-plans-for-dial-in-conferencing.md">Configure dial plans for dial-in conferencing in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-143"><strong>Asegurarse de que los planes de marcado tengan regiones asignadas</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-143"><strong>Make sure that dial plans are assigned regions</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-144">Ejecute los cmdlets <strong>Get-CsDialPlan</strong> y <strong>Set-CsDialPlan</strong> para garantizar que todos los planes de marcado tengan asignada una región.</span><span class="sxs-lookup"><span data-stu-id="dce06-144">Run the <strong>Get-CsDialPlan</strong> and <strong>Set-CsDialPlan</strong> cmdlets to make sure that all dial plans have a region assigned.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-145">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-145">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-146">CsVoiceAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-146">CsVoiceAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-147">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-147">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-148">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-148">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-149"><a href="lync-server-2013-make-sure-dial-plans-have-assigned-regions.md">Asegúrese de que los planes de marcado de Lync Server 2013 tienen regiones asignadas</a></span><span class="sxs-lookup"><span data-stu-id="dce06-149"><a href="lync-server-2013-make-sure-dial-plans-have-assigned-regions.md">Make sure dial plans Lync Server 2013 have assigned regions</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-150"><strong>(Opcional) Comprobar o modificar los requisitos del número de identificación personal de los usuarios (PIN)</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-150"><strong>(Optional) Verify or modify user personal identification number (PIN) requirements</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-151">Use el panel de control de Lync Server 2013 o el shell de administración de Lync Server para ver o modificar la <strong>Directiva de PIN</strong>de conferencia.</span><span class="sxs-lookup"><span data-stu-id="dce06-151">Use Lync Server 2013 Control Panel or Lync Server Management Shell to view or modify the Conferencing <strong>PIN Policy</strong>.</span></span> <span data-ttu-id="dce06-152">Puede especificar la longitud mínima del PIN, el número máximo de intentos de inicio de sesión, la expiración del PIN y si es posible usar patrones comunes.</span><span class="sxs-lookup"><span data-stu-id="dce06-152">You can specify minimum PIN length, maximum number of logon attempts, PIN expiration, and whether common patterns are allowable.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-153">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-153">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-154">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-154">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-155">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-155">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-156"><a href="lync-server-2013-optional-verify-pin-policy-settings.md">(Opcional) Comprobar la configuración de la directiva de PIN en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-156"><a href="lync-server-2013-optional-verify-pin-policy-settings.md">(Optional) Verify PIN policy settings in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-157"><strong>Configurar la directiva de conferencias para admitir conferencias de acceso telefónico local</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-157"><strong>Configure conferencing policy to support dial-in conferencing</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-158">Use el panel de control de Lync Server 2013 o el shell de administración de Lync Server para configurar la configuración de <strong>Directiva de conferencia</strong> .</span><span class="sxs-lookup"><span data-stu-id="dce06-158">Use Lync Server 2013 Control Panel or Lync Server Management Shell to configure <strong>Conferencing Policy</strong> settings.</span></span> <span data-ttu-id="dce06-159">Especifique si:</span><span class="sxs-lookup"><span data-stu-id="dce06-159">Specify whether:</span></span></p>
+<ul>
+<li><p><span data-ttu-id="dce06-160">Está habilitado el acceso telefónico a conferencias por RTC.</span><span class="sxs-lookup"><span data-stu-id="dce06-160">PSTN conference dial-in is enabled.</span></span></p></li>
+<li><p><span data-ttu-id="dce06-161">Los usuarios pueden invitar a participantes anónimos.</span><span class="sxs-lookup"><span data-stu-id="dce06-161">Users can invite anonymous participants.</span></span></p></li>
+<li><p><span data-ttu-id="dce06-p108">Los usuarios no autenticados pueden unirse a una conferencia mediante llamadas de salida. Mediante las llamadas de salida, el servidor de conferencia llama al usuario y el usuario responde al teléfono para unirse a la conferencia.</span><span class="sxs-lookup"><span data-stu-id="dce06-p108">Unauthenticated users can join a conference by using dial-out phoning. With dial-out phoning, the conference server calls the user, and the user answers the phone to join the conference.</span></span></p></li>
+</ul></td>
+<td><p><span data-ttu-id="dce06-164">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-164">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-165">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-165">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-166">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-166">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-167"><a href="lync-server-2013-configure-conferencing-policy-for-dial-in.md">Configurar la directiva de conferencias para el acceso telefónico local en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-167"><a href="lync-server-2013-configure-conferencing-policy-for-dial-in.md">Configure conferencing policy for dial-in in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-168"><strong>Configure dial-in access numbers</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-168"><strong>Configure dial-in access numbers</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-169">Use el panel de control de Lync Server 2013 o el shell de administración de Lync Server para configurar los números de acceso telefónico local a los que los usuarios llaman para llamar a una conferencia y especificar las regiones que asocian el número de acceso a los planes de marcado adecuados.</span><span class="sxs-lookup"><span data-stu-id="dce06-169">Use Lync Server 2013 Control Panel or Lync Server Management Shell to set up dial-in access numbers that users call to dial in to a conference, and specify the regions that associate the access number with the appropriate dial plans.</span></span> <span data-ttu-id="dce06-170">Los tres primeros números de acceso de la región especificada por el plan de marcado del organizador se incluyen en la invitación a la conferencia.</span><span class="sxs-lookup"><span data-stu-id="dce06-170">The first three access numbers for the region specified by the organizer's dial plan are included in the conference invitation.</span></span> <span data-ttu-id="dce06-171">Todos los números de acceso están disponibles en la página Configuración de conferencia de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-171">All access numbers are available on the Dial-in Conferencing Settings page.</span></span></p>
+<div>
+
+> [!NOTE]  
+> <span data-ttu-id="dce06-172">Después de crear los números de acceso telefónico local, puede usar el cmdlet <STRONG>set-CsDialInConferencingAccessNumber</STRONG> para modificar el nombre para mostrar de los objetos de contacto de Active Directory, de modo que los usuarios puedan identificar más fácilmente el número de acceso correcto.</span><span class="sxs-lookup"><span data-stu-id="dce06-172">After you create dial-in access numbers, you can use the <STRONG>Set-CsDialInConferencingAccessNumber</STRONG> cmdlet to modify the display name of the Active Directory contact objects so that users can more easily identify the correct access number.</span></span>
+
+
+</div></td>
+<td><p><span data-ttu-id="dce06-173">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-173">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-174">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-174">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-175">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-175">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-176"><a href="lync-server-2013-configure-dial-in-conferencing-access-numbers.md">Configurar números de conferencia de acceso telefónico en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-176"><a href="lync-server-2013-configure-dial-in-conferencing-access-numbers.md">Configure dial-in conferencing access numbers in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-177"><strong>(Opcional) Comprobar la configuración de conferencia de acceso telefónico local</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-177"><strong>(Optional) Verify dial-in conferencing settings</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-178">Use el cmdlet <strong>Get-CsDialinConferencingAccessNumber</strong> para buscar planes de marcado que tengan una región de conferencia de acceso telefónico local que no sea usada por ningún número de acceso, así como números de acceso que no tengan asignada ninguna región.</span><span class="sxs-lookup"><span data-stu-id="dce06-178">Use the <strong>Get-CsDialinConferencingAccessNumber</strong> cmdlet to search for dial plans that have a dial-in conferencing region that is not used by any access number and for access numbers that have no region assigned.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-179">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-179">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-180">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-180">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-181">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-181">CsAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-182">CsViewOnlyAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-182">CsViewOnlyAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-183">CsHelpDesk</span><span class="sxs-lookup"><span data-stu-id="dce06-183">CsHelpDesk</span></span></p></td>
+<td><p><span data-ttu-id="dce06-184"><a href="lync-server-2013-optional-verify-dial-in-conferencing-settings.md">(Opcional) Comprobar la configuración de conferencia de acceso telefónico local en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-184"><a href="lync-server-2013-optional-verify-dial-in-conferencing-settings.md">(Optional) Verify dial-in conferencing settings in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-185"><strong>(Opcional) Modificar la asignación de teclas de comandos DTMF</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-185"><strong>(Optional) Modify key mapping of DTMF commands</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-186">Use el cmdlet <strong>set-CsDialinConferencingDtmfConfiguration</strong> para modificar las teclas usadas para los comandos multifrecuencia de tono dual (DTMF), que los participantes pueden usar para controlar la configuración de la Conferencia (como desactivar y reactivar el audio o bloquear y desbloquear).</span><span class="sxs-lookup"><span data-stu-id="dce06-186">Use the <strong>Set-CsDialinConferencingDtmfConfiguration</strong> cmdlet to modify the keys used for dual-tone multifrequency (DTMF) commands, which participants can use to control conference settings (such as mute and unmute or lock and unlock).</span></span></p></td>
+<td><p><span data-ttu-id="dce06-187">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-187">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-188">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-188">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-189">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-189">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-190"><a href="lync-server-2013-optional-modify-key-mapping-for-dtmf-commands.md">(Opcional) Modificar la asignación de teclas para comandos DTMF en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-190"><a href="lync-server-2013-optional-modify-key-mapping-for-dtmf-commands.md">(Optional) Modify key mapping for DTMF commands in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-191"><strong>(Opcional) Modificar el comportamiento de los anuncios al unirse y abandonar conferencias</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-191"><strong>(Optional) Modify conference join and leave announcement behavior</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-192">Use el cmdlet <strong>Set-CsDialinConferencingConfiguration</strong> para cambiar el funcionamiento de los anuncios cuando los participantes se unen a conferencias o las abandonan.</span><span class="sxs-lookup"><span data-stu-id="dce06-192">Use the <strong>Set-CsDialinConferencingConfiguration</strong> to change how announcements work when participants join and leave conferences.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-193">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-193">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-194">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-194">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-195">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-195">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-196"><a href="lync-server-2013-optional-enable-and-disable-conference-join-and-leave-announcements.md">(Opcional) Habilitar y deshabilitar los anuncios de participación y abandono de conferencias en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-196"><a href="lync-server-2013-optional-enable-and-disable-conference-join-and-leave-announcements.md">(Optional) Enable and disable conference join and leave announcements in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-197"><strong>(Opcional) Comprobar la conferencia de acceso telefónico local</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-197"><strong>(Optional) Verify dial-in conferencing</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-198">Use el cmdlet <strong>Test-CsDialInConferencing</strong> para comprobar si los números de acceso del grupo de servidores especificado funcionan correctamente.</span><span class="sxs-lookup"><span data-stu-id="dce06-198">Use the <strong>Test-CsDialInConferencing</strong> cmdlet to test that the access numbers for the specified pool work correctly.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-199">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-199">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-200">CsServerAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-200">CsServerAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-201">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-201">CsAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-202"><a href="lync-server-2013-optional-verify-dial-in-conferencing.md">(Opcional) Comprobar la conferencia de acceso telefónico local en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-202"><a href="lync-server-2013-optional-verify-dial-in-conferencing.md">(Optional) Verify dial-in conferencing in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-203"><strong>Implementar el complemento de conferencia en línea para Lync 2013</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-203"><strong>Deploy the Online Meeting Add-in for Lync 2013</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-204">Implementar el complemento de reunión en línea para Lync 2013 para que los usuarios puedan programar conferencias que admitan conferencias de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-204">Deploy the Online Meeting Add-in for Lync 2013 so that users can schedule conferences that support dial-in conferencing.</span></span> <span data-ttu-id="dce06-205">El complemento de reunión en línea para Lync 2013 se instala automáticamente al instalar Lync 2013.</span><span class="sxs-lookup"><span data-stu-id="dce06-205">The Online Meeting Add-in for Lync 2013 is installed automatically when you install Lync 2013.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-206">Administradores</span><span class="sxs-lookup"><span data-stu-id="dce06-206">Administrators</span></span></p></td>
+<td><p><span data-ttu-id="dce06-207"><a href="lync-server-2013-deploy-the-online-meeting-add-in-for-lync-2013.md">Implementar el complemento de conferencia en línea para Lync 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-207"><a href="lync-server-2013-deploy-the-online-meeting-add-in-for-lync-2013.md">Deploy the Online Meeting Add-in for Lync 2013</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-208"><strong>Configurar una cuenta de usuario</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-208"><strong>Configure user account settings</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-209">Use el panel de control de Lync Server 2013 o el shell de administración de Lync Server para configurar el URI de la <strong>línea</strong> de telefonía como un número de teléfono normalizado único (por ejemplo, Tel: + 14255550200).</span><span class="sxs-lookup"><span data-stu-id="dce06-209">Use Lync Server 2013 Control Panel or Lync Server Management Shell to configure the telephony <strong>Line URI</strong> as a unique, normalized phone number (for example, tel:+14255550200).</span></span></p></td>
+<td><p><span data-ttu-id="dce06-210">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-210">RTCUniversalServerAdmins</span></span></p>
+<p><span data-ttu-id="dce06-211">CsAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-211">CsAdministrator</span></span></p>
+<p><span data-ttu-id="dce06-212">CsUserAdministrator</span><span class="sxs-lookup"><span data-stu-id="dce06-212">CsUserAdministrator</span></span></p></td>
+<td><p><span data-ttu-id="dce06-213"><a href="lync-server-2013-configure-user-account-settings.md">Configurar la cuenta de usuario en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-213"><a href="lync-server-2013-configure-user-account-settings.md">Configure user account settings in Lync Server 2013</a></span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="dce06-214">(Recomendado) Configurar directorios de conferencia</span><span class="sxs-lookup"><span data-stu-id="dce06-214">(Recommended) Configure conference directories</span></span></p></td>
+<td><p><span data-ttu-id="dce06-215">Use el cmdlet <strong>New-CsConferenceDirectory</strong> para crear un directorio de conferencia para cada 999 usuarios del grupo.</span><span class="sxs-lookup"><span data-stu-id="dce06-215">Use the <strong>New-CsConferenceDirectory</strong> cmdlet to create one conference directory for every 999 users in the pool.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-216">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-216">RTCUniversalServerAdmins</span></span></p></td>
+<td><p><span data-ttu-id="dce06-217"><a href="lync-server-2013-dial-in-conferencing-requirements.md">Requisitos de conferencia de acceso telefónico local en Lync Server 2013</a> <a href="recommended-create-conference-directories.md">(recomendado) crear directorios de conferencia</a></span><span class="sxs-lookup"><span data-stu-id="dce06-217"><a href="lync-server-2013-dial-in-conferencing-requirements.md">Dial-in conferencing requirements in Lync Server 2013</a> <a href="recommended-create-conference-directories.md">(Recommended) Create Conference Directories</a></span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="dce06-218"><strong>(Opcional) Dar la bienvenida a los usuarios a la conferencia de acceso telefónico local y definir el PIN inicial</strong></span><span class="sxs-lookup"><span data-stu-id="dce06-218"><strong>(Optional) Welcome users to dial-in conferencing and set the initial PIN</strong></span></span></p></td>
+<td><p><span data-ttu-id="dce06-219">Use el script <strong>set-CsPinSendCAWelcomeMail</strong> para configurar los pines iniciales de los usuarios y enviar un correo electrónico de bienvenida que contenga el PIN inicial y un vínculo a la página de configuración de conferencia de acceso telefónico local.</span><span class="sxs-lookup"><span data-stu-id="dce06-219">Use the <strong>Set-CsPinSendCAWelcomeMail</strong> script to set users' initial PINs and send a welcome email that contains the initial PIN and a link to the Dial-in Conferencing Settings page.</span></span></p></td>
+<td><p><span data-ttu-id="dce06-220">RTCUniversalServerAdmins</span><span class="sxs-lookup"><span data-stu-id="dce06-220">RTCUniversalServerAdmins</span></span></p></td>
+<td><p><span data-ttu-id="dce06-221"><a href="lync-server-2013-optional-welcome-users-to-dial-in-conferencing.md">(Opcional) Dar la bienvenida a los usuarios de la conferencia de acceso telefónico local en Lync Server 2013</a></span><span class="sxs-lookup"><span data-stu-id="dce06-221"><a href="lync-server-2013-optional-welcome-users-to-dial-in-conferencing.md">(Optional) Welcome users to dial-in conferencing in Lync Server 2013</a></span></span></p></td>
+</tr><span data-ttu-id="dce06-222">
+</tbody>
+</table>
+
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="dce06-222">
+</tbody>
+</table>
+
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
