@@ -1,0 +1,103 @@
+---
+title: 'Lync Server 2013: Instalar servidores perimetrales'
+description: 'Lync Server 2013: instalar servidores perimetrales.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Install Edge Servers
+ms:assetid: 1655ab69-3899-4ee4-a1cc-8243bc1bfa0f
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg398230(v=OCS.15)
+ms:contentKeyID: 48183503
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: e699a7f41b0ee554bc85fb2d9a72a2d9a42870cb
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49427211"
+---
+# <a name="install-edge-servers-for-lync-server-2013"></a><span data-ttu-id="5c502-103">Instalar servidores perimetrales para Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="5c502-103">Install Edge Servers for Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="5c502-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="5c502-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="5c502-105">_**Última modificación del tema:** 2012-09-08_</span><span class="sxs-lookup"><span data-stu-id="5c502-105">_**Topic Last Modified:** 2012-09-08_</span></span>
+
+<span data-ttu-id="5c502-106">Para instalar Lync Server 2013 en servidores perimetrales, use el Asistente para la implementación de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="5c502-106">You install Lync Server 2013 on Edge Servers by using Lync Server Deployment Wizard.</span></span> <span data-ttu-id="5c502-107">Al ejecutar el Asistente para la implementación en cada servidor perimetral, puede completar la mayoría de las tareas necesarias para configurar el servidor perimetral.</span><span class="sxs-lookup"><span data-stu-id="5c502-107">By running the Deployment Wizard on each Edge Server, you can complete most of the tasks required to set up the Edge Server.</span></span> <span data-ttu-id="5c502-108">Para implementar Lync Server 2013 en un servidor perimetral, debe ejecutar ya el generador de topologías para definir y publicar la topología del servidor perimetral, y exportarla a medios que estén disponibles desde el servidor perimetral.</span><span class="sxs-lookup"><span data-stu-id="5c502-108">In order to deploy Lync Server 2013 on an Edge Server, you must have already run Topology Builder to define and publish your Edge Server topology, and exported it to media that is available from the Edge Server.</span></span> <span data-ttu-id="5c502-109">Para obtener información detallada, vea [escenarios de acceso de usuarios externos en Lync server 2013](lync-server-2013-scenarios-for-external-user-access.md) y [exportar su topología de Lync Server 2013 y copiarla en medios externos para la instalación perimetral](lync-server-2013-export-your-topology-and-copy-it-to-external-media-for-edge-installation.md).</span><span class="sxs-lookup"><span data-stu-id="5c502-109">For details, see [Scenarios for external user access in Lync Server 2013](lync-server-2013-scenarios-for-external-user-access.md) and [Export your Lync Server 2013 topology and copy it to external media for edge installation](lync-server-2013-export-your-topology-and-copy-it-to-external-media-for-edge-installation.md).</span></span>
+
+<span data-ttu-id="5c502-110">Después de usar el Asistente para la implementación para instalar cada servidor perimetral, instalar y asignar los certificados necesarios e iniciar los servicios necesarios, puede completar la configuración con la información de [configuración compatibilidad para el acceso de usuarios externos en Lync server 2013](lync-server-2013-configuring-support-for-external-user-access.md) para habilitar y configurar el acceso externo de usuarios y la información para [comprobar la implementación de Edge en Lync Server 2013](lync-server-2013-verifying-your-edge-deployment.md) para validar la configuración, incluida la conectividad de cliente</span><span class="sxs-lookup"><span data-stu-id="5c502-110">After using the Deployment Wizard to install each Edge Server, install and assign the required certificates, and start the required services, you can complete the setup by using the information in [Configuring support for external user access in Lync Server 2013](lync-server-2013-configuring-support-for-external-user-access.md) to enable and configure external user access and the information in [Verifying your edge deployment in Lync Server 2013](lync-server-2013-verifying-your-edge-deployment.md) to validate the setup, including server and client connectivity.</span></span>
+
+<div>
+
+## <a name="to-install-an-edge-server"></a><span data-ttu-id="5c502-111">Para instalar un servidor perimetral</span><span class="sxs-lookup"><span data-stu-id="5c502-111">To install an Edge Server</span></span>
+
+1.  <span data-ttu-id="5c502-112">Inicie sesión en el equipo en el que desea instalar el servidor perimetral como miembro del grupo de administradores locales o en una cuenta con derechos y permisos de usuario equivalentes.</span><span class="sxs-lookup"><span data-stu-id="5c502-112">Log on to the computer on which you want to install your Edge Server as a member of the local Administrators group or an account with equivalent user rights and permissions.</span></span>
+
+2.  <span data-ttu-id="5c502-113">Asegúrese de que el archivo de configuración de topología que ha creado con el generador de topología y, a continuación, exportado y copiado a un medio externo esté disponible en el servidor perimetral (por ejemplo, el acceso a la unidad USB en la que ha copiado el archivo de configuración de topología o Compruebe el acceso al recurso compartido de red donde ha copiado el archivo).</span><span class="sxs-lookup"><span data-stu-id="5c502-113">Ensure that the topology configuration file you created using Topology Builder, and then exported and copied to external media, is available on the Edge Server (for example, access to the USB drive onto which you copied the topology configuration file, or verify access to the network share where you copied the file).</span></span>
+
+3.  <span data-ttu-id="5c502-114">Inicie el Asistente para la implementación.</span><span class="sxs-lookup"><span data-stu-id="5c502-114">Start the Deployment Wizard.</span></span>
+    
+    <div>
+    
+
+    > [!NOTE]  
+    > <span data-ttu-id="5c502-115">Si recibe un mensaje que indica que necesita instalar Microsoft Visual C++ Redistributable, haga clic en <STRONG>sí</STRONG>.</span><span class="sxs-lookup"><span data-stu-id="5c502-115">If you get a message saying that you need to install Microsoft Visual C++ Redistributable, click <STRONG>Yes</STRONG>.</span></span> <span data-ttu-id="5c502-116">En el siguiente cuadro de diálogo, puede aceptar la <STRONG>Ubicación de instalación</STRONG> predeterminada o hacer clic en <STRONG>examinar</STRONG> para seleccionar una ubicación alternativa y, a continuación, hacer clic en <STRONG>instalar</STRONG>.</span><span class="sxs-lookup"><span data-stu-id="5c502-116">In the next dialog box, you can accept the default <STRONG>Installation Location</STRONG> or click the <STRONG>Browse</STRONG> to select an alternate location, and then click <STRONG>Install</STRONG>.</span></span> <span data-ttu-id="5c502-117">En el siguiente cuadro de diálogo, active la casilla acepto <STRONG>los términos del contrato de licencia</STRONG> y, a continuación, haga clic en <STRONG>Aceptar</STRONG>.</span><span class="sxs-lookup"><span data-stu-id="5c502-117">In the next dialog box, select the <STRONG>I accept the terms in the license agreement</STRONG> check box, and then click <STRONG>OK</STRONG>.</span></span>
+
+    
+    </div>
+
+4.  <span data-ttu-id="5c502-118">En el Asistente para la implementación, haga clic en **instalar o actualizar el sistema de Lync Server**.</span><span class="sxs-lookup"><span data-stu-id="5c502-118">In the Deployment Wizard, click **Install or Update Lync Server System**.</span></span>
+
+5.  <span data-ttu-id="5c502-119">Una vez que el asistente determina el estado de implementación, en el **paso 1. Instale el almacén de configuración local**, haga clic en **Ejecutar** y luego haga lo siguiente:</span><span class="sxs-lookup"><span data-stu-id="5c502-119">After the wizard determines the deployment state, for **Step 1. Install Local Configuration Store**, click **Run** and then do the following:</span></span>
+    
+      - <span data-ttu-id="5c502-120">En el cuadro de diálogo **configurar réplica local del almacén de administración central** , haga clic en **Importar desde un archivo (recomendado para servidores perimetrales)**, vaya a la ubicación del archivo de configuración de topología exportada, seleccione el archivo. zip, haga clic en **abrir** y, a continuación, haga clic en **siguiente**.</span><span class="sxs-lookup"><span data-stu-id="5c502-120">In the **Configure Local Replica of Central Management Store** dialog box, click **Import from a file (Recommended for Edge Servers)**, go to the location of the exported topology configuration file, select the .zip file, click **Open**, and then click **Next**.</span></span>
+    
+      - <span data-ttu-id="5c502-121">El Asistente para la implementación lee la información de configuración del archivo de configuración y escribe el archivo de configuración XML en el equipo local.</span><span class="sxs-lookup"><span data-stu-id="5c502-121">The Deployment Wizard reads the configuration information from the configuration file and writes the XML configuration file to the local computer.</span></span>
+    
+      - <span data-ttu-id="5c502-122">Cuando el proceso **Ejecución de comandos** se complete, haga clic en **Finalizar**.</span><span class="sxs-lookup"><span data-stu-id="5c502-122">After the **Executing Commands** process is finished, click **Finish**.</span></span>
+
+6.  <span data-ttu-id="5c502-123">En el Asistente para la implementación, haga clic en **paso 2: configurar o quitar los componentes de Lync Server** para instalar los componentes de borde de lync Server 2013 que se especifican en el archivo de configuración XML que se almacena en el equipo local.</span><span class="sxs-lookup"><span data-stu-id="5c502-123">In the Deployment Wizard, click **Step 2: SetUp or Remove Lync Server Components** to install the Lync Server 2013 edge components specified in the XML configuration file that is stored on the local computer.</span></span>
+
+7.  <span data-ttu-id="5c502-124">Una vez completada la instalación, use la información de [configurar certificados perimetrales para Lync Server 2013](lync-server-2013-set-up-edge-certificates.md) para instalar y asignar los certificados necesarios antes de iniciar los servicios.</span><span class="sxs-lookup"><span data-stu-id="5c502-124">After completing the installation, use the information in [Set up Edge certificates for Lync Server 2013](lync-server-2013-set-up-edge-certificates.md) to install and assign the required certificates before you start services.</span></span>
+
+<span data-ttu-id="5c502-125"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="5c502-125"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
