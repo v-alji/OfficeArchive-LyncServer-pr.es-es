@@ -1,0 +1,80 @@
+---
+title: 'Lync Server 2013: validar la configuración del sistema de nombres de dominio para el equilibrio de carga'
+description: 'Lync Server 2013: validar la configuración del sistema de nombres de dominio para el equilibrio de carga.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Validate Domain Name System settings for load balancing
+ms:assetid: 92858e1c-91a5-4303-9bb4-b182e7f9c78b
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Dn720920(v=OCS.15)
+ms:contentKeyID: 63969625
+ms.date: 01/27/2015
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: a218a79a541e9c9705a8403146fe7e134e8ed827
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49446328"
+---
+# <a name="validate-domain-name-system-settings-for-load-balancing-in-lync-server-2013"></a><span data-ttu-id="bfbdc-103">Validar la configuración del sistema de nombres de dominio para el equilibrio de carga en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="bfbdc-103">Validate Domain Name System settings for load balancing in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="bfbdc-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="bfbdc-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="bfbdc-105">_**Última modificación del tema:** 2014-05-02_</span><span class="sxs-lookup"><span data-stu-id="bfbdc-105">_**Topic Last Modified:** 2014-05-02_</span></span>
+
+<span data-ttu-id="bfbdc-p101">Para admitir el FQDN que usa el equilibrio de carga de DNS, necesita aprovisionar el DNS, de modo que resuelva el FQDN del grupo (como, por ejemplo, pool01.contoso.com) en las direcciones IP de todos los servidores del grupo (por ejemplo, 192.168.1.1, 192.168.1.2, etc.). Necesita incluir solo las direcciones IP de los servidores implementados actualmente.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-p101">To support the FQDN used by DNS load balancing, you must provision DNS to resolve the pool FQDN (such as pool01.contoso.com) to the IP addresses of all the servers in the pool (for example, 192.168.1.1, 192.168.1.2, and so on). You should include only the IP addresses of servers that are currently deployed.</span></span>
+
+<span data-ttu-id="bfbdc-108">Además, si usa el equilibrio de carga de DNS para los grupos de límites, se requieren las siguientes entradas DNS:</span><span class="sxs-lookup"><span data-stu-id="bfbdc-108">Additionally if you are using DNS load balancing for the Edge pools the following DNS entries are required:</span></span>
+
+  - <span data-ttu-id="bfbdc-109">Para el servicio perimetral de acceso de Lync Server, debe tener una entrada para cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-109">For the Lync Server Access Edge service, you must have one entry for each server in the pool.</span></span> <span data-ttu-id="bfbdc-110">Cada entrada debe resolver el FQDN del servicio perimetral de acceso de Lync Server (por ejemplo, sip.contoso.com) a la dirección IP del servicio perimetral de acceso de Lync Server en uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-110">Each entry must resolve the FQDN of the Lync Server Access Edge service (for example, sip.contoso.com) to the IP address of the Lync Server Access Edge service on one of the Edge Servers in the pool.</span></span>
+
+  - <span data-ttu-id="bfbdc-111">Para el servicio perimetral de conferencias web de Lync Server, debe tener una entrada para cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-111">For the Lync Server Web Conferencing Edge service, you must have one entry for each server in the pool.</span></span> <span data-ttu-id="bfbdc-112">Cada entrada debe resolver el FQDN del servicio perimetral de conferencias web de Lync Server (por ejemplo, webconf.contoso.com) a la dirección IP del servicio perimetral de conferencias web de Lync Server en uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-112">Each entry must resolve the FQDN of the Lync Server Web Conferencing Edge service (for example, webconf.contoso.com) to the IP address of the Lync Server Web Conferencing Edge service on one of the Edge Servers in the pool.</span></span>
+
+  - <span data-ttu-id="bfbdc-113">Para el servicio perimetral de audio/vídeo de Lync Server, debe tener una entrada para cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-113">For the Lync Server Audio/Video Edge service, you must have one entry for each server in the pool.</span></span> <span data-ttu-id="bfbdc-114">Cada entrada debe resolver el FQDN del servicio perimetral de audio/vídeo de Lync Server (por ejemplo, av.contoso.com) a la dirección IP del servicio perimetral de audio/vídeo de Lync Server en uno de los servidores perimetrales del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-114">Each entry must resolve the FQDN of the Lync Server Audio/Video Edge service (for example, av.contoso.com) to the IP address of the Lync Server Audio/Video Edge service on one of the Edge Servers in the pool.</span></span>
+
+  - <span data-ttu-id="bfbdc-115">Si desea usar el equilibrio de carga de DNS en la interfaz interna del grupo Edge, debe agregar un registro DNS, que resuelve el nombre completo interno del grupo Edge a la dirección IP de cada servidor del grupo.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-115">If you want to use DNS load balancing on the internal interface of the Edge pool, you must add one DNS record, which resolves the internal FQDN of the Edge pool to the IP address of each server in the pool.</span></span>
+
+<span data-ttu-id="bfbdc-116">Para comprobar que DNS está devolviendo los valores correctos para el equilibrio de carga de DNS, debe usar la herramienta nslookup.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-116">To verify that DNS is returning the correct values for DNS load balancing you should use the nslookup tool.</span></span> <span data-ttu-id="bfbdc-117">Para devolver todos los valores de un registro DNS con Nslookup, debe ejecutar el comando siguiente:</span><span class="sxs-lookup"><span data-stu-id="bfbdc-117">To return all values for a DNS record with nslookup you should run the command:</span></span>
+
+`nslookup <FQDN >`
+
+<span data-ttu-id="bfbdc-118">Debe ejecutar este comando para cada FQDN usado en la configuración del equilibrio de carga de DNS para comprobar que cada registro configurado para el equilibrio de carga de DNS ha devuelto todas las entradas correctas.</span><span class="sxs-lookup"><span data-stu-id="bfbdc-118">You would run this command for every FQDN used in DNS load balancing configuration to verify that every record set for DNS load balancing returned all of the correct entries.</span></span>
+
+<span data-ttu-id="bfbdc-119"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="bfbdc-119"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+

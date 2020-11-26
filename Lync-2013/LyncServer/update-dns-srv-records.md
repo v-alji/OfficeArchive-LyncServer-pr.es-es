@@ -1,0 +1,90 @@
+---
+title: Actualizar registros SRV de DNS
+description: Actualizar registros SRV de DNS.
+ms.reviewer: ''
+ms.author: serdars
+author: serdarsoysal
+f1.keywords:
+- NOCSH
+TOCTitle: Update DNS SRV records
+ms:assetid: 9542b91a-108c-4980-89ec-634905cbbf26
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ688139(v=OCS.15)
+ms:contentKeyID: 49733739
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 24161074e8f3bcf7e296a957588eeb59d5f2ad1b
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49446552"
+---
+# <a name="update-dns-srv-records"></a><span data-ttu-id="92c7a-103">Actualizar registros SRV de DNS</span><span class="sxs-lookup"><span data-stu-id="92c7a-103">Update DNS SRV records</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="92c7a-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="92c7a-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="92c7a-105">_**Última modificación del tema:** 2012-09-29_</span><span class="sxs-lookup"><span data-stu-id="92c7a-105">_**Topic Last Modified:** 2012-09-29_</span></span>
+
+<span data-ttu-id="92c7a-106">Para completar correctamente este procedimiento, debe haber iniciado sesión en el servidor o dominio como miembro del grupo administradores de dominio o miembro del grupo DnsAdmins.</span><span class="sxs-lookup"><span data-stu-id="92c7a-106">To successfully complete this procedure, you should be logged on to the server or domain as a member of the Domain Admins group or a member of the DnsAdmins group.</span></span>
+
+<span data-ttu-id="92c7a-107">En este tema se describe cómo actualizar los registros del sistema de nombres de dominio (DNS) después de migrar a Lync Server 2013.</span><span class="sxs-lookup"><span data-stu-id="92c7a-107">This topic describes how to update the Domain Name System (DNS) records after migrating to Lync Server 2013.</span></span> <span data-ttu-id="92c7a-108">Después de que todos los usuarios se hayan movido a Lync Server 2013, pero antes de que se haya retirado el grupo o el director heredado de Lync Server 2010, debe actualizar los registros SRV de DNS en el DNS interno para cada dominio SIP.</span><span class="sxs-lookup"><span data-stu-id="92c7a-108">After all users have been moved to Lync Server 2013, but before the legacy Lync Server 2010 pool or Director is decommissioned, you must update the DNS SRV records in your internal DNS for every SIP domain.</span></span> <span data-ttu-id="92c7a-109">En este procedimiento se supone que su DNS interno tiene zonas para sus dominios de usuario SIP.</span><span class="sxs-lookup"><span data-stu-id="92c7a-109">This procedure assumes that your internal DNS has zones for your SIP user domains.</span></span>
+
+<span data-ttu-id="92c7a-110">**Para configurar un registro SRV de DNS**</span><span class="sxs-lookup"><span data-stu-id="92c7a-110">**To configure a DNS SRV record**</span></span>
+
+1.  <span data-ttu-id="92c7a-111">En el servidor DNS, haga clic en **Inicio**, haga clic en **herramientas administrativas** y, a continuación, haga clic en **DNS**.</span><span class="sxs-lookup"><span data-stu-id="92c7a-111">On the DNS server, click **Start**, click **Administrative Tools**, and then click **DNS**.</span></span>
+
+2.  <span data-ttu-id="92c7a-112">En el árbol de consola de su dominio SIP, expanda **zonas de búsqueda directa**, expanda el dominio SIP en el que está instalado Lync Server 2013 y vaya a la configuración de **\_ TCP** .</span><span class="sxs-lookup"><span data-stu-id="92c7a-112">In the console tree for your SIP domain, expand **Forward Lookup Zones**, expand the SIP domain in which Lync Server 2013 is installed, and navigate to the **\_tcp** setting.</span></span>
+
+3.  <span data-ttu-id="92c7a-113">En el panel derecho, haga clic con el botón derecho en **\_ sipinternaltls** y seleccione **propiedades**.</span><span class="sxs-lookup"><span data-stu-id="92c7a-113">In the right pane, right click **\_sipinternaltls** and select **Properties**.</span></span>
+
+4.  <span data-ttu-id="92c7a-114">En el **hospedaje que ofrece este servicio**, actualice el FQDN del host para que apunte al grupo de servidores de Lync Server 2013.</span><span class="sxs-lookup"><span data-stu-id="92c7a-114">In **Host offering this service**, update the host FQDN to point to the Lync Server 2013 pool.</span></span>
+
+5.  <span data-ttu-id="92c7a-115">Haga clic en **Aceptar**.</span><span class="sxs-lookup"><span data-stu-id="92c7a-115">Click **OK**.</span></span>
+
+<span data-ttu-id="92c7a-116">**Para comprobar que se puede resolver el FQDN del grupo de servidores front-end o del servidor Standard Edition**</span><span class="sxs-lookup"><span data-stu-id="92c7a-116">**To verify that the FQDN of the Front End pool or Standard Edition server can be resolved**</span></span>
+
+1.  <span data-ttu-id="92c7a-117">Inicie sesión en un equipo cliente del dominio.</span><span class="sxs-lookup"><span data-stu-id="92c7a-117">Log on to a client computer in the domain.</span></span>
+
+2.  <span data-ttu-id="92c7a-118">Haga clic en  **Inicio** y en  **Ejecutar**.</span><span class="sxs-lookup"><span data-stu-id="92c7a-118">Click **Start**, and then click **Run**.</span></span>
+
+3.  <span data-ttu-id="92c7a-119">En el cuadro **abrir** , escriba **cmd** y haga clic en **Aceptar**.</span><span class="sxs-lookup"><span data-stu-id="92c7a-119">In the **Open** box, type **cmd**, and then click **OK**.</span></span>
+
+4.  <span data-ttu-id="92c7a-120">En el símbolo del sistema, escriba **nslookup** \<FQDN of the Front End pool\> o \<FQDN of the Standard Edition server\> , y, a continuación, presione Entrar.</span><span class="sxs-lookup"><span data-stu-id="92c7a-120">At the command prompt, type **nslookup** \<FQDN of the Front End pool\> or \<FQDN of the Standard Edition server\>, and then press ENTER.</span></span>
+
+5.  <span data-ttu-id="92c7a-121">Compruebe que recibe una respuesta que se resuelve en la dirección IP adecuada para el nombre de dominio completo (FQDN).</span><span class="sxs-lookup"><span data-stu-id="92c7a-121">Verify that you receive a reply that resolves to the appropriate IP address for the FQDN.</span></span>
+
+<span data-ttu-id="92c7a-122"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="92c7a-122"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
