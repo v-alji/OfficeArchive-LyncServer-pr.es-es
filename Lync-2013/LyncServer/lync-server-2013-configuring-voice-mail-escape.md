@@ -1,0 +1,90 @@
+---
+title: 'Lync Server 2013: configuración del escape de correo de voz'
+description: 'Lync Server 2013: configuración del escape de correo de voz.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Configuring voice mail escape
+ms:assetid: a1d19e6c-82ff-4768-8ae5-da981368ce40
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ688157(v=OCS.15)
+ms:contentKeyID: 49733761
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: afbb2dd10c7ff8809eb8dfbcc64e40a599aa06a4
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49432404"
+---
+# <a name="configuring-voice-mail-escape-in-lync-server-2013"></a>Configurar el escape del correo de voz en Lync Server 2013
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody">
+
+<span> </span>
+
+_**Última modificación del tema:** 2013-02-22_
+
+Cuando un usuario configura llamadas simultáneas a un teléfono móvil, normalmente se enrutará al autor de la llamada al buzón de voz personal del usuario si el teléfono móvil está apagado, fuera de cobertura o se ha quedado sin batería. Con Lync Server 2013, los usuarios pueden optar por que las llamadas relacionadas con la empresa se enruten al sistema de correo de voz de la empresa. En concreto, se puede configurar un temporizador y, si el correo de voz del transportista responde a la llamada dentro del intervalo de tiempo definido, Lync Server se desconectará del sistema de correo de voz del transportista (y del correo de voz personal del usuario), mientras que los puntos de conexión restantes del usuario en el sistema corporativo continúan sonando. De esta manera, se enrutará automáticamente al autor de la llamada al buzón de voz corporativo del usuario.
+
+Esta configuración se realiza con el cmdlet del shell de administración de Lync Server, **set-CsVoicePolicy**, en el nivel de la Directiva de voz, con los siguientes parámetros.
+
+<div>
+
+## <a name="to-configure-voice-mail-escape"></a>Para configurar el escape de correo de voz
+
+1.  Inicie el shell de administración de Lync Server: haga clic en **Inicio**, seleccione **todos los programas**, **Microsoft Lync Server 2013** y, a continuación, haga clic en **Shell de administración de Lync Server**.
+
+2.  Especifique los siguientes parámetros en **Set-CsVoicePolicy**:
+    
+      - **EnableVoicemailEscapeTimer**: habilita o deshabilita el temporizador de escape.
+    
+      - **PSTNVoicemailEscapeTimer**: especifica el valor de tiempo de espera en milisegundos. El valor predeterminado es 1500 milisegundos y puede variar de 0 a 8000 milisegundos.
+
+</div>
+
+<div>
+
+## <a name="example"></a>Ejemplo
+
+    Set-CsVoicePolicy UserVoicePolicy -EnableVoiceMailEscapeTimer $true - PSTNVoicemailEscapeTimer 2000
+    
+    Set-CsVoicePolicy -Identity site:SitePolicy -EnableVoiceMailEscapeTimer $true -PSTNVoicemailEscapeTimer 1500
+
+</div>
+
+<div>
+
+## <a name="see-also"></a>Vea también
+
+
+[Configurar directivas de voz y registros de uso de la RTC para autorizar características y privilegios de llamada en Lync Server 2013](lync-server-2013-configuring-voice-policies-and-pstn-usage-records-to-authorize-calling-features-and-privileges.md)  
+  
+
+</div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</div>
+
