@@ -1,0 +1,423 @@
+---
+title: 'Lync Server 2013: Resumen de puerto - Servidor perimetral consolidado ampliado, equilibrio de carga DNS con direcciones IP privadas mediante NAT'
+description: 'Lync Server 2013: límite consolidado de puertos resumidos, equilibrio de carga de DNS con direcciones IP privadas mediante NAT.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Port summary - Scaled consolidated edge, DNS load balancing with private IP addresses using NAT
+ms:assetid: a296c2af-54d4-4b4f-9795-9191baf688cb
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg412756(v=OCS.15)
+ms:contentKeyID: 48184955
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: e0402b6682e86e5edf263fca78dfbe0f8fa070b4
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49424289"
+---
+# <a name="port-summary---scaled-consolidated-edge-dns-load-balancing-with-private-ip-addresses-using-nat-in-lync-server-2013"></a>Resumen de puerto - Servidor perimetral consolidado ampliado, equilibrio de carga DNS con direcciones IP privadas mediante NAT en Lync Server 2013
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody">
+
+<span> </span>
+
+_**Última modificación del tema:** 2012-12-04_
+
+La funcionalidad del servidor de Lync Server 2013, que se describe en esta arquitectura de escenario, es muy similar a la que se ha implementado en Lync Server 2010. La adición más destacada es el puerto **5269 sobre** la entrada TCP para el protocolo de presencia y mensajería extensible (XMPP). Lync Server 2013 implementa opcionalmente un proxy XMPP en el servidor perimetral o en el grupo perimetral y el servidor de puerta de enlace XMPP en el servidor front-end o en el grupo front-end.
+
+Además de IPv4, el servidor EDGE ahora es compatible con IPv6. Para mayor claridad, solo se usa IPv4 en los escenarios.
+
+**Red perimetral empresarial para el perímetro consolidado con direcciones IP privadas mediante NAT**
+
+![96f5a8f5-16d2-464d-b86e-7c7ecfc89ead](images/JJ205394.96f5a8f5-16d2-464d-b86e-7c7ecfc89ead(OCS.15).jpg "96f5a8f5-16d2-464d-b86e-7c7ecfc89ead")
+
+<div>
+
+## <a name="port-and-protocol-details"></a>Detalles de protocolo y puerto
+
+Le recomendamos que abra solo los puertos necesarios para admitir la funcionalidad para la que proporciona acceso externo.
+
+Para que el acceso remoto funcione para cualquier servicio perimetral, es obligatorio que el tráfico SIP pueda fluir de forma bidireccional tal y como se muestra en la cifra de tráfico entrante o saliente. En concreto, los mensajes SIP a y desde el servicio perimetral de acceso participan en la mensajería instantánea (mi), presencia, conferencias web, audio/vídeo (A/V) y Federación.
+
+### <a name="firewall-summary-for-scaled-consolidated-edge-dns-load-balancing-with-private-ip-addresses-using-nat-external-interface--node-1-and-node-2-example"></a>Resumen de Firewall para Edge consolidado, equilibrio de carga de DNS con direcciones IP privadas mediante NAT: interfaz externa-nodo 1 y nodo 2 (ejemplo)
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Función/protocolo/TCP o UDP/puerto</th>
+<th>Dirección IP de origen</th>
+<th>Dirección IP de destino</th>
+<th>Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>XMPP/TCP/5269</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servicio de proxy XMPP (comparte dirección IP con servicio perimetral de acceso)</p></td>
+<td><p>El servicio Proxy XMPP acepta el tráfico de los contactos XMPP en las federaciones XMPP definidas</p></td>
+</tr>
+<tr class="even">
+<td><p>XMPP/TCP/5269</p></td>
+<td><p>Servicio de proxy XMPP (comparte dirección IP con servicio perimetral de acceso)</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>El servicio Proxy XMPP envía tráfico a los contactos XMPP en las federaciones XMPP definidas</p></td>
+</tr>
+<tr class="odd">
+<td><p>Access/HTTP/TCP/80</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Comprobación y recuperación de CRL o revocación de certificados</p></td>
+</tr>
+<tr class="even">
+<td><p>Acceso/DNS/TCP/53</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Consulta DNS a través de TCP</p></td>
+</tr>
+<tr class="odd">
+<td><p>Acceso/DNS/UDP/53</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Consulta DNS a través de UDP</p></td>
+</tr>
+<tr class="even">
+<td><p>Acceso/SIP (TLS)/TCP/443</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Tráfico SIP de cliente a servidor para el acceso de usuarios externos</p></td>
+</tr>
+<tr class="odd">
+<td><p>Acceso/SIP (MTLS)/TCP/5061</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Para conectividad de mensajería instantánea pública y federada con SIP</p></td>
+</tr>
+<tr class="even">
+<td><p>Acceso/SIP (MTLS)/TCP/5061</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Para conectividad de mensajería instantánea pública y federada con SIP</p></td>
+</tr>
+<tr class="odd">
+<td><p>Conferencias web/PSOM (TLS)/TCP/443</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servicio perimetral de conferencias web del servidor perimetral</p></td>
+<td><p>Medios de conferencia Web</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/RTP/TCP/50000-59.999 SESIONES</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Necesario para la Federación con socios que ejecutan Office Communications Server 2007, Office Communications Server 2007 R2, Lync Server 2010 y Lync Server 2013.</p></td>
+</tr>
+<tr class="odd">
+<td><p>A/V/RTP/UDP/50000-59.999 SESIONES</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Solo es necesario para la Federación con socios que ejecutan Office Communications Server 2007.</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/RTP/TCP/50000-59.999 SESIONES</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Necesario solo para la Federación con socios que ejecutan Office Communications Server 2007</p></td>
+</tr>
+<tr class="odd">
+<td><p>A/V/RTP/UDP/50000-59.999 SESIONES</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Necesario solo para la Federación con socios que ejecutan Office Communications Server 2007</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/STUN, MSTURN/UDP/3478</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>3478 saliente se usa para determinar la versión del servidor perimetral con el que se comunica Lync Server y también para el tráfico de multimedia de un servidor perimetral a un servidor perimetral. Necesario para la Federación con Lync Server 2010, Windows Live Messenger y Office Communications Server 2007 R2, y también si se han implementado varias agrupaciones perimetrales dentro de una empresa.</p></td>
+</tr>
+<tr class="odd">
+<td><p>A/V/STUN, MSTURN/UDP/3478</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>STUN/TURN negociación de candidatos a través de UDP/3478</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/STUN, MSTURN/TCP/443</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>STUN/TURN negociación de candidatos por TCP/443</p></td>
+</tr>
+<tr class="odd">
+<td><p>A/V/STUN, MSTURN/TCP/443</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>STUN/TURN negociación de candidatos por TCP/443</p></td>
+</tr>
+</tbody>
+</table>
+
+
+### <a name="firewall-summary-for-scaled-consolidated-edge-dns-load-balancing-with-private-ip-addresses-using-nat-internal-interface--node-1-and-node-2-example"></a>Resumen de Firewall para Edge consolidado con escala, equilibrio de carga de DNS con direcciones IP privadas mediante NAT: interfaz interna-nodo 1 y nodo 2 (ejemplo)
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Protocolo/TCP o UDP/puerto</th>
+<th>Dirección IP de origen</th>
+<th>Dirección IP de destino</th>
+<th>Comentarios</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>XMPP/MTLS/TCP/23456</p></td>
+<td><p>Cualquiera (se puede definir como la dirección del servidor front-end o la dirección IP del grupo de servidores front-end que ejecuta el servicio de puerta de enlace XMPP)</p></td>
+<td><p>Dirección IP de la interfaz interna del servidor perimetral</p></td>
+<td><p>Tráfico XMPP saliente del servicio de puerta de enlace XMPP que se ejecuta en el servidor front-end o grupo front-end</p></td>
+</tr>
+<tr class="even">
+<td><p>SIP/MTLS/TCP/5061</p></td>
+<td><p>Cualquiera (se puede definir como director, dirección IP del grupo de directores, servidor front-end o dirección IP del grupo de servidores front-end)</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Tráfico SIP saliente (del Director, la dirección IP del grupo de directores, el servidor front-end o la dirección IP del grupo de servidores front-end) a la interfaz interna del servidor perimetral</p></td>
+</tr>
+<tr class="odd">
+<td><p>SIP/MTLS/TCP/5061</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Cualquiera (se puede definir como director, dirección IP del grupo de directores, servidor front-end o dirección IP del grupo de servidores front-end)</p></td>
+<td><p>Tráfico SIP entrante (Director, dirección IP del grupo de directores, servidor front-end o dirección IP del grupo front-end) de la interfaz interna del servidor perimetral</p></td>
+</tr>
+<tr class="even">
+<td><p>PSOM/MTLS/TCP/8057</p></td>
+<td><p>Cualquiera (se puede definir como la dirección IP del servidor front-end o cada dirección IP del servidor front-end en un grupo de servidores front-end)</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Tráfico de conferencias web desde el servidor front-end o cada servidor front-end si se está en un grupo, a la interfaz interna del servidor perimetral</p></td>
+</tr>
+<tr class="odd">
+<td><p>SIP/MTLS/TCP/5062</p></td>
+<td><p>Cualquiera (se puede definir como la dirección IP del servidor front-end, la dirección IP del grupo de servidores front-end o cualquier otro equipo de sucursal o servidor de sucursal con la supervivencia que use este servidor perimetral)</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Autenticación de usuarios A/V (servicio de autenticación A/V) desde el servidor front-end o la dirección IP del grupo de servidores front-end o cualquier otro dispositivo de sucursal que sea reviviente o con el servidor de sucursal</p></td>
+</tr>
+<tr class="even">
+<td><p>STUN/MSTURN/UDP/3478</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Ruta preferida para la transferencia de medios A/V entre usuarios internos y externos, un equipo de sucursal o un servidor de sucursal con la supervivencia</p></td>
+</tr>
+<tr class="odd">
+<td><p>STUN/MSTURN/TCP/443</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Ruta de reserva para la transferencia de medios A/V entre usuarios internos y externos, equipo de sucursal con la supervivencia o servidor de sucursal con la supervivencia, si no se puede establecer la comunicación UDP, se usa TCP para la transferencia de archivos y el uso compartido de escritorio</p></td>
+</tr>
+<tr class="even">
+<td><p>HTTPS/TCP/4443</p></td>
+<td><p>Cualquiera (puede definirse como la dirección IP del servidor front-end o el grupo que contiene el almacén de administración central)</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Replicación de los cambios del almacén de administración central al servidor perimetral</p></td>
+</tr>
+<tr class="odd">
+<td><p>MTLS/TCP/50001</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Controlador de servicio de registro centralizado con el shell de administración de Lync Server y los cmdlets del servicio de registro centralizado, la línea de comandos de ClsController (ClsController.exe) o los comandos del agente (ClsAgent.exe) y la colección de registros</p></td>
+</tr>
+<tr class="even">
+<td><p>MTLS/TCP/50002</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Controlador de servicio de registro centralizado con el shell de administración de Lync Server y los cmdlets del servicio de registro centralizado, la línea de comandos de ClsController (ClsController.exe) o los comandos del agente (ClsAgent.exe) y la colección de registros</p></td>
+</tr>
+<tr class="odd">
+<td><p>MTLS/TCP/50003</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Interfaz interna de Edge Server</p></td>
+<td><p>Controlador de servicio de registro centralizado con el shell de administración de Lync Server y los cmdlets del servicio de registro centralizado, la línea de comandos de ClsController (ClsController.exe) o los comandos del agente (ClsAgent.exe) y la colección de registros</p></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+
+<div>
+
+## <a name="firewall-summary-for-federation"></a>Resumen del firewall para la Federación
+
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Función/protocolo/TCP o UDP/puerto</th>
+<th>Dirección IP de origen</th>
+<th>Dirección IP de destino</th>
+<th>Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Acceso/SIP (MTLS)/TCP/5061</p></td>
+<td><p>Dirección IP pública del servicio perimetral de acceso</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Para conectividad de mensajería instantánea pública y federada con SIP</p></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+
+<div>
+
+## <a name="firewall-summary--public-instant-messaging-connectivity"></a>Resumen del firewall: conectividad de mensajería instantánea pública
+
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Función/protocolo/TCP o UDP/puerto</th>
+<th>Dirección IP de origen</th>
+<th>Dirección IP de destino</th>
+<th>Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Acceso/SIP (MTLS)/TCP/5061</p></td>
+<td><p>Partners de conectividad de mensajería instantánea pública</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Para conectividad de mensajería instantánea pública y federada con SIP</p></td>
+</tr>
+<tr class="even">
+<td><p>Acceso/SIP (MTLS)/TCP/5061</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Partners de conectividad de mensajería instantánea pública</p></td>
+<td><p>Para conectividad de mensajería instantánea pública y federada con SIP</p></td>
+</tr>
+<tr class="odd">
+<td><p>Acceso/SIP (TLS)/TCP/443</p></td>
+<td><p>Clientes</p></td>
+<td><p>Servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Tráfico SIP de cliente a servidor para el acceso de usuarios externos</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/RTP/TCP/50000-59.999 SESIONES</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Clientes de Live Messenger</p></td>
+<td><p>Se usa para sesiones de A/V con Windows Live Messenger si está configurada la conectividad de mensajería instantánea pública.</p></td>
+</tr>
+<tr class="odd">
+<td><p>A/V/STUN, MSTURN/UDP/3478</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Clientes de Live Messenger</p></td>
+<td><p>Necesario para la conectividad de mensajería instantánea pública con Windows Live Messenger</p></td>
+</tr>
+<tr class="even">
+<td><p>A/V/STUN, MSTURN/UDP/3478</p></td>
+<td><p>Clientes de Live Messenger</p></td>
+<td><p>Servidor perimetral A/V servicio perimetral</p></td>
+<td><p>Necesario para la conectividad de mensajería instantánea pública con Windows Live Messenger</p></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+
+<div>
+
+## <a name="firewall-summary-for-extensible-messaging-and-presence-protocol"></a>Resumen de Firewall para el protocolo de presencia y mensajería extensible
+
+
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Protocolo/TCP o UDP/puerto</th>
+<th>Origen (dirección IP)</th>
+<th>Destino (dirección IP)</th>
+<th>Comentarios</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>XMPP/TCP/5269</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Dirección IP de la interfaz de servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Puerto de comunicación de servidor a servidor estándar para XMPP. Permite la comunicación con el proxy XMPP del servidor perimetral de socios de XMPP</p></td>
+</tr>
+<tr class="even">
+<td><p>XMPP/TCP/5269</p></td>
+<td><p>Dirección IP de la interfaz de servicio perimetral de acceso al servidor perimetral</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Puerto de comunicación de servidor a servidor estándar para XMPP. Permite la comunicación desde el proxy XMPP del servidor perimetral a socios XMPP de Federación</p></td>
+</tr>
+<tr class="odd">
+<td><p>XMPP/MTLS/TCP/23456</p></td>
+<td><p>Cualquiera</p></td>
+<td><p>Cada IP de la interfaz del servidor perimetral interno</p></td>
+<td><p>Tráfico de XMPP interno de la puerta de enlace XMPP en el servidor front-end o grupo front-end a la dirección IP interna del servidor perimetral o a la dirección IP interna de cada miembro del grupo perimetral</p></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</div>
+
