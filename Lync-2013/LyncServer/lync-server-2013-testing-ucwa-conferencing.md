@@ -1,0 +1,199 @@
+---
+title: 'Lync Server 2013: probar conferencias de UCWA'
+description: 'Lync Server 2013: probar conferencias de UCWA.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Testing UCWA conferencing
+ms:assetid: 62b3866a-0759-4b1f-99ec-5a68d6a74f00
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Dn727306(v=OCS.15)
+ms:contentKeyID: 63969610
+ms.date: 01/27/2015
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 37f88a683abb67d55211422fc4dcf45fc1d5c966
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49439740"
+---
+# <a name="testing-ucwa-conferencing-in-lync-server-2013"></a><span data-ttu-id="e331f-103">Prueba de conferencias de UCWA en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="e331f-103">Testing UCWA conferencing in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="e331f-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="e331f-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="e331f-105">_**Última modificación del tema:** 2014-11-03_</span><span class="sxs-lookup"><span data-stu-id="e331f-105">_**Topic Last Modified:** 2014-11-03_</span></span>
+
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="e331f-106">Programación de verificación</span><span class="sxs-lookup"><span data-stu-id="e331f-106">Verification schedule</span></span></p></td>
+<td><p><span data-ttu-id="e331f-107">Cada día</span><span class="sxs-lookup"><span data-stu-id="e331f-107">Daily</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="e331f-108">Herramienta de prueba</span><span class="sxs-lookup"><span data-stu-id="e331f-108">Testing tool</span></span></p></td>
+<td><p><span data-ttu-id="e331f-109">Windows PowerShell</span><span class="sxs-lookup"><span data-stu-id="e331f-109">Windows PowerShell</span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="e331f-110">Permisos necesarios</span><span class="sxs-lookup"><span data-stu-id="e331f-110">Permissions required</span></span></p></td>
+<td><p><span data-ttu-id="e331f-111">Al ejecutarse de forma local con el shell de administración de Lync Server, los usuarios deben ser miembros del grupo de seguridad RTCUniversalServerAdmins.</span><span class="sxs-lookup"><span data-stu-id="e331f-111">When run locally using the Lync Server Management Shell, users must be members of the RTCUniversalServerAdmins security group.</span></span></p>
+<p><span data-ttu-id="e331f-112">Cuando se ejecuta con una instancia remota de Windows PowerShell, a los usuarios se les debe asignar un rol de RBAC que tenga permiso para ejecutar el cmdlet <strong>Test-CsUcwaConference</strong> .</span><span class="sxs-lookup"><span data-stu-id="e331f-112">When run using a remote instance of Windows PowerShell, users must be assigned an RBAC role that has permission to run the <strong>Test-CsUcwaConference</strong> cmdlet.</span></span> <span data-ttu-id="e331f-113">Para ver una lista de todos los roles de RBAC que pueden usar este cmdlet, ejecute el siguiente comando en el símbolo del sistema de Windows PowerShell:</span><span class="sxs-lookup"><span data-stu-id="e331f-113">To see a list of all RBAC roles that can use this cmdlet, run the following command from the Windows PowerShell prompt:</span></span></p>
+<pre><code>Get-CsAdminRole | Where-Object {$_.Cmdlets -match &quot;Test-CsUcwaConference&quot;}</code></pre></td>
+</tr>
+</tbody>
+</table>
+
+
+<div>
+
+## <a name="description"></a><span data-ttu-id="e331f-114">Descripción</span><span class="sxs-lookup"><span data-stu-id="e331f-114">Description</span></span>
+
+<span data-ttu-id="e331f-115">El cmdlet **Test-CsUcwaConference** verifica que un par de usuarios de prueba puedan programar, unirse y, a continuación, realizar una conferencia en línea con la API Web de comunicaciones unificadas (UCWA).</span><span class="sxs-lookup"><span data-stu-id="e331f-115">The **Test-CsUcwaConference** cmdlet verifies that a pair of test users can schedule, join, and then conduct an online conference using the Unified Communications Web API (UCWA).</span></span> <span data-ttu-id="e331f-116">Para ello, el cmdlet usa el servicio de vale Web de Lync Server para autenticar los dos usuarios de prueba y registrarlos con Lync Server.</span><span class="sxs-lookup"><span data-stu-id="e331f-116">To do this, the cmdlet uses the Lync Server web ticket service to authenticate the two test users and register them with Lync Server.</span></span> <span data-ttu-id="e331f-117">A continuación, el cmdlet inicia una conferencia con las credenciales del organizador e invita al participante a unirse a la reunión.</span><span class="sxs-lookup"><span data-stu-id="e331f-117">The cmdlet then starts a conference using the organizer credentials and invites the participant to join the meeting.</span></span> <span data-ttu-id="e331f-118">Una vez que se ha unido la reunión, el cmdlet **Test-CsUcwaConference** verifica que los usuarios puedan realizar acciones como mensajes instantáneos de Exchange y realizar grupos, desconectar la Conferencia y anular el registro de los dos usuarios de prueba.</span><span class="sxs-lookup"><span data-stu-id="e331f-118">After the meeting is joined, the **Test-CsUcwaConference** cmdlet verifies that the users can do such things as exchange instant message and conduct pools, then disconnects the conference and unregisters the two test users.</span></span> <span data-ttu-id="e331f-119">La Conferencia programada también se eliminará al finalizar la prueba.</span><span class="sxs-lookup"><span data-stu-id="e331f-119">The scheduled conference will also be deleted when the test is finished.</span></span>
+
+<span data-ttu-id="e331f-120">El cmdlet **Test-CsUcwaConference** también se puede usar para determinar si los usuarios anónimos pueden unirse a conferencias en línea.</span><span class="sxs-lookup"><span data-stu-id="e331f-120">The **Test-CsUcwaConference** cmdlet can also be used to determine whether anonymous users can join online conferences.</span></span>
+
+<span data-ttu-id="e331f-121">Tenga en cuenta que el cmdlet **Test-CsUcwaConference** no se debe ejecutar en un grupo de servidores de Microsoft Lync Server 2010 a menos que se haya instalado UCWA en ese grupo.</span><span class="sxs-lookup"><span data-stu-id="e331f-121">Note that the **Test-CsUcwaConference** cmdlet should not be run against a Microsoft Lync Server 2010 pool unless UCWA was installed on that pool.</span></span> <span data-ttu-id="e331f-122">Si UCWA no se ha instalado, se producirá un error en la llamada al cmdlet **Test-CsUcwaConference** .</span><span class="sxs-lookup"><span data-stu-id="e331f-122">If UCWA has not been installed then the call to the **Test-CsUcwaConference** cmdlet will fail.</span></span>
+
+</div>
+
+<div>
+
+## <a name="running-the-test"></a><span data-ttu-id="e331f-123">Ejecutar la prueba</span><span class="sxs-lookup"><span data-stu-id="e331f-123">Running the test</span></span>
+
+<span data-ttu-id="e331f-124">El comando que se muestra en el ejemplo 1 comprueba que un par de usuarios de prueba pueden participar en una conferencia de UCWA en el grupo atl-cs-001.litwareinc.com.</span><span class="sxs-lookup"><span data-stu-id="e331f-124">The command shown in Example 1 verifies that a pair of test users can participate in an UCWA conference on the pool atl-cs-001.litwareinc.com.</span></span> <span data-ttu-id="e331f-125">Tenga en cuenta que este comando producirá un error si no ha predefinido un par de usuarios de prueba de la configuración de supervisión de estado para atl-cs-001.litwareinc.com.</span><span class="sxs-lookup"><span data-stu-id="e331f-125">Note that this command will fail if you have not predefined a pair of health monitoring configuration test users for atl-cs-001.litwareinc.com.</span></span>
+
+    Test-CsUcwaConference -TargetFqdn "atl-cs-001.litwareinc.com"
+
+<span data-ttu-id="e331f-126">Los comandos que se muestran en el ejemplo 2 prueban la capacidad de un par de usuarios (litwareinc \\ Pilar y litwareinc \\ kenmyer) para participar en una conferencia de UCWA.</span><span class="sxs-lookup"><span data-stu-id="e331f-126">The commands shown in Example 2 test the ability of a pair of users (litwareinc\\pilar and litwareinc\\kenmyer) to participate in an UCWA conference.</span></span> <span data-ttu-id="e331f-127">Para ello, el primer comando del ejemplo usa el cmdlet Get-Credential para crear un objeto de credencial de interfaz de línea de comandos de Windows PowerShell que contiene el nombre y la contraseña del usuario Pilar Ackerman.</span><span class="sxs-lookup"><span data-stu-id="e331f-127">To do this, the first command in the example uses the Get-Credential cmdlet to create a Windows PowerShell command-line interface credential object that contains the name and password of the user Pilar Ackerman.</span></span> <span data-ttu-id="e331f-128">(Como el nombre de inicio de sesión, litwareinc \\ pilar, se incluyó como parámetro, el cuadro de diálogo solicitud de credenciales de Windows PowerShell solo requiere que el administrador escriba la contraseña de la cuenta de Pilar Ackerman). El objeto de credenciales resultante se almacena en una variable llamada $cred 1.</span><span class="sxs-lookup"><span data-stu-id="e331f-128">(Because the logon name, litwareinc\\pilar, was included as a parameter, the Windows PowerShell Credential Request dialog box only requires the administrator to enter the password for the Pilar Ackerman account.) The resulting credentials object is then stored in a variable named $cred1.</span></span> <span data-ttu-id="e331f-129">El segundo comando hace lo mismo, pero esta vez devuelve un objeto de credenciales para la cuenta Ken Myer.</span><span class="sxs-lookup"><span data-stu-id="e331f-129">The second command does the same thing, this time returning a credential object for the Ken Myer account.</span></span>
+
+<span data-ttu-id="e331f-130">Con los dos objetos de credenciales a mano, el tercer comando del ejemplo determina si los dos usuarios pueden participar en una conferencia de UCWA.</span><span class="sxs-lookup"><span data-stu-id="e331f-130">With the two credential objects in hand, the third command in the example determines whether the two users can participate in an UCWA conference.</span></span> <span data-ttu-id="e331f-131">Para ejecutar esta tarea, se llama al cmdlet **Test-CsUcwaConference** , junto con los siguientes parámetros: TargetFqdn (el FQDN del grupo de servidores de registrar); OrganizerSipAddress (la dirección SIP del organizador de la reunión); OrganizerCredential (el objeto de Windows PowerShell que contiene las credenciales de este mismo usuario); ParticipantSipAddress (la dirección SIP del otro usuario de prueba); y ParticipantCredential (el objeto de la interfaz de línea de comandos de Windows PowerShell que contiene las credenciales del otro usuario).</span><span class="sxs-lookup"><span data-stu-id="e331f-131">To run this task, the **Test-CsUcwaConference** cmdlet is called, together with the following parameters: TargetFqdn (the FQDN of the Registrar pool); OrganizerSipAddress (the SIP address for the meeting organizer); OrganizerCredential (the Windows PowerShell object that contains the credentials for this same user); ParticipantSipAddress (the SIP address for the other test user); and ParticipantCredential (the Windows PowerShell command-line interface object that contains the credentials for the other user).</span></span>
+
+    $cred1 = Get-Credential "litwareinc\pilar"
+    $cred2 = Get-Credential "litwareinc\kenmyer"
+    Test-CsUcwaConference -TargetFqdn atl-cs-001.litwareinc.com -OrganizerSipAddress "sip:pilar@litwareinc.com" -OrganizerCredential $cred1 -ParticipantSipAddress "sip:kenmyer@litwareinc.com" -ParticipantCredential $cred2
+
+</div>
+
+<div>
+
+## <a name="determining-success-or-failure"></a><span data-ttu-id="e331f-132">Determinar el éxito o el fracaso</span><span class="sxs-lookup"><span data-stu-id="e331f-132">Determining success or failure</span></span>
+
+<span data-ttu-id="e331f-133">Si la Conferencia está configurada correctamente, recibirá un resultado similar a este, con la propiedad result marcada como **correcta:**</span><span class="sxs-lookup"><span data-stu-id="e331f-133">If conferencing is correctly configured, you'll receive output similar to this, with the Result property marked as **Success:**</span></span>
+
+<span data-ttu-id="e331f-134">FQDN de destino: atl-cs-001.litwareinc.com</span><span class="sxs-lookup"><span data-stu-id="e331f-134">Target Fqdn : atl-cs-001.litwareinc.com</span></span>
+
+<span data-ttu-id="e331f-135">URI de destino: https://LyncTest-SE. LyncTest. SelfHost. Corp.</span><span class="sxs-lookup"><span data-stu-id="e331f-135">Target Uri : https:// LyncTest-SE.LyncTest.SelfHost.Corp.</span></span>
+
+<span data-ttu-id="e331f-136">Microsoft.com:443/CertProv/CertProvisiongService.svc</span><span class="sxs-lookup"><span data-stu-id="e331f-136">Microsoft.com:443/CertProv/CertProvisiongService.svc</span></span>
+
+<span data-ttu-id="e331f-137">Resultado: éxito</span><span class="sxs-lookup"><span data-stu-id="e331f-137">Result : Success</span></span>
+
+<span data-ttu-id="e331f-138">Latencia: 00:00:14.9862716</span><span class="sxs-lookup"><span data-stu-id="e331f-138">Latency : 00:00:14.9862716</span></span>
+
+<span data-ttu-id="e331f-139">Mensaje de error:</span><span class="sxs-lookup"><span data-stu-id="e331f-139">Error Message :</span></span>
+
+<span data-ttu-id="e331f-140">Diagnóstico</span><span class="sxs-lookup"><span data-stu-id="e331f-140">Diagnosis :</span></span>
+
+<span data-ttu-id="e331f-141">Si los usuarios especificados no pueden usar la Conferencia, el resultado se mostrará como **error** y la información adicional se registrará en las propiedades de diagnóstico y errores:</span><span class="sxs-lookup"><span data-stu-id="e331f-141">If the specified users can't use conferencing, the Result will be shown as **Failure**, and additional information will be recorded in the Error and Diagnosis properties:</span></span>
+
+<span data-ttu-id="e331f-142">ADVERTENCIA: no se pudo leer el número de puerto del registrador para el nombre completo</span><span class="sxs-lookup"><span data-stu-id="e331f-142">WARNING: Failed to read Registrar port number for the given fully qualified</span></span>
+
+<span data-ttu-id="e331f-143">nombre de dominio (FQDN).</span><span class="sxs-lookup"><span data-stu-id="e331f-143">domain name (FQDN).</span></span> <span data-ttu-id="e331f-144">Usando el número de puerto predeterminado del registrador.</span><span class="sxs-lookup"><span data-stu-id="e331f-144">Using default Registrar port number.</span></span> <span data-ttu-id="e331f-145">Excepción</span><span class="sxs-lookup"><span data-stu-id="e331f-145">Exception:</span></span>
+
+<span data-ttu-id="e331f-146">System. InvalidOperationException: no se encontró ningún clúster coincidente en la topología.</span><span class="sxs-lookup"><span data-stu-id="e331f-146">System.InvalidOperationException: No matching cluster found in topology.</span></span>
+
+<span data-ttu-id="e331f-147">en</span><span class="sxs-lookup"><span data-stu-id="e331f-147">at</span></span>
+
+<span data-ttu-id="e331f-148">Microsoft. RTC. Management. SyntheticTransactions. SipSyntheticTransaction. TryRetri</span><span class="sxs-lookup"><span data-stu-id="e331f-148">Microsoft.Rtc.Management.SyntheticTransactions.SipSyntheticTransaction.TryRetri</span></span>
+
+<span data-ttu-id="e331f-149">eveRegistrarPortFromTopology (Int32& registrarPortNumber)</span><span class="sxs-lookup"><span data-stu-id="e331f-149">eveRegistrarPortFromTopology(Int32& registrarPortNumber)</span></span>
+
+<span data-ttu-id="e331f-150">Test-CsUcwaConference: no hay ningún usuario de prueba asignado para</span><span class="sxs-lookup"><span data-stu-id="e331f-150">Test-CsUcwaConference : There is no test user assigned for</span></span>
+
+<span data-ttu-id="e331f-151">\[LyncTest.SelfHost.Corp.Microsoft.com \] .</span><span class="sxs-lookup"><span data-stu-id="e331f-151">\[LyncTest.SelfHost.Corp.Microsoft.com\].</span></span> <span data-ttu-id="e331f-152">Comprobar la configuración del usuario de prueba.</span><span class="sxs-lookup"><span data-stu-id="e331f-152">Verify test user configuration.</span></span>
+
+<span data-ttu-id="e331f-153">En la línea: 1 carácter: 1</span><span class="sxs-lookup"><span data-stu-id="e331f-153">At line:1 char:1</span></span>
+
+<span data-ttu-id="e331f-154">\+ Test-CsUcwaConference TargetFqdn "LyncTest.SelfHost.Corp.Microsoft.com"</span><span class="sxs-lookup"><span data-stu-id="e331f-154">\+ Test-CsUcwaConference -TargetFqdn "LyncTest.SelfHost.Corp.Microsoft.com"</span></span>
+
+\+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<span data-ttu-id="e331f-155">\+ CategoryInfo: ResourceUnavailable: (:) \[ Prueba-CsUcwaConference\]</span><span class="sxs-lookup"><span data-stu-id="e331f-155">\+ CategoryInfo : ResourceUnavailable: (:) \[Test-CsUcwaConference\]</span></span>
+
+<span data-ttu-id="e331f-156">, InvalidOperationException</span><span class="sxs-lookup"><span data-stu-id="e331f-156">, InvalidOperationException</span></span>
+
+<span data-ttu-id="e331f-157">\+ FullyQualifiedErrorId: NotFoundTestUsers, Microsoft. RTC. Management. sintetizador</span><span class="sxs-lookup"><span data-stu-id="e331f-157">\+ FullyQualifiedErrorId : NotFoundTestUsers,Microsoft.Rtc.Management.Synth</span></span>
+
+<span data-ttu-id="e331f-158">eticTransactions.TestUcwaConferenceCmdlet</span><span class="sxs-lookup"><span data-stu-id="e331f-158">eticTransactions.TestUcwaConferenceCmdlet</span></span>
+
+</div>
+
+<div>
+
+## <a name="reasons-why-the-test-might-have-failed"></a><span data-ttu-id="e331f-159">Razones por las que se ha producido un error en la prueba</span><span class="sxs-lookup"><span data-stu-id="e331f-159">Reasons why the test might have failed</span></span>
+
+<span data-ttu-id="e331f-160">Estas son algunas de las razones comunes por las que **Test-CsUcwaConference** podría fallar:</span><span class="sxs-lookup"><span data-stu-id="e331f-160">Here are some common reasons why **Test-CsUcwaConference** might fail:</span></span>
+
+  - <span data-ttu-id="e331f-161">Se proporcionó un valor de parámetro incorrecto.</span><span class="sxs-lookup"><span data-stu-id="e331f-161">An incorrect parameter value was supplied.</span></span> <span data-ttu-id="e331f-162">Si se usa, los parámetros opcionales deben estar configurados correctamente o se producirá un error en la prueba.</span><span class="sxs-lookup"><span data-stu-id="e331f-162">If used, the optional parameters must be configured correctly or the test will fail.</span></span> <span data-ttu-id="e331f-163">Vuelva a ejecutar el comando sin los parámetros opcionales y vea si se realiza correctamente.</span><span class="sxs-lookup"><span data-stu-id="e331f-163">Rerun the command without the optional parameters and see whether that succeeds.</span></span>
+
+  - <span data-ttu-id="e331f-164">La capacidad de llevar a cabo una conferencia depende de la Directiva de conferencia que se haya asignado al usuario que organizó la Conferencia (en el caso del cmdlet **Test-CsUcwaConference** , que es el "remitente").</span><span class="sxs-lookup"><span data-stu-id="e331f-164">The ability to conduct a conference depends on the conferencing policy that has been assigned to the user who organized the conference (in the case of the **Test-CsUcwaConference** cmdlet, that is the "sender").</span></span> <span data-ttu-id="e331f-165">Si el organizador no puede incluir actividades de colaboración en su reunión (por ejemplo, si su Directiva de conferencia tiene la propiedad EnableDataCollaboration establecida en falso), el cmdlet **Test-CsUcwaConference** se producirá un error.</span><span class="sxs-lookup"><span data-stu-id="e331f-165">If the organizer is not allowed to include collaborative activities in his or her meeting (for example, if his or her conferencing policy has the EnableDataCollaboration property set to False) then the **Test-CsUcwaConference** cmdlet will fail.</span></span>
+
+  - <span data-ttu-id="e331f-166">Este comando fallará si el servidor perimetral está mal configurado o aún no se ha implementado.</span><span class="sxs-lookup"><span data-stu-id="e331f-166">This command will fail if the Edge Server is misconfigured or not yet deployed.</span></span>
+
+</div>
+
+<div>
+
+## <a name="see-also"></a><span data-ttu-id="e331f-167">Vea también</span><span class="sxs-lookup"><span data-stu-id="e331f-167">See Also</span></span>
+
+
+[<span data-ttu-id="e331f-168">Test-CsASConference</span><span class="sxs-lookup"><span data-stu-id="e331f-168">Test-CsASConference</span></span>](https://docs.microsoft.com/powershell/module/skype/Test-CsASConference)  
+[<span data-ttu-id="e331f-169">Test-CsDataConference</span><span class="sxs-lookup"><span data-stu-id="e331f-169">Test-CsDataConference</span></span>](https://docs.microsoft.com/powershell/module/skype/Test-CsDataConference)  
+[<span data-ttu-id="e331f-170">Test-CsAVConference</span><span class="sxs-lookup"><span data-stu-id="e331f-170">Test-CsAVConference</span></span>](https://docs.microsoft.com/powershell/module/skype/Test-CsAVConference)  
+  
+
+<span data-ttu-id="e331f-171"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="e331f-171"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
