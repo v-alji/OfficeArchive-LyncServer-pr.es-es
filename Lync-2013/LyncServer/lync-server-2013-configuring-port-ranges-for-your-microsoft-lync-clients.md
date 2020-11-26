@@ -1,0 +1,180 @@
+---
+title: 'Lync Server 2013: configuración de intervalos de puertos para los clientes de Microsoft Lync'
+description: 'Lync Server 2013: configuración de intervalos de puertos para los clientes de Microsoft Lync.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Configuring port ranges for your Microsoft Lync clients
+ms:assetid: 287d5cea-7ada-461c-9b4a-9da2af315e71
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ204760(v=OCS.15)
+ms:contentKeyID: 48183694
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 1e7fcabf81f8e0110010b1a4fb8e697fb0da986c
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49432733"
+---
+# <a name="configuring-port-ranges-for-your-microsoft-lync-clients-in-lync-server-2013"></a><span data-ttu-id="3f6a6-103">Configurar intervalos de puertos para los clientes de Microsoft Lync en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="3f6a6-103">Configuring port ranges for your Microsoft Lync clients in Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="3f6a6-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="3f6a6-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="3f6a6-105">_**Última modificación del tema:** 2014-04-22_</span><span class="sxs-lookup"><span data-stu-id="3f6a6-105">_**Topic Last Modified:** 2014-04-22_</span></span>
+
+<span data-ttu-id="3f6a6-106">De forma predeterminada, las aplicaciones cliente de Lync pueden usar cualquier puerto entre los puertos 1024 y 65535 cuando participan en una sesión de comunicación; Esto se debe a que los intervalos de puertos específicos no se habilitan automáticamente para los clientes.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-106">By default, Lync client applications can use any port between ports 1024 and 65535 when involved in a communication session; this is because specific port ranges are not automatically enabled for clients.</span></span> <span data-ttu-id="3f6a6-107">Sin embargo, para usar la calidad de servicio, tendrá que reasignar los diversos tipos de tráfico (audio, vídeo, multimedia, uso compartido de aplicaciones y transferencia de archivos) a una serie de intervalos de puertos únicos.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-107">In order to use Quality of Service, however, you will need to reassign the various traffic types (audio, video, media, application sharing, and file transfer) to a series of unique port ranges.</span></span> <span data-ttu-id="3f6a6-108">Esto se puede hacer con el cmdlet Set-CsConferencingConfiguration.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-108">This can be done by using the Set-CsConferencingConfiguration cmdlet.</span></span>
+
+<div>
+
+
+> [!NOTE]  
+> <span data-ttu-id="3f6a6-109">Los usuarios finales no pueden realizar estos cambios por sí mismos.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-109">End users cannot make these changes themselves.</span></span> <span data-ttu-id="3f6a6-110">Los administradores solo pueden hacer cambios en el puerto mediante el cmdlet Set-CsConferencingConfiguration.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-110">Port changes can only be made by administrators using the Set-CsConferencingConfiguration cmdlet.</span></span>
+
+
+
+</div>
+
+<span data-ttu-id="3f6a6-111">Puede determinar qué intervalos de puertos se usan actualmente para las sesiones de comunicación ejecutando el siguiente comando desde el shell de administración de Microsoft Lync Server 2013:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-111">You can determine which port ranges are currently used for communication sessions by running the following command from within the Microsoft Lync Server 2013 Management Shell:</span></span>
+
+    Get-CsConferencingConfiguration
+
+<span data-ttu-id="3f6a6-112">Suponiendo que no ha realizado ningún cambio en la configuración de conferencia después de instalar Lync Server 2013, debe obtener información que incluya estos valores de propiedad:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-112">Assuming that you have not made any changes to your conferencing settings since you installed Lync Server 2013, you should get back information that includes these property values:</span></span>
+
+    ClientMediaPortRangeEnabled : False
+    ClientAudioPort             : 5350
+    ClientAudioPortRange        : 40
+    ClientVideoPort             : 5350
+    ClientVideoPortRange        : 40
+    ClientAppSharingPort        : 5350
+    ClientAppSharingPortRange   : 40
+    ClientFileTransferPort      : 5350
+    ClientTransferPortRange     : 40
+
+<span data-ttu-id="3f6a6-113">Si examina detenidamente la salida anterior, verá dos cuestiones de importancia.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-113">If you look closely at the preceding output, you'll see two things of importance.</span></span> <span data-ttu-id="3f6a6-114">En primer lugar, la propiedad ClientMediaPortRangeEnabled se establece en false:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-114">First, the ClientMediaPortRangeEnabled property is set to False:</span></span>
+
+    ClientMediaPortRangeEnabled : False
+
+<span data-ttu-id="3f6a6-115">Eso es importante porque, cuando esta propiedad se establece en false, los clientes de Lync usarán cualquier puerto disponible entre los puertos 1024 y 65535 cuando participen en una sesión de comunicación; Esto es así independientemente de cualquier otra configuración de puertos (por ejemplo, ClientMediaPort o ClientVideoPort).</span><span class="sxs-lookup"><span data-stu-id="3f6a6-115">That's important because, when this property is set to False, Lync clients will use any available port between ports 1024 and 65535 when involved in a communication session; this is true regardless of any other port settings (for example, ClientMediaPort or ClientVideoPort).</span></span> <span data-ttu-id="3f6a6-116">Si desea restringir el uso de un conjunto de puertos especificado (y esto es algo que quiera hacer si piensa implementar la calidad de servicio), primero debe habilitar los intervalos de puertos de los medios de cliente.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-116">If you want to restrict usage to a specified set of ports (and this is something you do want to do if you plan on implementing Quality of Service) then you must first enable client media port ranges.</span></span> <span data-ttu-id="3f6a6-117">Esto se puede realizar con el siguiente comando de Windows PowerShell:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-117">That can be done using the following Windows PowerShell command:</span></span>
+
+    Set-CsConferencingConfiguration -ClientMediaPortRangeEnabled $True
+
+<span data-ttu-id="3f6a6-118">El comando anterior habilita los intervalos de puertos de medios de cliente para la colección global de opciones de configuración de conferencias; sin embargo, esta configuración también se puede aplicar al ámbito del sitio o al ámbito del servicio (solo para el servicio de servidor de conferencias).</span><span class="sxs-lookup"><span data-stu-id="3f6a6-118">The preceding command enables client media port ranges for the global collection of conferencing configuration settings; however, these settings can also be applied to the site scope and/or the service scope (for the Conferencing Server service only).</span></span> <span data-ttu-id="3f6a6-119">Para habilitar los intervalos de puertos de medios de cliente para un sitio o servidor específico, especifique la identidad de ese sitio o servidor cuando llame a set-CsConferencingConfiguration:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-119">To enable client media port ranges for a specific site or server, specify the Identity of that site or server when calling Set-CsConferencingConfiguration:</span></span>
+
+    Set-CsConferencingConfiguration -Identity "site:Redmond" -ClientMediaPortRangeEnabled $True
+
+<span data-ttu-id="3f6a6-120">También puede usar este comando para habilitar simultáneamente los intervalos de puertos para todas las opciones de configuración de Conferencia:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-120">Alternatively, you can use this command to simultaneously enable port ranges for all your conferencing configuration settings:</span></span>
+
+    Get-CsConferencingConfiguration | Set-CsConferencingConfiguration  -ClientMediaPortRangeEnabled $True
+
+<span data-ttu-id="3f6a6-121">La segunda importancia que observará es que la salida de ejemplo muestra que, de forma predeterminada, los intervalos de puertos de medios establecidos para cada tipo de tráfico de red son idénticos:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-121">The second thing of importance you will notice is that the sample output shows that, by default, the media port ranges set for each type of network traffic are identical:</span></span>
+
+    ClientAudioPort             : 5350
+    ClientVideoPort             : 5350
+    ClientAppSharingPort        : 5350
+    ClientFileTransferPort      : 5350
+
+<span data-ttu-id="3f6a6-122">Para implementar QoS, cada uno de estos intervalos de puertos tendrá que ser único.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-122">In order to implement QoS, each of these port ranges will need to be unique.</span></span> <span data-ttu-id="3f6a6-123">Por ejemplo, puede configurar los intervalos de puertos como este:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-123">For example, you might configure the port ranges like this:</span></span>
+
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span data-ttu-id="3f6a6-124">Tipo de tráfico de cliente</span><span class="sxs-lookup"><span data-stu-id="3f6a6-124">Client Traffic Type</span></span></th>
+<th><span data-ttu-id="3f6a6-125">Inicio de Puerto</span><span class="sxs-lookup"><span data-stu-id="3f6a6-125">Port Start</span></span></th>
+<th><span data-ttu-id="3f6a6-126">Intervalo de puertos</span><span class="sxs-lookup"><span data-stu-id="3f6a6-126">Port Range</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><span data-ttu-id="3f6a6-127">Audio</span><span class="sxs-lookup"><span data-stu-id="3f6a6-127">Audio</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-128">50020</span><span class="sxs-lookup"><span data-stu-id="3f6a6-128">50020</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-129">veinte</span><span class="sxs-lookup"><span data-stu-id="3f6a6-129">20</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="3f6a6-130">Vídeo</span><span class="sxs-lookup"><span data-stu-id="3f6a6-130">Video</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-131">58000</span><span class="sxs-lookup"><span data-stu-id="3f6a6-131">58000</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-132">veinte</span><span class="sxs-lookup"><span data-stu-id="3f6a6-132">20</span></span></p></td>
+</tr>
+<tr class="odd">
+<td><p><span data-ttu-id="3f6a6-133">Uso compartido de aplicaciones</span><span class="sxs-lookup"><span data-stu-id="3f6a6-133">Application sharing</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-134">42000</span><span class="sxs-lookup"><span data-stu-id="3f6a6-134">42000</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-135">veinte</span><span class="sxs-lookup"><span data-stu-id="3f6a6-135">20</span></span></p></td>
+</tr>
+<tr class="even">
+<td><p><span data-ttu-id="3f6a6-136">Transferencia de archivos</span><span class="sxs-lookup"><span data-stu-id="3f6a6-136">File transfer</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-137">42020</span><span class="sxs-lookup"><span data-stu-id="3f6a6-137">42020</span></span></p></td>
+<td><p><span data-ttu-id="3f6a6-138">veinte</span><span class="sxs-lookup"><span data-stu-id="3f6a6-138">20</span></span></p></td>
+</tr>
+</tbody>
+</table>
+
+
+<span data-ttu-id="3f6a6-139">En la tabla anterior, los intervalos de puertos de cliente representan un subconjunto de los intervalos de puertos configurados para los servidores.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-139">In the preceding table, client port ranges represent a subset of the port ranges configured for your servers.</span></span> <span data-ttu-id="3f6a6-140">Por ejemplo, en los servidores, el uso compartido de aplicaciones se configuró para usar los puertos 40803 a 49151; en los equipos cliente, el uso compartido de aplicaciones está configurado para usar los puertos de 42000 a 42019.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-140">For example, on the servers, application sharing was configured to use ports 40803 through 49151; on the client computers, application sharing is configured to use ports 42000 through 42019.</span></span> <span data-ttu-id="3f6a6-141">Esto también se hace principalmente para facilitar la administración de QoS: los puertos de cliente no tienen que representar un subconjunto de los puertos que se usan en el servidor.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-141">This, too is done primarily to make administration of QoS easier: client ports do not have to represent a subset of the ports used on the server.</span></span> <span data-ttu-id="3f6a6-142">(Por ejemplo, en los equipos cliente, puede configurar el uso compartido de aplicaciones para que lo use, por ejemplo, los puertos 10000 a 10019). Sin embargo, le recomendamos que los intervalos de puertos de cliente sean un subconjunto de intervalos de puertos de servidor.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-142">(For example, on the client computers you could configure application sharing to use, say, ports 10000 through 10019.) However, it is recommended that you make your client port ranges a subset of your server port ranges.</span></span>
+
+<span data-ttu-id="3f6a6-143">Además, es posible que haya observado que se han reservado 8348 puertos para el uso compartido de aplicaciones en los servidores, pero solo se reservaron 20 puertos para el uso compartido de aplicaciones en los clientes.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-143">In addition, you might have noticed that 8348 ports were set aside for application sharing on the servers, but only 20 ports were set aside for application sharing on the clients.</span></span> <span data-ttu-id="3f6a6-144">Esto también se recomienda, pero no es una regla difícil y rápida.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-144">This, too is recommended, but is not a hard-and-fast rule.</span></span> <span data-ttu-id="3f6a6-145">En general, puede considerar que cada puerto disponible representa una única sesión de comunicación: Si tiene 100 puertos disponibles en un intervalo de puertos que significa que el equipo en cuestión puede participar, como máximo, de las sesiones de comunicación de 100 en cualquier momento.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-145">In general, you can consider each available port to represent a single communication session: if you have 100 ports available in a port range that means that the computer in question could participate in, at most, 100 communication sessions at any given time.</span></span> <span data-ttu-id="3f6a6-146">Dado que es probable que los servidores adquieran parte de muchas más conversaciones que clientes, tiene sentido abrir muchos más puertos en servidores que en los clientes.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-146">Because servers will likely take part in many more conversations than clients, it makes sense to open many more ports on servers than on clients.</span></span> <span data-ttu-id="3f6a6-147">La reserva de 20 puertos para el uso compartido de aplicaciones en un cliente significa que un usuario puede participar en 20 sesiones de uso compartido de aplicaciones en el dispositivo especificado, y todas al mismo tiempo.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-147">Setting aside 20 ports for application sharing on a client means that a user could participate in 20 application sharing sessions on the specified device, and all at the same time.</span></span> <span data-ttu-id="3f6a6-148">Eso debería ser suficiente para la gran mayoría de los usuarios.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-148">That should prove sufficient for the vast majority of your users.</span></span>
+
+<span data-ttu-id="3f6a6-149">Para asignar los intervalos de puertos anteriores a la colección global de opciones de configuración de conferencias, puede usar el siguiente comando del shell de administración de Lync Server:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-149">To assign the preceding port ranges to your global collection of conferencing configuration settings you can use the following Lync Server Management Shell command:</span></span>
+
+    Set-CsConferencingConfiguration -Identity global -ClientAudioPort 50020 -ClientAudioPortRange 20 -ClientVideoPort 58000 -ClientVideoPortRange 20 -ClientAppSharingPort 42000 -ClientAppSharingPortRange 20 - ClientFileTransferPort 42020 -ClientFileTransferPortRange 20
+
+<span data-ttu-id="3f6a6-150">O bien, use este comando para asignar estos mismos intervalos de puerto para todas las opciones de configuración de Conferencia:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-150">Or, use this command to assign these same port ranges for all your conferencing configuration settings:</span></span>
+
+    Get-CsConferencingConfiguration | Set-CsConferencingConfiguration -ClientAudioPort 50020 -ClientAudioPortRange 20 -ClientVideoPort 58000 -ClientVideoPortRange 20 -ClientAppSharingPort 42000 -ClientAppSharingPortRange 20 - ClientFileTransferPort 42020 -ClientFileTransferPortRange 20
+
+<span data-ttu-id="3f6a6-151">Los usuarios individuales deben cerrar sesión en Lync y, a continuación, iniciar sesión de nuevo antes de que estos cambios se hagan efectivos.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-151">Individual users must log off from Lync and then log back on before these changes will actually take effect.</span></span>
+
+<div>
+
+
+> [!NOTE]  
+> <span data-ttu-id="3f6a6-152">También puede habilitar intervalos de puertos de medios de cliente y, a continuación, asignar esos intervalos de puertos con un solo comando.</span><span class="sxs-lookup"><span data-stu-id="3f6a6-152">You can also enable client media port ranges, and then assign those port ranges, using a single command.</span></span> <span data-ttu-id="3f6a6-153">Por ejemplo:</span><span class="sxs-lookup"><span data-stu-id="3f6a6-153">For example:</span></span><BR><CODE>Set-CsConferencingConfiguration -ClientMediaPortRangeEnabled $True -ClientAudioPort 50020 -ClientAudioPortRange 20 -ClientVideoPort 58000 -ClientVideoPortRange 20 -ClientAppSharingPort 42000 -ClientAppSharingPortRange 20 -ClientFileTransferPort 42020 -ClientFileTransferPortRange 20</CODE>
+
+
+
+<span data-ttu-id="3f6a6-154"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="3f6a6-154"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+

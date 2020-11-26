@@ -1,0 +1,146 @@
+---
+title: 'Lync Server 2013: Configurar la directiva de calidad de servicio para los servidores de conferencia, aplicación y mediación'
+description: 'Lync Server 2013: configuración de una directiva de calidad de servicio para los servidores de conferencia, aplicación y mediación.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Configuring a Quality of Service policy for your Conferencing, Application, and Mediation servers
+ms:assetid: 8adcbbc5-c9f5-476d-ab7f-72e61859cacf
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/JJ205076(v=OCS.15)
+ms:contentKeyID: 48184769
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 0ee82c5f1f6b3025c4052b7e27c1013e0624b756
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49433489"
+---
+# <a name="configuring-a-quality-of-service-policy-in-lync-server-2013-for-your-conferencing-application-and-mediation-servers"></a><span data-ttu-id="dfd7e-103">Configurar la directiva de calidad de servicio para los servidores de conferencia, aplicación y mediación en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="dfd7e-103">Configuring a Quality of Service policy in Lync Server 2013 for your Conferencing, Application, and Mediation servers</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="dfd7e-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="dfd7e-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="dfd7e-105">_**Última modificación del tema:** 2014-06-23_</span><span class="sxs-lookup"><span data-stu-id="dfd7e-105">_**Topic Last Modified:** 2014-06-23_</span></span>
+
+<span data-ttu-id="dfd7e-106">La configuración de intervalos de puertos facilita el uso de la calidad de servicio al garantizar que todo el tráfico de un tipo específico (por ejemplo, todo el tráfico de audio) se desplaza por el mismo conjunto de puertos.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-106">Configuring port ranges facilitates the use of Quality of Service by ensuring that all traffic of a specified type (for example, all audio traffic) travels through the same set of ports.</span></span> <span data-ttu-id="dfd7e-107">Esto facilita que el sistema identifique y marque un paquete determinado: Si el puerto 49152 está reservado para tráfico de audio, todos los paquetes que viajan a través del puerto 49152 se pueden marcar con un código DSCP que indica que se trata de un paquete de audio.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-107">This makes it easy for the system to identify and mark a given packet: if port 49152 is reserved for audio traffic, then any packet traveling through port 49152 can be marked with a DSCP code that indicates that this is an audio packet.</span></span> <span data-ttu-id="dfd7e-108">A su vez, permite que los enrutadores identifiquen el paquete como un paquete de audio y le dan mayor prioridad que los paquetes no marcados (como los paquetes que se usan para copiar un archivo de un servidor a otro).</span><span class="sxs-lookup"><span data-stu-id="dfd7e-108">In turn, this enables routers to identify the packet as an audio packet, and give it higher priority than unmarked packets (such as packets used to copy a file from one server to another).</span></span>
+
+<span data-ttu-id="dfd7e-109">Sin embargo, simplemente restringir un conjunto de puertos a un tipo específico de tráfico no da lugar a que los paquetes se marquen con el código DSCP adecuado.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-109">However, simply restricting a set of ports to a specific type of traffic does not result in packets traveling through those ports being marked with the appropriate DSCP code.</span></span> <span data-ttu-id="dfd7e-110">Además de definir intervalos de puertos, también debe crear directivas de calidad de servicio que especifiquen el código DSCP que se va a asociar con cada intervalo de puertos.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-110">In addition to defining port ranges you must also create Quality of Service policies that specify the DSCP code to be associated with each port range.</span></span> <span data-ttu-id="dfd7e-111">Para Microsoft Lync Server 2013, que normalmente significa la creación de dos directivas: una para el audio y otra para el vídeo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-111">For Microsoft Lync Server 2013 that typically means creating two policies: one for audio and one for video.</span></span>
+
+<span data-ttu-id="dfd7e-112">Las directivas de calidad de servicio se crean más fácilmente y se administran mediante una directiva de grupo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-112">Quality of Service policies are most-easily created, and managed, by using Group Policy.</span></span> <span data-ttu-id="dfd7e-113">(Estas mismas directivas también se pueden crear con directivas de seguridad local.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-113">(These same policies can also be created by using local security policies.</span></span> <span data-ttu-id="dfd7e-114">Sin embargo, eso requiere repetir el mismo procedimiento en todos los equipos.) El conjunto inicial de directivas de QoS (uno para el audio y otra para el vídeo) debe aplicarse solo a los equipos de Lync Server que ejecuten el servidor de conferencia, el servidor de aplicaciones o los servicios de Media Server.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-114">However, that requires you to repeat the same procedure on each and every computer.) Your initial set of QoS policies (one for audio and one for video) should be applied only to Lync Server computers running the Conferencing server, Application server, and/or Mediation server services.</span></span> <span data-ttu-id="dfd7e-115">Si todos estos equipos se encuentran en la misma unidad organizativa de Active Directory, simplemente puede asignar el nuevo objeto de directiva de grupo (GPO) a esa unidad organizativa.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-115">If all of these computers are located in the same Active Directory OU then you can simply assign the new Group Policy object (GPO) to that OU.</span></span> <span data-ttu-id="dfd7e-116">Como alternativa, puede realizar otros pasos para dirigir la nueva Directiva a los equipos especificados; por ejemplo, puede colocar los equipos apropiados en un grupo de seguridad y, a continuación, usar el filtrado de seguridad de directiva de grupo para aplicar el GPO solo a ese grupo de seguridad.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-116">Alternatively, you can take other steps to target the new policy to the specified computers; for example, you can place the appropriate computers in a security group, then use Group Policy security filtering to apply the GPO just to that security group.</span></span>
+
+<span data-ttu-id="dfd7e-117">Para crear una directiva de calidad de servicio para administrar el audio, inicie sesión en un equipo en el que se haya instalado administración de directivas de grupo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-117">In order to create a Quality of Service policy for managing audio, log on to a computer where Group Policy Management has been installed.</span></span> <span data-ttu-id="dfd7e-118">Abra administración de directivas de grupo (haga clic en **Inicio**, seleccione **herramientas administrativas** y, a continuación, haga clic en **Administración de directivas de grupo**) y realice el siguiente procedimiento:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-118">Open Group Policy Management (click **Start**, point to **Administrative Tools**, and then click **Group Policy Management**) and then complete the following procedure:</span></span>
+
+1.  <span data-ttu-id="dfd7e-119">En administración de directivas de grupo, busque el contenedor en el que se debe crear la nueva Directiva.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-119">In Group Policy Management, locate the container where the new policy should be created.</span></span> <span data-ttu-id="dfd7e-120">Por ejemplo, si todos los equipos de Lync Server se encuentran en una unidad organizativa denominada Lync Server, la nueva Directiva debe crearse en la OU de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-120">For example, if all your Lync Server computers are located in an OU named Lync Server then the new policy should be created in the Lync Server OU.</span></span>
+
+2.  <span data-ttu-id="dfd7e-121">Haga clic con el botón secundario en el contenedor correspondiente y luego haga clic en **crear un GPO en este dominio y vincúlelo aquí**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-121">Right-click the appropriate container and then click **Create a GPO in this domain, and Link it here**.</span></span>
+
+3.  <span data-ttu-id="dfd7e-122">En el cuadro de diálogo **nuevo GPO** , escriba un nombre para el nuevo objeto de directiva de grupo en el cuadro **nombre** (por ejemplo, **QoS de Lync Server**) y, a continuación, haga clic en **Aceptar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-122">In the **New GPO** dialog box, type a name for the new Group Policy object in the **Name** box (for example, **Lync Server QoS**) and then click **OK**.</span></span>
+
+4.  <span data-ttu-id="dfd7e-123">Haga clic con el botón secundario en la Directiva recién creada y luego haga clic en **Editar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-123">Right-click the newly-created policy and then click **Edit**.</span></span>
+
+5.  <span data-ttu-id="dfd7e-124">En el editor de administración de directivas de grupo, expanda **configuración del equipo**, expanda **directivas**, expanda **configuración de Windows**, haga clic con el botón secundario en **QoS basada en directivas** y, a continuación, haga clic en **crear nueva Directiva**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-124">In the Group Policy Management Editor, expand **Computer Configuration**, expand **Policies**, expand **Windows Settings**, right-click **Policy-based QoS**, and then click **Create new policy**.</span></span>
+
+6.  <span data-ttu-id="dfd7e-125">En el cuadro de diálogo **QoS basado en directivas** , en la página de apertura, escriba un nombre para la nueva Directiva (por ejemplo, **Lync Server QoS**) en el cuadro **nombre** .</span><span class="sxs-lookup"><span data-stu-id="dfd7e-125">In the **Policy-based QoS** dialog box, on the opening page, type a name for the new policy (e.g., **Lync Server QoS**) in the **Name** box.</span></span> <span data-ttu-id="dfd7e-126">Seleccione **especificar valor de DSCP** y establezca el valor en **46**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-126">Select **Specify DSCP Value** and set the value to **46**.</span></span> <span data-ttu-id="dfd7e-127">Deje la **tasa de límite saliente** desactivada y, a continuación, haga clic en **siguiente**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-127">Leave **Specify Outbound Throttle Rate** unselected, and then click **Next**.</span></span>
+
+7.  <span data-ttu-id="dfd7e-128">En la página siguiente, asegúrese de que **todas las aplicaciones** está seleccionada y, a continuación, haga clic en **siguiente**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-128">On the next page, make sure that **All applications** is selected and then click **Next**.</span></span> <span data-ttu-id="dfd7e-129">Esto simplemente garantiza que todas las aplicaciones coincidirán con paquetes del intervalo de puertos especificado con el código DSCP especificado.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-129">This simply ensures that all applications will match packets from the specified port range with the specified DSCP code.</span></span>
+
+8.  <span data-ttu-id="dfd7e-130">En la tercera página, asegúrese de que **todas las direcciones IP de origen y cualquier dirección IP de destino** estén seleccionadas y, a continuación, haga clic en **siguiente**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-130">On the third page, make sure that both **Any source IP address and Any destination IP address** are selected and then click **Next**.</span></span> <span data-ttu-id="dfd7e-131">Estas dos opciones de configuración garantizan que los paquetes se administrarán independientemente del equipo (dirección IP) que hayan enviado esos paquetes y qué equipo (dirección IP) recibirá esos paquetes.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-131">These two settings ensure that packets will be managed regardless of which computer (IP address) sent those packets and which computer (IP address) will receive those packets.</span></span>
+
+9.  <span data-ttu-id="dfd7e-132">En la cuarta página, seleccione **TCP y UDP** en la lista desplegable **seleccionar el protocolo de esta directiva de QoS** .</span><span class="sxs-lookup"><span data-stu-id="dfd7e-132">On page four, select **TCP and UDP** from the **Select the protocol this QoS policy applies to** dropdown list.</span></span> <span data-ttu-id="dfd7e-133">TCP (Protocolo de control de transmisión) y UDP (Protocolo de datagrama de usuario) son los dos protocolos de red más usados por Lync Server y sus aplicaciones cliente.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-133">TCP (Transmission Control Protocol) and UDP (User Datagram Protocol) are the two networking protocols most-commonly used by Lync Server and its client applications.</span></span>
+
+10. <span data-ttu-id="dfd7e-134">En el encabezado, **especifique el número de puerto de origen**, seleccione **de este rango o puerto de origen**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-134">Under the heading **Specify the source port number**, select **From this source port or range**.</span></span> <span data-ttu-id="dfd7e-135">En el cuadro de texto que acompaña, escriba el intervalo de puertos reservado para las transtransmisións de audio.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-135">In the accompanying text box, type the port range reserved for audio transmissions.</span></span> <span data-ttu-id="dfd7e-136">Por ejemplo, si ha reservado los puertos 49152 a través de los puertos 57500 para el tráfico de audio, escriba el intervalo de puertos con este formato: **49152:57500**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-136">For example, if you reserved ports 49152 through ports 57500 for audio traffic enter the port range using this format: **49152:57500**.</span></span> <span data-ttu-id="dfd7e-137">Haga clic en **Finalizar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-137">Click **Finish**.</span></span>
+
+<div>
+
+
+> [!NOTE]  
+> <span data-ttu-id="dfd7e-138">El valor de DSCP de 46 es algo arbitrario: aunque DSCP 46 se usa a menudo para marcar paquetes de audio, no es necesario usar DSCP 46 para las comunicaciones de audio.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-138">The DSCP value of 46 is somewhat arbitrary: although DSCP 46 is often used for marking audio packets, you do not have to use DSCP 46 for audio communications.</span></span> <span data-ttu-id="dfd7e-139">Si ya ha implementado QoS y está usando un código de DSCP diferente para el audio (por ejemplo, DSCP 40), debe configurar la Directiva de calidad de servicio para usar el mismo código (por ejemplo, 40 para audio).</span><span class="sxs-lookup"><span data-stu-id="dfd7e-139">If you have already implemented QoS and you are using a different DSCP code for audio (for example, DSCP 40) then you should configure your Quality of Service policy to use that same code (i.e., 40 for audio).</span></span> <span data-ttu-id="dfd7e-140">Si ahora está implementando la calidad de servicio, se recomienda que use DSCP 46 para el audio, simplemente porque ese valor suele usarse para marcar paquetes de audio.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-140">If you are just now implementing Quality of Service, then it is recommended that you use DSCP 46 for audio, simply because that value is commonly used to mark audio packets.</span></span>
+
+
+
+</div>
+
+<span data-ttu-id="dfd7e-141">Después de crear la directiva QoS para el tráfico de audio, debe crear una segunda Directiva para el tráfico de vídeo (y, opcionalmente, una tercera Directiva para administrar el tráfico de uso compartido de aplicaciones).</span><span class="sxs-lookup"><span data-stu-id="dfd7e-141">After you have created the QoS policy for audio traffic you should then create a second policy for video traffic (and, optionally, a third policy for managing application sharing traffic).</span></span> <span data-ttu-id="dfd7e-142">Para crear una directiva para el vídeo, siga el mismo procedimiento básico que siguió al crear la Directiva de audio y realizar estas sustituciones:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-142">To create a policy for video, follow the same basic procedure you followed when creating the audio policy, making these substitutions:</span></span>
+
+  - <span data-ttu-id="dfd7e-143">Use un nombre de directiva diferente (y único) (por ejemplo, **vídeo de Lync Server**).</span><span class="sxs-lookup"><span data-stu-id="dfd7e-143">Use a different (and unique) policy name (for example, **Lync Server Video**).</span></span>
+
+  - <span data-ttu-id="dfd7e-144">Establezca el valor de DSCP en **34** en lugar de 46.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-144">Set the DSCP value to **34** instead of 46.</span></span> <span data-ttu-id="dfd7e-145">(Tenga en cuenta que no es necesario usar un valor de DSCP de 34.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-145">(Note that you do not have to use a DSCP value of 34.</span></span> <span data-ttu-id="dfd7e-146">El único requisito es que use un valor de DSCP diferente para el vídeo que el que usó para el audio.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-146">The only requirement is that you use a different DSCP value for video than you used for audio.)</span></span>
+
+  - <span data-ttu-id="dfd7e-147">Use el intervalo de puertos configurado previamente para el tráfico de vídeo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-147">Use the previously-configured port range for video traffic.</span></span> <span data-ttu-id="dfd7e-148">Por ejemplo, si ha reservado los puertos 57501 a 65535 para el vídeo, establezca el intervalo de puertos en: **57501:65535**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-148">For example, if you have reserved ports 57501 through 65535 for video, then set the port range to this: **57501:65535**.</span></span>
+
+<span data-ttu-id="dfd7e-149">Si decide crear una directiva para administrar el tráfico de uso compartido de aplicaciones, debe crear una tercera Directiva y realizar las siguientes sustituciones:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-149">If you decide to create a policy for managing application sharing traffic you must create a third policy, making the following substitutions:</span></span>
+
+  - <span data-ttu-id="dfd7e-150">Use un nombre de directiva diferente (y único) (por ejemplo, **compartir aplicaciones de Lync Server**).</span><span class="sxs-lookup"><span data-stu-id="dfd7e-150">Use a different (and unique) policy name (for example, **Lync Server Application Sharing**).</span></span>
+
+  - <span data-ttu-id="dfd7e-151">Establezca el valor de DSCP en **24** en lugar de 46.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-151">Set the DSCP value to **24** instead of 46.</span></span> <span data-ttu-id="dfd7e-152">(Nuevamente, no es necesario usar un valor de DSCP de 24.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-152">(Again, you do not have to use a DSCP value of 24.</span></span> <span data-ttu-id="dfd7e-153">El único requisito es que use un valor de DSCP diferente para el uso compartido de aplicaciones que el que usó para el audio o el vídeo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-153">The only requirement is that you use a different DSCP value for application sharing than you used for audio or for video.)</span></span>
+
+  - <span data-ttu-id="dfd7e-154">Use el intervalo de puertos configurado previamente para el tráfico de vídeo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-154">Use the previously-configured port range for video traffic.</span></span> <span data-ttu-id="dfd7e-155">Por ejemplo, si ha reservado los puertos 40803 a 49151 para el uso compartido de aplicaciones, establezca el intervalo de puertos en este: **40803:49151**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-155">For example, if you have reserved ports 40803 through 49151 for application sharing, then set the port range to this: **40803:49151**.</span></span>
+
+<span data-ttu-id="dfd7e-156">Las nuevas directivas que ha creado no tendrán efecto hasta que se actualice la Directiva de grupo en los equipos de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-156">The new policies you have created will not take effect until Group Policy has been refreshed on your Lync Server computers.</span></span> <span data-ttu-id="dfd7e-157">Aunque la directiva de grupo se actualiza periódicamente por sí misma, se puede forzar una actualización inmediata si se ejecuta el siguiente comando en cada equipo en el que se tenga que actualizar la directiva de grupo:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-157">Although Group Policy periodically refreshes on its own, you can force an immediate refresh by running the following command on each computer where Group Policy needs to be refreshed:</span></span>
+
+    Gpupdate.exe /force
+
+<span data-ttu-id="dfd7e-158">Este comando se puede ejecutar desde el shell de administración de Lync Server o desde cualquier ventana de comandos que se ejecute con credenciales de administrador.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-158">This command can be run from within the Lync Server Management Shell or from any command window that is running under administrator credentials.</span></span> <span data-ttu-id="dfd7e-159">Para abrir una ventana de comandos con las credenciales del administrador, haga clic en **Inicio**, haga clic con el botón derecho en **Símbolo del sistema** y, a continuación, haga clic en **Ejecutar como administrador**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-159">To run a command window under administrator credentials, click **Start**, right-click **Command Prompt**, and then click **Run as administrator**.</span></span>
+
+<span data-ttu-id="dfd7e-160">Para comprobar que se han aplicado las nuevas directivas de QoS, haga lo siguiente:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-160">To verify that the new QoS policies have been applied, do the following:</span></span>
+
+1.  <span data-ttu-id="dfd7e-161">En un equipo de Lync Server, haga clic en **Inicio** y, a continuación, en **Ejecutar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-161">On a Lync Server computer, click **Start** and then click **Run**.</span></span>
+
+2.  <span data-ttu-id="dfd7e-162">En el cuadro de diálogo **Ejecutar** , escriba **regedit** y, a continuación, presione Entrar.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-162">In the **Run** dialog box, type **regedit** and then press ENTER.</span></span>
+
+3.  <span data-ttu-id="dfd7e-163">En el editor del registro, expanda **equipo**, expanda **HKEY \_ local \_ Machine**, expanda **software**, expanda **directivas**, expanda **Microsoft**, expanda **Windows** y, a continuación, haga clic en **QoS**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-163">In Registry Editor, expand **Computer**, expand **HKEY\_LOCAL\_MACHINE**, expand **SOFTWARE**, expand **Policies**, expand **Microsoft**, expand **Windows**, and then click **QoS**.</span></span> <span data-ttu-id="dfd7e-164">En **QoS** , debe ver las claves del registro para cada una de las directivas de QoS que acaba de crear.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-164">Under **QoS** you should see registry keys for each of the QoS policies you just created.</span></span> <span data-ttu-id="dfd7e-165">Por ejemplo, si ha creado dos nuevas directivas (una con el nombre QoS de audio de Lync Server y la otra llamada de vídeo de Lync Server QoS), debe entradas del registro para QoS de audio de Lync Server y la calidad de video de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-165">For example, if you created two new policies (one named Lync Server Audio QoS and the other named Lync Server Video QoS) you should registry entries for Lync Server Audio QoS and Lync Server Video QoS.</span></span>
+
+<span data-ttu-id="dfd7e-166">Para asegurarse de que los paquetes de red estén marcados con el valor de DSCP adecuado, también debe crear una nueva entrada de registro en cada equipo completando el procedimiento siguiente:</span><span class="sxs-lookup"><span data-stu-id="dfd7e-166">To help ensure that network packets are marked with the appropriate DSCP value, you should also create a new registry entry on each computer by completing the following procedure:</span></span>
+
+1.  <span data-ttu-id="dfd7e-167">Haga clic en **Inicio** y, después, en **Ejecutar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-167">Click **Start** and then click **Run**.</span></span>
+
+2.  <span data-ttu-id="dfd7e-168">En el cuadro de diálogo **Ejecutar** , escriba **regedit** y, a continuación, presione Entrar.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-168">In the **Run** dialog box, type **regedit** and then press ENTER.</span></span>
+
+3.  <span data-ttu-id="dfd7e-169">En el editor del registro, expanda el **\_ \_ equipo local HKEY**, expanda **sistema**, expanda **CurrentControlSet**, expanda **Services** y, a continuación, expanda **TCPIP**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-169">In the Registry Editor, expand **HKEY\_LOCAL\_MACHINE**, expand **SYSTEM**, expand **CurrentControlSet**, expand **services**, and then expand **Tcpip**.</span></span>
+
+4.  <span data-ttu-id="dfd7e-170">Haga clic con el botón derecho en **TCPIP**, seleccione **nuevo** y, a continuación, haga clic en **clave**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-170">Right-click **Tcpip**, point to **New**, and then click **Key**.</span></span> <span data-ttu-id="dfd7e-171">Después de crear la nueva clave del registro, escriba **QoS** y, a continuación, presione Entrar para cambiar el nombre de la clave.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-171">After the new registry key is created, type **QoS** and then press ENTER to rename the key.</span></span>
+
+5.  <span data-ttu-id="dfd7e-172">Haga clic con el botón derecho en **QoS**, seleccione **nuevo** y, a continuación, haga clic en **valor de cadena**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-172">Right-click **QoS**, point to **New**, and then click **String Value**.</span></span> <span data-ttu-id="dfd7e-173">Después de crear el nuevo valor del registro, escriba **no use NLA** y, a continuación, presione Entrar para cambiar el nombre del valor.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-173">After the new registry value is created, type **Do not use NLA** and then press ENTER to rename the value.</span></span>
+
+6.  <span data-ttu-id="dfd7e-174">Haga doble clic en **no usar NLA**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-174">Double-click **Do not use NLA**.</span></span> <span data-ttu-id="dfd7e-175">En el cuadro de diálogo **Editar cadena** , escriba **1** en el cuadro **datos del valor** y, a continuación, haga clic en **Aceptar**.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-175">In the **Edit String** dialog box, type **1** in the **Value data** box and then click **OK**.</span></span>
+
+7.  <span data-ttu-id="dfd7e-176">Cierre el editor del registro y, a continuación, reinicie el equipo.</span><span class="sxs-lookup"><span data-stu-id="dfd7e-176">Close the Registry Editor and then reboot your computer.</span></span>
+
+<span data-ttu-id="dfd7e-177"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="dfd7e-177"></div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
