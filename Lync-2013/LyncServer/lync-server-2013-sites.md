@@ -1,0 +1,108 @@
+---
+title: Sitios de Lync Server 2013
+description: Sitios de 2013 de Lync Server.
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Sites
+ms:assetid: 022cb6dd-37e2-4882-a53e-5ddfdbc6f53a
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg398076(v=OCS.15)
+ms:contentKeyID: 48183233
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 59739c5a81fca1f1f3ab5c1b83a23f0be0a5ee2d
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49423802"
+---
+# <a name="lync-server-sites-for-lync-server-2013"></a><span data-ttu-id="4ded4-103">Sitios de Lync Server para Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4ded4-103">Lync Server sites for Lync Server 2013</span></span>
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody"><span data-ttu-id="4ded4-104">
+
+<span> </span></span><span class="sxs-lookup"><span data-stu-id="4ded4-104">
+
+<span> </span></span></span>
+
+<span data-ttu-id="4ded4-105">_**Última modificación del tema:** 2012-10-16_</span><span class="sxs-lookup"><span data-stu-id="4ded4-105">_**Topic Last Modified:** 2012-10-16_</span></span>
+
+<span data-ttu-id="4ded4-106">En Lync Server, define los *sitios* de su red que contienen los componentes de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="4ded4-106">In Lync Server, you define *sites* on your network that contain Lync Server components.</span></span> <span data-ttu-id="4ded4-107">Un sitio es un conjunto de equipos con una buena conexión de red de alta velocidad y baja latencia, como, por ejemplo, una red de área local (LAN) única o dos redes conectadas a través de una red de fibra óptica de alta velocidad.</span><span class="sxs-lookup"><span data-stu-id="4ded4-107">A site is a set of computers that is well-connected by a high-speed, low-latency network, such as a single local area network (LAN) or two networks connected by a high-speed fiber optic network.</span></span> <span data-ttu-id="4ded4-108">Tenga en cuenta que los sitios de Lync Server son un concepto independiente de los sitios de los servicios de dominio de Active Directory y los sitios de Microsoft Exchange Server.</span><span class="sxs-lookup"><span data-stu-id="4ded4-108">Note that Lync Server sites are a separate concept from Active Directory Domain Services sites and Microsoft Exchange Server sites.</span></span> <span data-ttu-id="4ded4-109">Los sitios de Lync Server no necesitan corresponderse con los sitios de Active Directory.</span><span class="sxs-lookup"><span data-stu-id="4ded4-109">Your Lync Server sites do not need to correspond to your Active Directory sites.</span></span>
+
+<div>
+
+## <a name="site-types"></a><span data-ttu-id="4ded4-110">Tipos de sitio</span><span class="sxs-lookup"><span data-stu-id="4ded4-110">Site Types</span></span>
+
+<span data-ttu-id="4ded4-111">Cada sitio es un *sitio central*, que contiene al menos un grupo de servidores front-end o un servidor Standard Edition, o un *sitio de sucursal*.</span><span class="sxs-lookup"><span data-stu-id="4ded4-111">Each site is either a *central site*, which contains at least one Front End pool or a Standard Edition server, or a *branch site*.</span></span> <span data-ttu-id="4ded4-112">Cada sitio de sucursal está asociado exactamente a un sitio central y los usuarios del sitio de la sucursal obtienen la mayor parte de la funcionalidad de Lync Server de los servidores del sitio central asociado.</span><span class="sxs-lookup"><span data-stu-id="4ded4-112">Each branch site is associated with exactly one central site, and the users at the branch site get most of their Lync Server functionality from the servers at the associated central site.</span></span>
+
+<span data-ttu-id="4ded4-113">Cada sitio de la sucursal contiene una de las siguientes opciones:</span><span class="sxs-lookup"><span data-stu-id="4ded4-113">Each branch site contains one of the following:</span></span>
+
+  - <span data-ttu-id="4ded4-114">Un *dispositivo de rama con la supervivencia (SBA)*, que es un servidor blade estándar del sector con un registrador de Lync Server y un servidor de mediación que se ejecuta en Windows Server.</span><span class="sxs-lookup"><span data-stu-id="4ded4-114">A *Survivable Branch Appliance (SBA)*, which is an industry-standard blade server with a Lync Server Registrar and a Mediation Server running on Windows Server.</span></span> <span data-ttu-id="4ded4-115">El dispositivo de sucursal con la supervivencia también contiene una puerta de enlace de red telefónica conmutada (RTC).</span><span class="sxs-lookup"><span data-stu-id="4ded4-115">The Survivable Branch Appliance also contains a public switched telephone network (PSTN) gateway.</span></span> <span data-ttu-id="4ded4-116">El equipo de sucursales con la que es superviviente está diseñado para sucursales con entre 25 y 1000 usuarios.</span><span class="sxs-lookup"><span data-stu-id="4ded4-116">The Survivable Branch Appliance is designed for branch sites with between 25 and 1000 users.</span></span>
+
+  - <span data-ttu-id="4ded4-117">Un *servidor de sucursal (SBS) con supervivencia*, que es un servidor que ejecuta Windows Server y que cumple con los requisitos de hardware especificados y que tiene instalado el software de servidor de mediación y registrador de Lync Server.</span><span class="sxs-lookup"><span data-stu-id="4ded4-117">A *Survivable Branch Server (SBS)*, which is a server running Windows Server that meets specified hardware requirements, and that has Lync Server Registrar and Mediation Server software installed on it.</span></span> <span data-ttu-id="4ded4-118">Debe conectarse a una puerta de enlace PSTN o a un tronco SIP a un proveedor de servicios telefónicos.</span><span class="sxs-lookup"><span data-stu-id="4ded4-118">It must connect to either a PSTN gateway or a SIP trunk to a telephone service provider.</span></span> <span data-ttu-id="4ded4-119">El servidor de sucursal con la supervivencia está diseñado para sucursales con usuarios de 1000 y 5000.</span><span class="sxs-lookup"><span data-stu-id="4ded4-119">The Survivable Branch Server is designed for branch sites with between 1000 and 5000 users.</span></span>
+
+  - <span data-ttu-id="4ded4-120">Una puerta de enlace RTC y, opcionalmente, un *servidor de mediación*.</span><span class="sxs-lookup"><span data-stu-id="4ded4-120">A PSTN gateway, and, optionally, a *Mediation Server*.</span></span> <span data-ttu-id="4ded4-121">Para obtener más información sobre este y otros roles de servidor, vea [roles de servidor en Lync server 2013](lync-server-2013-server-roles.md).</span><span class="sxs-lookup"><span data-stu-id="4ded4-121">For details on this and other server roles, see [Server roles in Lync Server 2013](lync-server-2013-server-roles.md).</span></span>
+
+<span data-ttu-id="4ded4-122">Una sucursal con un vínculo de red de área extensa (WAN) resistente a un sitio central puede usar la tercera opción: una puerta de enlace RTC y, opcionalmente, un servidor de mediación.</span><span class="sxs-lookup"><span data-stu-id="4ded4-122">A branch office with a resilient wide area network (WAN) link to a central site can use the third option—a PSTN gateway, and, optionally, a Mediation Server.</span></span> <span data-ttu-id="4ded4-123">Los sitios de sucursales con vínculos menos resistentes deben usar un equipo de sucursal o un servidor de sucursal que sea reviviente y que ofrezcan resiliencia en momentos de errores de red de área extensa.</span><span class="sxs-lookup"><span data-stu-id="4ded4-123">Branch office sites with less-resilient links should use a Survivable Branch Appliance or Survivable Branch Server, which provide resiliency in times of wide-area network failures.</span></span> <span data-ttu-id="4ded4-124">Por ejemplo, en un sitio con una sucursal o un servidor de sucursal superviviente implementado, los usuarios pueden seguir realizando y recibiendo llamadas de voz empresariales si la WAN que conecta el sitio de la sucursal con el sitio central está desactivada.</span><span class="sxs-lookup"><span data-stu-id="4ded4-124">For example, in a site with a Survivable Branch Appliance or Survivable Branch Server deployed, users can still make and receive Enterprise Voice calls if the WAN connecting the branch site to the central site is down.</span></span> <span data-ttu-id="4ded4-125">Para más información sobre la aplicación de sucursales con capacidad de supervivencia, servidor de sucursal y resistencia, consulte [planificación de la resistencia de voz empresarial en Lync Server 2013](lync-server-2013-planning-for-enterprise-voice-resiliency.md) en la documentación de planificación.</span><span class="sxs-lookup"><span data-stu-id="4ded4-125">For details about the Survivable Branch Appliance, Survivable Branch Server, and resiliency, see [Planning for Enterprise Voice resiliency in Lync Server 2013](lync-server-2013-planning-for-enterprise-voice-resiliency.md) in the Planning documentation.</span></span>
+
+</div>
+
+<div>
+
+## <a name="site-topologies"></a><span data-ttu-id="4ded4-126">Topologías de sitios</span><span class="sxs-lookup"><span data-stu-id="4ded4-126">Site Topologies</span></span>
+
+<span data-ttu-id="4ded4-127">La implementación debe incluir al menos un sitio central y puede incluir entre cero y muchos sitios de la sucursal.</span><span class="sxs-lookup"><span data-stu-id="4ded4-127">Your deployment must include at least one central site, and can include zero to many branch sites.</span></span> <span data-ttu-id="4ded4-128">Cada sitio de sucursal está afiliado a un sitio central.</span><span class="sxs-lookup"><span data-stu-id="4ded4-128">Each branch site is affiliated with one central site.</span></span> <span data-ttu-id="4ded4-129">El sitio central proporciona los servicios de Lync Server al sitio de la sucursal que no está hospedado localmente en el sitio de la sucursal, como la presencia y la Conferencia.</span><span class="sxs-lookup"><span data-stu-id="4ded4-129">The central site provides the Lync Server services to the branch site that are not hosted locally at the branch site, such as presence and conferencing.</span></span>
+
+<span data-ttu-id="4ded4-130">Si tiene varios sitios, puede emparejar los grupos de aplicaciones para el usuario en diferentes sitios para habilitar las capacidades de recuperación ante desastres.</span><span class="sxs-lookup"><span data-stu-id="4ded4-130">If you have multiple sites, you can pair together the Front End pools at different sites to enable disaster recovery abilities.</span></span> <span data-ttu-id="4ded4-131">Para obtener más información, consulte [compatibilidad de alta disponibilidad y recuperación ante desastres en Lync Server 2013](lync-server-2013-high-availability-and-disaster-recovery-support.md).</span><span class="sxs-lookup"><span data-stu-id="4ded4-131">For details, see [High availability and disaster recovery support in Lync Server 2013](lync-server-2013-high-availability-and-disaster-recovery-support.md).</span></span>
+
+</div>
+
+<div>
+
+## <a name="see-also"></a><span data-ttu-id="4ded4-132">Vea también</span><span class="sxs-lookup"><span data-stu-id="4ded4-132">See Also</span></span>
+
+
+[<span data-ttu-id="4ded4-133">Roles de servidor en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4ded4-133">Server roles in Lync Server 2013</span></span>](lync-server-2013-server-roles.md)  
+[<span data-ttu-id="4ded4-134">Compatibilidad entre la alta disponibilidad y la recuperación ante desastres en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4ded4-134">High availability and disaster recovery support in Lync Server 2013</span></span>](lync-server-2013-high-availability-and-disaster-recovery-support.md)  
+
+
+[<span data-ttu-id="4ded4-135">Planear la resistencia de la telefonía IP empresarial en Lync Server 2013</span><span class="sxs-lookup"><span data-stu-id="4ded4-135">Planning for Enterprise Voice resiliency in Lync Server 2013</span></span>](lync-server-2013-planning-for-enterprise-voice-resiliency.md)  
+  
+
+<span data-ttu-id="4ded4-136"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span><span class="sxs-lookup"><span data-stu-id="4ded4-136"></div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</span></span></div>
+
