@@ -1,0 +1,98 @@
+---
+title: 'Lync Server 2013: crear parámetros de configuración de registradores'
+description: 'Lync Server 2013: crear parámetros de configuración de registro.'
+ms.reviewer: ''
+ms.author: v-lanac
+author: lanachin
+f1.keywords:
+- NOCSH
+TOCTitle: Create Registrar configuration settings
+ms:assetid: eddfbdd2-cfd0-4c03-986e-443d6728db7d
+ms:mtpsurl: https://technet.microsoft.com/en-us/library/Gg182601(v=OCS.15)
+ms:contentKeyID: 48185758
+ms.date: 07/23/2014
+manager: serdars
+mtps_version: v=OCS.15
+ms.openlocfilehash: 1ada10302b3c2319e0f713ce2d3bea00b6fed126
+ms.sourcegitcommit: 36fee89bb887bea4f18b19f17a8c69daf5bc423d
+ms.translationtype: MT
+ms.contentlocale: es-ES
+ms.lasthandoff: 11/26/2020
+ms.locfileid: "49431606"
+---
+# <a name="create-registrar-configuration-settings-in-lync-server-2013"></a>Crear opciones de configuración de registradores en Lync Server 2013
+
+<div data-xmlns="http://www.w3.org/1999/xhtml">
+
+<div class="topic" data-xmlns="http://www.w3.org/1999/xhtml" data-msxsl="urn:schemas-microsoft-com:xslt" data-cs="https://msdn.microsoft.com/">
+
+<div data-asp="https://msdn2.microsoft.com/asp">
+
+
+
+</div>
+
+<div id="mainSection">
+
+<div id="mainBody">
+
+<span> </span>
+
+_**Última modificación del tema:** 2013-03-17_
+
+Puede usar el registrador para configurar los métodos de autenticación de servidores proxy. El protocolo de autenticación que especifique definirá el tipo de desafío que presentarán los servidores del grupo a los clientes. Los protocolos disponibles son:
+
+  - **Kerberos**   Este es el esquema de autenticación basado en contraseñas más seguro disponible para los clientes, pero normalmente solo está disponible para clientes de empresa, ya que requiere conexión de cliente a un centro de distribución de claves (controlador de dominio de Kerberos). Esta configuración es adecuada si el servidor autentica solo clientes de empresa.
+
+  - **NTLM**   Esta es la autenticación basada en contraseña disponible para los clientes que usan un esquema de hash de desafío/respuesta en la contraseña. Esta es la única forma de autenticación disponible para los clientes sin conexión a un centro de distribución de claves (controlador de dominio de Kerberos), como los usuarios remotos. Si un servidor autentica solo usuarios remotos, debe elegir NTLM.
+
+  - **Autenticación de certificados**   Este es el método de autenticación nuevo cuando el servidor necesita obtener certificados de clientes de Lync Phone Edition, teléfonos de área común, Lync 2013 y la aplicación de la tienda Windows de Lync. En los clientes de Lync Phone Edition, después de que un usuario inicie sesión y se autentique correctamente proporcionando un número de identificación personal (PIN), Lync Server 2013 entonces le da el URI del SIP al teléfono y aprovisiona un certificado firmado de Lync Server o un certificado de usuario que identifica Joe (por ejemplo: SN=joe@contoso.com) en el teléfono. Este certificado se usa para autenticarse con el Registrador y los Servicios web.
+
+<div>
+
+
+> [!NOTE]  
+> Se recomienda habilitar Kerberos y NTLM cuando un servidor admita la autenticación para los clientes remotos y de empresa. El servidor perimetral y los servidores internos se comunican para garantizar que solamente se ofrezca la autenticación NTLM a clientes remotos. Si solamente se habilita Kerberos en estos servidores, no podrán autenticar usuarios remotos. Si los usuarios de empresa también se autentican frente al servidor, se usa Kerberos.<BR>Si va a usar los clientes de la aplicación de la tienda Windows de Lync, debe habilitar la autenticación de certificados.
+
+
+
+</div>
+
+Siga estos pasos para crear un registrador nuevo.
+
+<div>
+
+## <a name="to-create-new-registrar-configuration-settings"></a>Para crear nuevas opciones de configuración de registrador
+
+1.  Desde una cuenta de usuario que sea miembro del grupo RTCUniversalServerAdmins (o que tenga derechos de usuario equivalentes), o asignada al rol CsServerAdministrator o CsAdministrator, inicie sesión en cualquier equipo de la red en el que haya implementado Lync Server 2013.
+
+2.  Abra una ventana del explorador y, a continuación, escriba la dirección URL del administrador para abrir el panel de control de Lync Server. Para obtener más información sobre los diferentes métodos que puede usar para iniciar el panel de control de Lync Server, consulte [abrir las herramientas administrativas 2013 de Lync Server](lync-server-2013-open-lync-server-administrative-tools.md).
+
+3.  En la barra de navegación izquierda, haga clic en **Seguridad** y, a continuación, en **Registrador**.
+
+4.  En la página **Registrador**, haga clic en **Nuevo**.
+
+5.  En **Seleccionar un servicio**, haga clic en el servicio al que se aplicará el Registrador y, a continuación, haga clic en **Aceptar**.
+
+6.  En **Nueva configuración de registrador**, seleccione uno o más de los siguientes elementos en función de las funciones de los clientes y la compatibilidad de su entorno:
+    
+      - **Habilitar autenticación Kerberos** para que los servidores del grupo emitan desafíos mediante la autenticación Kerberos.
+    
+      - **Habilitar autenticación NTLM** para que los servidores del grupo emitan desafíos mediante la autenticación NTLM.
+    
+      - **Habilitar autenticación de certificados** para que los servidores del grupo emitan desafíos mediante la autenticación de certificados.
+
+7.  Haga clic en **Confirmar**.
+
+</div>
+
+</div>
+
+<span> </span>
+
+</div>
+
+</div>
+
+</div>
+
