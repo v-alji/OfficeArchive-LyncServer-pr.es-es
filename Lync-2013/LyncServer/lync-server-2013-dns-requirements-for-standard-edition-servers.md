@@ -1,6 +1,6 @@
 ---
 title: 'Lync Server 2013: requisitos DNS para servidores Standard Edition'
-description: 'Lync Server 2013: requisitos DNS para los servidores Standard Edition.'
+description: 'Lync Server 2013: requisitos DNS para servidores Standard Edition.'
 ms.reviewer: ''
 ms.author: v-lanac
 author: lanachin
@@ -38,7 +38,7 @@ ms.locfileid: "49398184"
 
 <span> </span>
 
-_**Tema última modificación:** 19-06-2012_
+_**Tema Última modificación:** 2012-06-19_
 
 En esta sección se describen los registros del sistema de nombres de dominio (DNS) necesarios para la implementación de servidores Standard Edition.
 
@@ -46,7 +46,7 @@ En esta sección se describen los registros del sistema de nombres de dominio (D
 
 ## <a name="dns-records-for-standard-edition-servers"></a>Registros de DNS para servidores Standard Edition
 
-La tabla siguiente especifica los requisitos DNS para la implementación del servidor Lync Server 2013 Standard Edition.
+En la tabla siguiente se especifican los requisitos DNS para la implementación del servidor Lync Server 2013 Standard Edition.
 
 ### <a name="dns-requirements-for-a-standard-edition-server"></a>Requisitos de DNS para un servidor Standard Edition
 
@@ -68,15 +68,15 @@ La tabla siguiente especifica los requisitos DNS para la implementación del ser
 </tr>
 <tr class="even">
 <td><p>Inicio de sesión de clientes automático</p></td>
-<td><p>Para cada dominio SIP compatible, un registro SRV para _sipinternaltls._tcp. &lt; dominio &gt; a través del puerto 5061 que se asigna al FQDN del servidor Standard Edition que autentica y redirige las solicitudes del cliente para el inicio de sesión. Para obtener más información, consulte los requisitos DNS para el inicio de sesión <a href="lync-server-2013-dns-requirements-for-automatic-client-sign-in.md">automático de clientes en Lync Server 2013.</a></p></td>
+<td><p>Para cada dominio SIP compatible, un registro SRV para _sipinternaltls._tcp. &lt; dominio &gt; a través del puerto 5061 que se asigna al FQDN del servidor Standard Edition que autentica y redirige las solicitudes de inicio de sesión del cliente. Para obtener más información, vea Requisitos DNS para el inicio de sesión automático del cliente <a href="lync-server-2013-dns-requirements-for-automatic-client-sign-in.md">en Lync Server 2013.</a></p></td>
 </tr>
 <tr class="odd">
 <td><p>Detección del servicio web de actualización de dispositivos por los dispositivos de comunicaciones unificadas (UC)</p></td>
-<td><p>Un registro A interno con el nombre ucupdates-r2. &lt; Dominio SIP que se resuelve en la dirección IP del servidor Standard Edition que hospeda el servicio web &gt; de actualización de dispositivos. En una situación en la que un dispositivo de comunicaciones unificadas esté activado, pero en el que nunca un usuario inició sesión, el registro A permite al dispositivo detectar el servidor que hospeda el servicio web de actualización de dispositivos y obtener actualizaciones. De lo contrario, los dispositivos obtienen la información del servidor a través del aprovisionamiento en banda la primera vez que un usuario inicia sesión.</p></td>
+<td><p>Un registro A interno con el nombre ucupdates-r2. &lt; Dominio SIP que se resuelve en la dirección IP del servidor Standard Edition que &gt; hospeda el servicio web de actualización de dispositivos. En una situación en la que un dispositivo de comunicaciones unificadas esté activado, pero en el que nunca un usuario inició sesión, el registro A permite al dispositivo detectar el servidor que hospeda el servicio web de actualización de dispositivos y obtener actualizaciones. De lo contrario, los dispositivos obtienen la información del servidor a través del aprovisionamiento en banda la primera vez que un usuario inicia sesión.</p></td>
 </tr>
 <tr class="even">
 <td><p>Un proxy inverso compatible con el tráfico HTTP</p></td>
-<td><p>Un registro A externo que resuelve el FQDN externo de la granja de servidores web en la dirección IP externa del proxy inverso. Los clientes y los dispositivos de UC usan este registro para conectarse al proxy inverso. Para obtener más información, <a href="lync-server-2013-determine-dns-requirements.md">consulte Determinar los requisitos DNS para Lync Server 2013</a> en la documentación de planeamiento.</p></td>
+<td><p>Un registro A externo que resuelve el FQDN externo de la granja de servidores web en la dirección IP externa del proxy inverso. Los clientes y los dispositivos de UC usan este registro para conectarse al proxy inverso. Para obtener más información, vea <a href="lync-server-2013-determine-dns-requirements.md">Determinar los requisitos DNS para Lync Server 2013</a> en la documentación de planeamiento.</p></td>
 </tr>
 </tbody>
 </table>
